@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111203205036) do
+ActiveRecord::Schema.define(:version => 20111203211848) do
 
   create_table "first_nations", :force => true do |t|
     t.string   "name"
@@ -26,6 +26,9 @@ ActiveRecord::Schema.define(:version => 20111203205036) do
     t.string   "detail_url"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "membership_authority"
+    t.string   "election_system"
+    t.integer  "quorum"
   end
 
   add_index "first_nations", ["tribal_council_id"], :name => "index_first_nations_on_tribal_council_id"
@@ -39,6 +42,16 @@ ActiveRecord::Schema.define(:version => 20111203205036) do
 
   add_index "nation_memberships", ["first_nation_id"], :name => "index_nation_memberships_on_first_nation_id"
   add_index "nation_memberships", ["reserve_id"], :name => "index_nation_memberships_on_reserve_id"
+
+  create_table "officials", :force => true do |t|
+    t.string   "title"
+    t.string   "surname"
+    t.string   "given_name"
+    t.date     "appointed_on"
+    t.date     "expires_on"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "reserves", :force => true do |t|
     t.string   "name"

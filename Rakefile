@@ -4,4 +4,4 @@
 
 require File.expand_path('../config/application', __FILE__)
 
-WatervoicesCa::Application.load_tasks
+WaterVoices::Application.load_tasks
