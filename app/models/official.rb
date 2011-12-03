@@ -1,6 +1,8 @@
 class Official < ActiveRecord::Base
   belongs_to :first_nation
 
+  validates_uniquenes_of :given_name, scope: [:surname, :first_nation_id]
+
   def self.scrape_list(doc)
     doc.css('tr:gt(1)').each do |tr|
       Official.scrape_detail tr

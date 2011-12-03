@@ -3,13 +3,19 @@ module Scrapable
     base.extend ClassMethods
   end
 
-  # Temporarily stores the parsed document being scraped.
-  attr_accessor :doc
+   # Temporarily stores the parsed document being scraped.
+  def doc=(doc)
+    @doc = doc
+  end
+
+  def doc
+    @doc
+  end
 
   # Scrapes one detail page.
   def scrape_detail
-    doc = Scrapable::Helpers.get detail_url
-    @@attributes.each do |attribute,id|
+    self.doc = Scrapable::Helpers.get detail_url
+    self.class.attributes.each do |attribute,id|
       if id['anchor']
         self[attribute] = doc.at_css('#' + id).andand[:href]
       else
@@ -19,7 +25,7 @@ module Scrapable
   end
 
   module Helpers
-    def get(url)
+    def self.get(url)
       Nokogiri::HTML(RestClient.get(url))
     end
   end
@@ -27,19 +33,19 @@ module Scrapable
   module ClassMethods
     BASE_URL = 'http://pse5-esd5.ainc-inac.gc.ca/fnp/Main/Search/'
 
-    alias :filename= :filename
     # Sets the filename at which to start the scrape.
     def filename(filename = nil)
       @filename = filename if filename
       @filename
     end  
+    alias :filename= :filename
 
-    alias :attributes= :attributes
     # Sets a mapping between attribute and HTML id.
     def attributes(attributes = nil)
       @attributes = attributes if attributes
       @attributes
     end
+    alias :attributes= :attributes
 
     # Scrapes the list of items.
     def scrape_list
