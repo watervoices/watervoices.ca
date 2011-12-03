@@ -1,0 +1,5 @@
+git clone TODO
+bundle
+bundle exec rake db:migrate
+bundle exec rake first_nations:list
+bundle exec rake first_nations:details
