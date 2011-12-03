@@ -25,16 +25,27 @@ class FirstNation < ActiveRecord::Base
     super
     self.tribal_council = TribalCouncil.find_by_number(doc.at_css('#ctl00_hlTCNumber').andand.text)
 
-    # @note This changes the doc, which can easily cause bugs if not careful.
-    doc = Scrapable::Helpers.get governance_url
+    gov = Scrapable::Helpers.get governance_url
     {
       membership_authority: 'ctl00_txtAuthority',
       election_system: 'ctl00_txtElection',
       quorum: 'ctl00_txtQuorum',
     }.each do |attribute,id|
-      self[attribute] = doc.at_css('#' + id).andand.text
+      self[attribute] = gov.at_css('#' + id).andand.text
     end
 
-    Official.scrape_list doc
+    gov.css('tr:gt(1)').each do |tr|
+      surname = tr.at_css('td:eq(2)').text
+      given_name = tr.at_css('td:eq(3)').text
+
+      official = officials.find_or_initialize_by_surname_and_given_name(surname, given_name)
+      official.attributes = {
+        title: tr.at_css('td:eq(1)').text,
+        surname: surname,
+        given_name: given_name,
+        appointed_on: (Date.strptime(tr.at_css('td:eq(4)').text, '%m/%d/%Y') rescue nil),
+        expires_on: (Date.strptime(tr.at_css('td:eq(5)').text, '%m/%d/%Y') rescue nil),
+      }
+    end
   end
 end
