@@ -18,7 +18,7 @@ class FirstNation < ActiveRecord::Base
   validates_uniqueness_of :number
 
   def governance_url
-    BASE_URL + 'FNGovernance.aspx?BAND_NUMBER=%s&lang=eng' % number
+    'http://pse5-esd5.ainc-inac.gc.ca/fnp/Main/Search/FNGovernance.aspx?BAND_NUMBER=%s&lang=eng' % number
   end
 
   def scrape_detail
