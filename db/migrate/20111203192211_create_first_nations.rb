@@ -10,6 +10,7 @@ class CreateFirstNations < ActiveRecord::Migration
       t.string :url
       t.string :aboriginal_canada_portal
       t.references :tribal_council
+      t.string :detail_url
 
       t.timestamps
     end

@@ -1,3 +1,15 @@
+namespace :tribal_councils do
+  desc 'Scrape tribal councils list'
+  task :list => :environment do
+    TribalCouncil.scrape_list
+  end
+
+  desc 'Scrape tribal councils details'
+  task :details => :environment do
+    TribalCouncil.scrape_details
+  end
+end
+
 namespace :first_nations do
   desc 'Scrape First Nations list'
   task :list => :environment do

@@ -7,16 +7,16 @@ class Reserve < ActiveRecord::Base
 
   validates_uniqueness_of :number
 
-  def self.scrape_detail
+  def scrape_detail(doc)
     {
       name: 'ctl00_txtReserveName',
       number: 'ctl00_txtReserveNumber',
       location: 'ctl00_txtLocation',
       hectares: 'ctl00_txtHectares',
     }.each do |attribute,id|
-      item[attribute] = doc.at_css('#' + id).andand.text
+      self[attribute] = doc.at_css('#' + id).andand.text
     end
-    item.nation_ids = doc.at_css('#ctl00_dgFNlist td:first a').map{|a| a.text}
-    item.save!
+    self.nation_ids = doc.at_css('#ctl00_dgFNlist td:first a').map{|a| a.text}
+    save!
   end
 end

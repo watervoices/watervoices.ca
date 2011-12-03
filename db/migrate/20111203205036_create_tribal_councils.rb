@@ -10,6 +10,7 @@ class CreateTribalCouncils < ActiveRecord::Migration
       t.string :country
       t.integer :geographic_zone
       t.string :environmental_index
+      t.string :detail_url
 
       t.timestamps
     end

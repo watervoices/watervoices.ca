@@ -21,7 +21,7 @@ module Scrapable
   def scrape_page(page)
     page.parser.css('tr').each do |tr|
       a = tr.at_css('a')
-      find_or_create_by_number(a.text, url: BASE_URL + a[:href]) if a
+      find_or_create_by_number!(a.text, detail_url: BASE_URL + a[:href]) if a
     end
 
     if page.parser.at_css('#ctl00_btnNext')
@@ -32,9 +32,9 @@ module Scrapable
   end
 
   # Scrapes the details pages.
-  def self.scrape_details
+  def scrape_details
     all.each do |item|
-      scrape_detail Nokogiri::HTML(RestClient.get(item.url))
+      item.scrape_detail Nokogiri::HTML(RestClient.get(item.detail_url))
     end
   end
 

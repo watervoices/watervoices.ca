@@ -5,6 +5,7 @@ class CreateReserves < ActiveRecord::Migration
       t.integer :number
       t.string :location
       t.float :hectares
+      t.string :detail_url
 
       t.timestamps
     end

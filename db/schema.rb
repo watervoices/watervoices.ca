@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111203201751) do
+ActiveRecord::Schema.define(:version => 20111203205036) do
 
   create_table "first_nations", :force => true do |t|
     t.string   "name"
@@ -23,6 +23,7 @@ ActiveRecord::Schema.define(:version => 20111203201751) do
     t.string   "url"
     t.string   "aboriginal_canada_portal"
     t.integer  "tribal_council_id"
+    t.string   "detail_url"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -44,6 +45,22 @@ ActiveRecord::Schema.define(:version => 20111203201751) do
     t.integer  "number"
     t.string   "location"
     t.float    "hectares"
+    t.string   "detail_url"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "tribal_councils", :force => true do |t|
+    t.string   "name"
+    t.string   "operating_name"
+    t.integer  "number"
+    t.string   "address"
+    t.string   "city"
+    t.string   "postal_code"
+    t.string   "country"
+    t.integer  "geographic_zone"
+    t.string   "environmental_index"
+    t.string   "detail_url"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

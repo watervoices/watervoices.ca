@@ -6,7 +6,7 @@ class TribalCouncil < ActiveRecord::Base
 
   validates_uniqueness_of :number
 
-  def self.scrape_detail
+  def scrape_detail(doc)
     {
       name: 'ctl00_txtName',
       operating_name: 'ctl00_txtOperatingName',
@@ -19,12 +19,11 @@ class TribalCouncil < ActiveRecord::Base
       environmental_index: 'ctl00_txtEnvironmentalIndex',
     }.each do |attribute,id|
       if id['anchor']
-        item[attribute] = doc.at_css('#' + id).andand[:href]
+        self[attribute] = doc.at_css('#' + id).andand[:href]
       else
-        item[attribute] = doc.at_css('#' + id).andand.text
+        self[attribute] = doc.at_css('#' + id).andand.text
       end
     end
-    item.tribal_council_id = doc.at_css('#ctl00_hlTCNumber').andand.text
-    item.save!
+    save!
   end
 end

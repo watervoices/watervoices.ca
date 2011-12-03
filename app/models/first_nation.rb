@@ -8,7 +8,7 @@ class FirstNation < ActiveRecord::Base
 
   validates_uniqueness_of :number
 
-  def self.scrape_detail
+  def scrape_detail(doc)
     {
       name: 'ctl00_txtBandName',
       number: 'ctl00_txtBandNumber',
@@ -20,12 +20,12 @@ class FirstNation < ActiveRecord::Base
       aboriginal_canada_portal: 'ctl00_anchor2',
     }.each do |attribute,id|
       if id['anchor']
-        item[attribute] = doc.at_css('#' + id).andand[:href]
+        self[attribute] = doc.at_css('#' + id).andand[:href]
       else
-        item[attribute] = doc.at_css('#' + id).andand.text
+        self[attribute] = doc.at_css('#' + id).andand.text
       end
     end
-    item.tribal_council_id = doc.at_css('#ctl00_hlTCNumber').andand.text
-    item.save!
+    self.tribal_council_id = doc.at_css('#ctl00_hlTCNumber').andand.text
+    save!
   end
 end
