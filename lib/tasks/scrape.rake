@@ -52,37 +52,43 @@ namespace :reserves do
   end
 end
 
-namespace :geocode do
+# @note 582 are found using Google Maps links on Aboriginal Canada.
+# @note 385 are found using Statistics Canada subdivisions.
+namespace :location do
   require 'csv'
   require 'unicode_utils/upcase'
 
-  def geocode(name, latitude, longitude)
+  def locate(name, latitude, longitude)
     reserve = Reserve.find_by_name name
     if reserve
       reserve.set_latitude_and_longitude latitude, longitude
     else
-      alt = (name.split(' ') - %w(COUNCIL FIRST GOVERNMENT NATION NATIONS RESERVE SETTLEMENT TREATY)).join(' ')
-      matches = Reserve.where('name LIKE ?', "%#{alt}%").all.map(&:name)
-      case matches.size
-      when 1
-        #puts "#{name.rjust(45)}  #{matches.first}"
-      when 0
-        #puts "Couldn't find '#{name}' (searching '#{alt}')"
-      else
-        #puts "Couldn't find '#{name}': searching '#{alt}':"
-        #puts matches
-      end
+      match_not_found name
+    end
+  end
+
+  def match_not_found(name)
+    alt = (name.split(' ') - %w(COUNCIL FIRST GOVERNMENT NATION NATIONS RESERVE SETTLEMENT TREATY)).join(' ')
+    matches = Reserve.where('name LIKE ?', "%#{alt}%").all.map(&:name)
+    case matches.size
+    when 1
+      puts "#{name.rjust(45)}  #{matches.first}"
+    when 0
+      #puts "Couldn't find '#{name}' (searching '#{alt}')"
+    else
+      #puts "Couldn't find '#{name}': searching '#{alt}':"
+      #puts matches
     end
   end
 
   desc 'Import coordinates from Statistics Canada subdivisions'
   task :statcan => :environment do
     csv = CSV.read(File.join(Rails.root, 'data', 'statcan.gc.ca.csv'), headers: true, col_sep: "\t")
-    Reserve.where(latitude: nil).all.each do |reserve|
-      if csv.find{|x| x['CSDNAME'] == reserve.name}
-        puts "FOUND #{reserve.name}"
-      else
-
+    Reserve.all.each do |reserve|
+      row = csv.find{|x| UnicodeUtils.upcase(x['CSDNAME']) == reserve.name}
+      if row
+        longitude, latitude = row['wkt_geom'].match(/\APOINT\(([0-9.-]+) ([0-9.-]+)\)\z/)[1..2]
+        reserve.set_latitude_and_longitude latitude, longitude
       end
     end
   end
@@ -92,7 +98,7 @@ namespace :geocode do
     Nokogiri::XML(File.read(File.join(Rails.root, 'data', 'aboriginalcanada.gc.ca.kml'))).css('Placemark').each do |placemark|
       name = UnicodeUtils.upcase placemark.at_css('name').text
       longitude, latitude = placemark.at_css('coordinates').text.split(',')
-      geocode name, longitude, latitude
+      locate name, latitude, longitude
       # @todo placemark.at_css('description').text
     end
   end
@@ -101,7 +107,7 @@ namespace :geocode do
   task :geocommons => :environment do
     Dir[File.join(Rails.root, 'data', '* First Nations.csv')].each do |filename|
       CSV.foreach(filename, headers: true) do |row|
-        geocode UnicodeUtils.upcase row['name'].gsub('&apos;', "'"), row['latitude'], row['longitude']
+        locate UnicodeUtils.upcase(row['name'].gsub('&apos;', "'")), row['latitude'], row['longitude']
       end
     end
   end

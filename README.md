@@ -11,6 +11,7 @@
     bundle exec rake reserves:list
     bundle exec rake reserves:details
     bundle exec rake reserves:extra
+    bundle exec rake location:statcan
 
 # Deployment
 
@@ -24,9 +25,10 @@
     heroku run rake tribal_councils:details
     heroku run rake first_nations:details
     heroku run rake reserves:details
-
     heroku run rake first_nations:extra
+
     heroku run rake reserves:extra
+    bundle exec rake location:statcan
 
 # Data Sources
 
