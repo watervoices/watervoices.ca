@@ -19,12 +19,13 @@
     git push heroku master
     heroku run rake db:migrate
     heroku run rake tribal_councils:list
-    heroku run rake tribal_councils:details
     heroku run rake first_nations:list
-    heroku run rake first_nations:details
-    heroku run rake first_nations:extra
     heroku run rake reserves:list
+    heroku run rake tribal_councils:details
+    heroku run rake first_nations:details
     heroku run rake reserves:details
+
+    heroku run rake first_nations:extra
     heroku run rake reserves:extra
 
 # Data Sources

@@ -12,6 +12,25 @@ class Reserve < ActiveRecord::Base
   serialize :connectivity
   validates_uniqueness_of :number
 
+  def geocoded?
+    latitude? && longitude?
+  end
+
+  def set_latitude_and_longitude(lat, lng)
+    if geocoded?
+      unless latitude.round(3) == lat.to_f.round(3)
+        puts "Latitude #{latitude} not close to #{lat} for reserve '#{name}' (#{number})"
+      end
+      unless longitude.round(3) == longitude.to_f.round(3)
+        puts "Longitude #{longitude} not close to #{lng} for reserve '#{name}' (#{number})"
+      end
+    else
+      self.latitude = lat
+      self.longitude = lng
+      save!
+    end
+  end
+
   def aboriginal_url
     'http://www.aboriginalcanada.gc.ca/acp/community/site.nsf/eng/rn%05d.html' % number
   end
