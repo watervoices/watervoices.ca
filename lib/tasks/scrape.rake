@@ -58,9 +58,20 @@ namespace :twitter do
   task :members_of_parliament => :environment do
     CSV.foreach(File.join(Rails.root, 'data', 'federal.csv'), headers: true, encoding: 'utf-8') do |row|
       begin
-        member_of_parliament = MemberOfParliament.find_by_name! row['Name']
-      rescue ActiveRecord::RecordNotFound
-        puts %(No match for name "#{row['Name']}")
+        matches = [MemberOfParliament.find_by_constituency(row['Riding']) || MemberOfParliament.where('constituency LIKE ?', "#{row['Riding']}%").all].flatten
+        if matches.size > 1
+          puts %(Many matches for constituency "#{row['Riding']}": #{matches.map(&:constituency).to_sentence})
+        elsif matches.size == 1
+          if row['Name'][/a-z/]
+            row['Name'] = row['Name'].titleize
+          end
+          unless matches.first.name == row['Name']
+            puts %("#{matches.first.name}" doesn't match "#{row['Name']}")
+          end
+          matches.first.update_attribute :twitter, "http://twitter.com/#{row['Twitter'].sub(/\A@/, '')}"
+        else
+          puts %(No match for constituency "#{row['Riding']}")
+        end
       end
     end
   end

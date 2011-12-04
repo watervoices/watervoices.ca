@@ -24,7 +24,7 @@ class MemberOfParliament < ActiveRecord::Base
 
   def scrape_detail
     doc = Scrapable::Helpers.parse detail_url.sub('ProfileMP', 'PrintProfileMP')
-    self.name = doc.at_css('#MasterPage_TombstoneContent_TombstoneContent_ucHeaderMP_lblMPNameData').text[/\A(?:Right Hon\. |Hon\. )?(.+)\z/]
+    self.name = doc.at_css('#MasterPage_TombstoneContent_TombstoneContent_ucHeaderMP_lblMPNameData').text[/\A(?:Right Hon\. |Hon\. )?(.+)\z/, 1].gsub(/[[:space:]]+/, ' ')
 
     src = doc.at_css('#MasterPage_TombstoneContent_TombstoneContent_ucHeaderMP_imgPhoto')[:src]
     unless src == 'Images/BlankMPPhoto.GIF'

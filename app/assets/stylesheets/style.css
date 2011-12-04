@@ -4,7 +4,7 @@ html, body {
 }
 
 body {
-	background-image: url(/assets/bkg0.jpg);
+	background-image: url(/images/bkg0.jpg);
 	background-repeat: repeat-x;
 	background-color: #e8e0d5;
 }
@@ -17,7 +17,7 @@ body {
 }
 
 .top {
-	background-image: url(/assets/topb.png);
+	background-image: url(/images/topb.png);
 	background-repeat: no-repeat;
 	width: 966px;
 	height:179px;
@@ -48,7 +48,7 @@ body {
 	padding-right:5px;
 }
 .mid1 {
-	background-image: url(/assets/mid1b.png);
+	background-image: url(/images/mid1b.png);
 	background-repeat: repeat-y;
 	width: 916px;
 	height:165px;
@@ -58,7 +58,7 @@ body {
 	clear:both;
 }
 .mid2 {
-	background-image: url(/assets/mid2.png);
+	background-image: url(/images/mid2.png);
 	background-repeat: repeat-y;
 	width: 916px;
 	padding:25px;
@@ -67,7 +67,7 @@ body {
 	height:440px;
 }
 .mid3 {
-	background-image: url(/assets/mid3.png);
+	background-image: url(/images/mid3.png);
 	background-repeat: repeat-y;
 	width: 916px;
 	padding:25px;
@@ -76,7 +76,7 @@ body {
 	height:350px;
 }
 .mid4 {
-	background-image: url(/assets/mid4.png);
+	background-image: url(/images/mid4.png);
 	background-repeat: repeat-y;
 	width: 916px;
 	padding:25px;
@@ -84,38 +84,38 @@ body {
 	clear:both;
 }
 .divider1 {
-	background-image: url(/assets/divider1.png);
+	background-image: url(/images/divider1.png);
 	background-repeat: no-repeat;
 	width: 966px;
 	height:17px;
 }
 .divider2 {
-	background-image: url(/assets/divider2.png);
+	background-image: url(/images/divider2.png);
 	background-repeat: no-repeat;
 	width: 966px;
 	height:2px;
 }
 .divider3 {
-	background-image: url(/assets/divider3.png);
+	background-image: url(/images/divider3.png);
 	background-repeat: no-repeat;
 	width: 966px;
 	height:2px;
 }
 .divider4 {
-	background-image: url(/assets/divider4.png);
+	background-image: url(/images/divider4.png);
 	background-repeat: no-repeat;
 	width: 966px;
 	height:2px;
 }
 .bot {
-	background-image: url(/assets/bot.png);
+	background-image: url(/images/bot.png);
 	background-repeat: no-repeat;
 	width: 966px;
 	height:7px;
 	margin-bottom:40px;
 }
 .but1 {
-	background-image: url(/assets/but1.png);
+	background-image: url(/images/but1.png);
 	background-repeat: no-repeat;
 	background-position: center center;
 	width: 165px;
@@ -159,7 +159,7 @@ body {
 }
 
 .info-box1 {
-	background-image: url(/assets/info-box1.png);
+	background-image: url(/images/info-box1.png);
 	background-repeat: no-repeat;
 	background-position: center center;
 	width: 165px;
@@ -203,22 +203,22 @@ li {
 .tabs li {
 	float: left;
 	clear: right; 
-	background-image: url(/assets/tab-inactive.png);
-	background-position: 0px 0px;
+	background-image: url(/images/tab-inactive2.png);
+	background-position: -25px 0px;
 	background-repeat: no-repeat;
 	height: 56px;
 	line-height: 60px;
 	float:left;
 	clear:right;
 	position: relative;
-	padding-left:22px;
+	padding-left:25px;
 	padding-right:17px;
 	color: #fff;
 	text-shadow: #000 0px 1px 1px;
 	cursor: pointer;
 }
 .tabs li.active {
-	background-image: url(/assets/tab-active.png);
+	background-image: url(/images/tab-active.png);
 	background-position: 0px 0px;
 	background-repeat: no-repeat;
 	height: 56px;
@@ -230,6 +230,9 @@ li {
 	color: #000;
 	text-shadow: #fff 0px 1px 1px;
 	cursor: default;
+	z-index:2;
+	margin-right: 4px;
+	margin-left:-16px;
 }
 .tabs li.active:hover {
 	color: #000;
@@ -238,7 +241,7 @@ li {
 	color: #ff823f;
 }
 .tabs li.active div.endcap {
-	background-image: url(/assets/tab-active.png);
+	background-image: url(/images/tab-active.png);
 	background-position:  top right;
 	background-repeat: no-repeat;
 	width: 6px;
@@ -252,15 +255,29 @@ li {
 }
 
 .tabs li div.endcap {
-	background-image: url(/assets/tab-inactive.png);
+	background-image: url(/images/tab-inactive2.png);
 	background-position:  top right;
 	background-repeat: no-repeat;
-	width: 6px;
+	width: 20px;
 	height: 56px;
 	float:left;
 	clear:right;
 	position: absolute;
 	right: -6px;
+	top:0px;
+	z-index:1;
+}
+.tabs li.active div.frontcap {
+	display:none;
+}
+.tabs li div.frontcap {
+	background-image: url(/images/tab-inactive2.png);
+	background-position:  top left;
+	background-repeat: no-repeat;
+	width: 24px;
+	height: 56px;
+	position: absolute;
+	left: -24px;
 	top:0px;
 	z-index:1;
 }
