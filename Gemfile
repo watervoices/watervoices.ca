@@ -5,7 +5,6 @@ gem 'rails', '3.1.0'
 # Bundle edge Rails instead:
 # gem 'rails',     :git => 'git://github.com/rails/rails.git'
 
-gem 'sqlite3'
 gem 'andand'
 gem 'mechanize'
 gem 'nokogiri'
@@ -22,6 +21,7 @@ end
 gem 'jquery-rails'
 
 group :development, :test do
+  gem 'sqlite3'
   gem 'rspec-rails'
 end
 
