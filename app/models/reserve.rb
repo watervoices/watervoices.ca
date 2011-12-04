@@ -6,6 +6,7 @@ class Reserve < ActiveRecord::Base
     location: 'ctl00_txtLocation',
     hectares: 'ctl00_txtHectares'
 
+  belongs_to :member_of_parliament
   has_many :nation_memberships
   has_many :first_nations, through: :nation_memberships, dependent: :destroy
 

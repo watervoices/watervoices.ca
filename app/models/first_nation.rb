@@ -41,7 +41,7 @@ class FirstNation < ActiveRecord::Base
       surname = tr.at_css('td:eq(2)').text
       given_name = tr.at_css('td:eq(3)').text
 
-      official = officials.find_or_initialize_by_surname_and_given_name(surname, given_name)
+      official = officials.find_or_initialize_by_given_name_and_surname(given_name, surname)
       official.attributes = {
         title: tr.at_css('td:eq(1)').text,
         surname: surname,
