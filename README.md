@@ -3,17 +3,20 @@
     git clone git://github.com/jpmckinney/watervoices.ca.git
     bundle
     bundle exec rake db:migrate
+    bundle exec rake members_of_parliament:list
     bundle exec rake tribal_councils:list
-    bundle exec rake tribal_councils:details
     bundle exec rake first_nations:list
-    bundle exec rake first_nations:details
-    bundle exec rake first_nations:extra
     bundle exec rake reserves:list
+    bundle exec rake members_of_parliament:details
+    bundle exec rake tribal_councils:details
+    bundle exec rake first_nations:details
     bundle exec rake reserves:details
+    bundle exec rake first_nations:extra
     bundle exec rake reserves:extra
     bundle exec rake location:geocommons
     bundle exec rake location:kml
     bundle exec rake location:statcan
+    bundle exec rake districts:lookup
 
 # Deployment
 
@@ -21,18 +24,20 @@
     heroku create --stack cedar APP_NAME
     git push heroku master
     heroku run rake db:migrate
+    heroku run rake members_of_parliament:list
     heroku run rake tribal_councils:list
     heroku run rake first_nations:list
     heroku run rake reserves:list
+    heroku run rake members_of_parliament:details
     heroku run rake tribal_councils:details
     heroku run rake first_nations:details
     heroku run rake reserves:details
     heroku run rake first_nations:extra
-
     heroku run rake reserves:extra
     heroku run rake location:geocommons
     heroku run rake location:kml
     heroku run rake location:statcan
+    heroku run rake districts:lookup
 
 # Data Sources
 

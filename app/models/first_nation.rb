@@ -63,7 +63,7 @@ class FirstNation < ActiveRecord::Base
         tribal_council.update_attribute :url, a[:href] if a
       end
     rescue RestClient::ResourceNotFound => e
-      puts "404 for First Nation '#{name}' (#{number}) on aboriginalcanada.gc.ca"
+      puts %(404 for First Nation "#{name}" (#{number}) on aboriginalcanada.gc.ca)
     end
   end
 end

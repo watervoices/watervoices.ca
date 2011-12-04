@@ -52,8 +52,40 @@ namespace :reserves do
   end
 end
 
+namespace :members_of_parliament do
+  desc 'Scrape members of parliament list'
+  task :list => :environment do
+    MemberOfParliament.scrape_list
+  end
+
+  desc 'Scrape members of parliament details'
+  task :details => :environment do
+    MemberOfParliament.scrape_details
+  end
+end
+
+namespace :districts do
+  desc 'Find electoral districts for each reserve'
+  task :lookup => :environment do
+    Reserve.geocoded.all.each do |reserve|
+      response = JSON.parse(RestClient.get 'http://api.vote.ca/api/beta/districts', params: {lat: reserve.latitude, lng: reserve.longitude})
+      federal = response.find{|x| x['electoral_group']['level'] == 'Federal'}
+      if federal
+        begin
+          MemberOfParliament.find_by_constituency! federal['name']
+        rescue ActiveRecord::RecordNotFound
+          puts %(No match for constituency "#{federal['name']}")
+        end
+      else
+        puts %(No match for reserve "#{reserve.name}" (#{reserve.number}))
+      end
+    end
+  end
+end
+
 # @note 582 are found using Google Maps links on Aboriginal Canada.
-# @note 385 are found using Statistics Canada subdivisions.
+# Another 25 from GeoCommons.
+# Another 4 from KML.
 namespace :location do
   require 'csv'
   require 'unicode_utils/upcase'
@@ -83,9 +115,9 @@ namespace :location do
     when 1
       puts "#{name} (#{alternative_name})\n#{matches.first.name} (#{fingerprint(matches.first.name)})\n---"
     when 0
-      #puts "Couldn't find '#{name}' (searching '#{alternative_name}')"
+      #puts %(Couldn't find "#{name}": searching "#{alternative_name}")
     else
-      #puts "Couldn't find '#{name}': searching '#{alternative_name}':"
+      #puts %(Couldn't find "#{name}": searching "#{alternative_name}":)
       #puts matches.map(&:name)
     end
   end

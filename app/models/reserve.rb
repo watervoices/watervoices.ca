@@ -13,6 +13,9 @@ class Reserve < ActiveRecord::Base
   serialize :connectivity
   validates_uniqueness_of :number
 
+  scope :nongeocoded, where(latitude: nil)
+  scope :geocoded, where('latitude IS NOT NULL')
+
   def geocoded?
     latitude? && longitude?
   end
@@ -20,10 +23,10 @@ class Reserve < ActiveRecord::Base
   def set_latitude_and_longitude(lat, lng)
     if geocoded?
       unless latitude.round(2) == lat.to_f.round(2)
-        puts "Latitude #{latitude} not close to #{lat} for reserve '#{name}' (#{number})"
+        puts %(Latitude #{latitude} (stored) not close to #{lat} for reserve "#{name}" (#{number}))
       end
       unless longitude.round(2) == lng.to_f.round(2)
-        puts "Longitude #{longitude} not close to #{lng} for reserve '#{name}' (#{number})"
+        puts %(Longitude #{longitude} (stored) not close to #{lng} for reserve "#{name}" (#{number}))
       end
     else
       self.latitude = lat
@@ -37,7 +40,6 @@ class Reserve < ActiveRecord::Base
   end
 
   def scrape_detail
-    p detail_url
     super
     self.first_nations = FirstNation.find_all_by_number(doc.css('#ctl00_dgFNlist td:first a').map{|a| a.text})
   end
@@ -78,7 +80,7 @@ class Reserve < ActiveRecord::Base
         end
       end
     rescue RestClient::ResourceNotFound => e
-      puts "404 for reserve '#{name}' (#{number}) on aboriginalcanada.gc.ca"
+      puts %(404 for reserve "#{name}" (#{number}) on aboriginalcanada.gc.ca)
     end
   end
 end
