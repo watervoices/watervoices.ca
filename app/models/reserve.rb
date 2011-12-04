@@ -9,6 +9,7 @@ class Reserve < ActiveRecord::Base
   has_many :nation_memberships
   has_many :first_nations, through: :nation_memberships, dependent: :destroy
 
+  serialize :connectivity
   validates_uniqueness_of :number
 
   def scrape_detail
@@ -17,6 +18,39 @@ class Reserve < ActiveRecord::Base
   end
 
   def scrape_extra
-    
+    begin
+      doc = Scrapable::Helpers.parse 'http://www.aboriginalcanada.gc.ca/acp/community/site.nsf/eng/rn%05d.html' % number
+      self.statcan_url = doc.at_css('a[href*="statcan"]').andand[:href]
+
+      a = doc.at_css('a[href*="maps.google.com"]')
+      self.latitude, self.longitude = URI.parse(a[:href]).query.match(/\bq=([0-9.-]+),([0-9.-]+)/)[1..2] if a
+
+      a = doc.at_css('a[href*="connectivitysurvey.nsf"]')
+      if a
+        doc = Scrapable::Helpers.parse 'http://www.aboriginalcanada.gc.ca/' + a[:href]
+        tds = doc.css('td')
+
+        self.connectivity = {}
+        [ 'Band Administration Office Internet Connectivity Type',
+          'Is that Internet Access available to Community Members ?',
+          'Connectivity Status',
+          'Number of SchoolNet Sites',
+          'SchoolNet Internet Connectivity Type',
+          'Police Detachment Internet Access Availability',
+          'Community Access Point available at',
+          'Does the FC have a CAP Site?',
+          'FC Internet Connectivity Type',
+          'Residential Internet Access Availability',
+          'Percentage of Households that Subscribe to the Internet',
+          'Expected Internet Availability by the end of 2007',
+        ].each do |label|
+          value = tds.find{|x|x.text == label}.next_element.text.strip
+          value = '' if ['No Connection', 'none available'].include? value
+          self.connectivity[label] = value
+        end
+      end
+    rescue RestClient::ResourceNotFound => e
+      puts "404 for reserve '#{name}' (#{number}) on aboriginalcanada.gc.ca"
+    end
   end
 end

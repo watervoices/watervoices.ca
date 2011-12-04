@@ -8,14 +8,6 @@ namespace :tribal_councils do
   task :details => :environment do
     TribalCouncil.scrape_details
   end
-
-  desc 'Scrape tribal councils data from Aboriginal Canada'
-  task :extra => :environment do
-    TribalCouncil.all.each do |item|
-      item.scrape_extra
-      item.save!
-    end
-  end
 end
 
 namespace :first_nations do

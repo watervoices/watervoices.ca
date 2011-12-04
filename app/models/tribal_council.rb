@@ -14,9 +14,4 @@ class TribalCouncil < ActiveRecord::Base
   has_many :nations
 
   validates_uniqueness_of :number
-
-  def scrape_extra
-    doc = Scrapable::Helpers.parse 'http://www.aboriginalcanada.gc.ca/acp/community/site.nsf/eng/fn%03d.html' % first_nation.number
-    self.url = doc.css('a').find{|x| x.text == 'Tribal Council Homepage'}.andand[:href]
-  end
 end

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111204000712) do
+ActiveRecord::Schema.define(:version => 20111204012948) do
 
   create_table "first_nations", :force => true do |t|
     t.string   "name"
@@ -63,6 +63,10 @@ ActiveRecord::Schema.define(:version => 20111204000712) do
     t.string   "detail_url"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "statcan_url"
+    t.float    "latitude"
+    t.float    "longitude"
+    t.text     "connectivity"
   end
 
   create_table "tribal_councils", :force => true do |t|

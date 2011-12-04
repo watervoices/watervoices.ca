@@ -26,8 +26,7 @@ class FirstNation < ActiveRecord::Base
     self.tribal_council = TribalCouncil.find_by_number(doc.at_css('#ctl00_hlTCNumber').andand.text)
 
     gov = Scrapable::Helpers.parse governance_url
-    {
-      membership_authority: 'ctl00_txtAuthority',
+    { membership_authority: 'ctl00_txtAuthority',
       election_system: 'ctl00_txtElection',
       quorum: 'ctl00_txtQuorum',
     }.each do |attribute,id|
@@ -50,7 +49,17 @@ class FirstNation < ActiveRecord::Base
   end
 
   def scrape_extra
-    doc = Scrapable::Helpers.parse 'http://www.aboriginalcanada.gc.ca/acp/community/site.nsf/eng/fn%03d.html' % number
-    self.wikipedia = doc.at_css('a[href*=wikipedia]').andand[:href]
+    begin
+      doc = Scrapable::Helpers.parse 'http://www.aboriginalcanada.gc.ca/acp/community/site.nsf/eng/fn%d.html' % number
+      self.wikipedia = doc.at_css('a[href*="wikipedia.org"]').andand[:href]
+
+      # @note Not optimal to change state here, but okay.
+      if tribal_council
+        a = doc.css('a').find{|x| x.text == 'Tribal Council Homepage'}
+        tribal_council.update_attribute :url, a[:href] if a
+      end
+    rescue RestClient::ResourceNotFound => e
+      puts "404 for First Nation '#{name}' (#{number}) on aboriginalcanada.gc.ca"
+    end
   end
 end
