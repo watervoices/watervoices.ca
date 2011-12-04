@@ -16,6 +16,7 @@
     bundle exec rake location:geocommons
     bundle exec rake location:kml
     bundle exec rake location:statcan
+    bundle exec rake twitter:members_of_parliament
     bundle exec rake districts:lookup
 
 # Deployment
@@ -37,6 +38,7 @@
     heroku run rake location:geocommons
     heroku run rake location:kml
     heroku run rake location:statcan
+    heroku run rake twitter:members_of_parliament
     heroku run rake districts:lookup
 
 # Data Sources
@@ -46,3 +48,4 @@
 * [Aboriginal Communities and Friendship Centres in Google Earth](http://www.aboriginalcanada.gc.ca/acp/site.nsf/eng/ao36276.html)
 * [Census subdivision boundaries from Statistics Canada](http://www12.statcan.gc.ca/census-recensement/2011/geo/bound-limit/bound-limit-eng.cfm)
 * [GeoCommons datasets by Steven DeRoy](http://geocommons.com/users/sderoy/overlays)
+* [Politwitter.ca](http://politwitter.ca/)

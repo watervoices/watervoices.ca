@@ -8,8 +8,8 @@ class MemberOfParliament < ActiveRecord::Base
   validates_uniqueness_of :constituency
 
   def self.scrape_list
-    doc = Scrapable::Helpers.get 'http://www.parl.gc.ca/MembersOfParliament/MainMPsCompleteList.aspx?TimePeriod=Current&Language=E'
-    doc.css('#MasterPage_MasterPage_BodyContent_PageContent_Content_ListContent_ListContent_grdCompleteList tr:gt(1').each do |tr|
+    doc = Scrapable::Helpers.parse 'http://www.parl.gc.ca/MembersOfParliament/MainMPsCompleteList.aspx?TimePeriod=Current&Language=E'
+    doc.css('#MasterPage_MasterPage_BodyContent_PageContent_Content_ListContent_ListContent_grdCompleteList tr:gt(1)').each do |tr|
       member_of_parliament = find_or_create_by_constituency(tr.at_css('td:eq(2)').text, detail_url: BASE_URL + tr.at_css('td:eq(1) a')[:href])
       member_of_parliament.save! if member_of_parliament.new_record?
     end
@@ -23,8 +23,7 @@ class MemberOfParliament < ActiveRecord::Base
   end
 
   def scrape_detail
-    # @todo constituency_number
-    doc = Scrapable::Helpers.parse detail_url
+    doc = Scrapable::Helpers.parse detail_url.sub('ProfileMP', 'PrintProfileMP')
     self.name = doc.at_css('#MasterPage_TombstoneContent_TombstoneContent_ucHeaderMP_lblMPNameData').text[/\A(?:Right Hon\. |Hon\. )?(.+)\z/]
 
     src = doc.at_css('#MasterPage_TombstoneContent_TombstoneContent_ucHeaderMP_imgPhoto')[:src]
@@ -40,6 +39,7 @@ class MemberOfParliament < ActiveRecord::Base
       self[attribute] = doc.at_css('#' + id).andand.text
     end
 
+    # @todo constituency_number
     # @todo addressings
     #kind
     #address

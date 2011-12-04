@@ -1,0 +1,307 @@
+html, body {
+	margin: 0;
+	padding: 0;	
+}
+
+body {
+	background-image: url(/assets/bkg0.jpg);
+	background-repeat: repeat-x;
+	background-color: #e8e0d5;
+}
+
+.main {
+	position:absolute;
+	left:50%;
+	top:8px;
+	margin-left: -483px
+}
+
+.top {
+	background-image: url(/assets/topb.png);
+	background-repeat: no-repeat;
+	width: 966px;
+	height:179px;
+	position: relative;
+}
+.top > #breadCrumbs {
+	background-color: #234453;
+	border-bottom: 1px solid #4b7585;
+	position: absolute;
+	left:10px;
+	top:151px;
+	height:20px;
+	font-family: 'myriad pro', helvetica, arial;
+	font-size:14px;
+	font-weight: normal;
+	color: #fff;
+	text-shadow: rgba(0,0,0,0.5) 0px -1px 1px;
+	text-align: left;
+	padding-left:6px;
+	line-height:20px;
+	border-radius: 5px;
+}
+.top > #breadCrumbs > div {
+	float:left;
+	clear:right;
+	position:relative;
+	cursor: pointer;
+	padding-right:5px;
+}
+.mid1 {
+	background-image: url(/assets/mid1b.png);
+	background-repeat: repeat-y;
+	width: 916px;
+	height:165px;
+	padding:25px;
+	display:none;
+	position:relative;
+	clear:both;
+}
+.mid2 {
+	background-image: url(/assets/mid2.png);
+	background-repeat: repeat-y;
+	width: 916px;
+	padding:25px;
+	position:relative;
+	clear:both;
+	height:440px;
+}
+.mid3 {
+	background-image: url(/assets/mid3.png);
+	background-repeat: repeat-y;
+	width: 916px;
+	padding:25px;
+	position:relative;
+	clear:both;
+	height:350px;
+}
+.mid4 {
+	background-image: url(/assets/mid4.png);
+	background-repeat: repeat-y;
+	width: 916px;
+	padding:25px;
+	position:relative;
+	clear:both;
+}
+.divider1 {
+	background-image: url(/assets/divider1.png);
+	background-repeat: no-repeat;
+	width: 966px;
+	height:17px;
+}
+.divider2 {
+	background-image: url(/assets/divider2.png);
+	background-repeat: no-repeat;
+	width: 966px;
+	height:2px;
+}
+.divider3 {
+	background-image: url(/assets/divider3.png);
+	background-repeat: no-repeat;
+	width: 966px;
+	height:2px;
+}
+.divider4 {
+	background-image: url(/assets/divider4.png);
+	background-repeat: no-repeat;
+	width: 966px;
+	height:2px;
+}
+.bot {
+	background-image: url(/assets/bot.png);
+	background-repeat: no-repeat;
+	width: 966px;
+	height:7px;
+	margin-bottom:40px;
+}
+.but1 {
+	background-image: url(/assets/but1.png);
+	background-repeat: no-repeat;
+	background-position: center center;
+	width: 165px;
+	height:165px;
+	position: relative;
+	cursor: pointer;
+	float:left;
+	clear:right;
+	margin-right:18px;
+	
+}
+.but1.over {
+	background-position: top center;
+	position: absolute;
+	left:0px;
+	top:0px;
+}
+.but1.down {
+	background-position: bottom center;
+	position: absolute;
+	left:0px;
+	top:0px;
+}
+.but1text {
+	position: absolute;
+	right:20px;
+	bottom:15px;
+	font-family: 'myriad pro', helvetica, arial;
+	font-size:18px;
+	font-weight: bold;
+	color: #fff;
+	text-shadow: rgba(0,0,0,0.5) 0px -1px 1px;
+	cursor: pointer;
+}
+.but1icon {
+	background-position: center center;
+	background-repeat: no-repeat;
+	width: 100%;
+	height: 100%;
+	position: absolute;
+}
+
+.info-box1 {
+	background-image: url(/assets/info-box1.png);
+	background-repeat: no-repeat;
+	background-position: center center;
+	width: 165px;
+	height:165px;
+	position: relative;
+	cursor: default;
+	float:left;
+	clear:right;
+	font-family: 'myriad pro', helvetica, arial;
+	font-size:20px;
+	font-weight: normal;
+	color: #fff;
+	text-shadow: rgba(0,0,0,0.5) 0px -1px 1px;
+	text-align: center;
+	margin-right:18px;
+}
+.info-box1 span {
+	position: absolute;
+	top:50%;
+	width:100%;
+	left:0px;
+	margin-top:-44px;
+	line-height:30px;
+}
+li {
+	list-style: none;
+}
+.tabs {
+	position: absolute;
+	right:18px;
+	bottom:0px;
+	height:56px;
+	margin:0px;
+	padding:0px;
+	font-family: 'myriad pro', helvetica, arial;
+	font-size:16px;
+	font-weight: bold;
+	cursor: pointer;
+	
+}
+.tabs li {
+	float: left;
+	clear: right; 
+	background-image: url(/assets/tab-inactive.png);
+	background-position: 0px 0px;
+	background-repeat: no-repeat;
+	height: 56px;
+	line-height: 60px;
+	float:left;
+	clear:right;
+	position: relative;
+	padding-left:22px;
+	padding-right:17px;
+	color: #fff;
+	text-shadow: #000 0px 1px 1px;
+	cursor: pointer;
+}
+.tabs li.active {
+	background-image: url(/assets/tab-active.png);
+	background-position: 0px 0px;
+	background-repeat: no-repeat;
+	height: 56px;
+	float:left;
+	clear:right;
+	position: relative;
+	padding-left:36px;
+	padding-right:20px;
+	color: #000;
+	text-shadow: #fff 0px 1px 1px;
+	cursor: default;
+}
+.tabs li.active:hover {
+	color: #000;
+}
+.tabs li:hover {
+	color: #ff823f;
+}
+.tabs li.active div.endcap {
+	background-image: url(/assets/tab-active.png);
+	background-position:  top right;
+	background-repeat: no-repeat;
+	width: 6px;
+	height: 56px;
+	float:left;
+	clear:right;
+	position: absolute;
+	right: -6px;
+	top:0px;
+	z-index:1;
+}
+
+.tabs li div.endcap {
+	background-image: url(/assets/tab-inactive.png);
+	background-position:  top right;
+	background-repeat: no-repeat;
+	width: 6px;
+	height: 56px;
+	float:left;
+	clear:right;
+	position: absolute;
+	right: -6px;
+	top:0px;
+	z-index:1;
+}
+
+.lowerInfoBoxes {
+	width:48%;
+	border: 1px solid #e3dfd9;
+	background-color: #fff;
+	float:left;
+	margin-right:17px;
+	position:relative;
+	display:block;
+	height:350px;
+}
+
+.lowerInfoBoxesTitle {
+	border-bottom: 1px solid #f6f5f3;
+	padding:12px;
+	width:100%;
+	font-family: 'myriad pro', helvetica, arial;
+	font-size:16px;
+	font-weight: bold;
+	color: #000;
+	text-align: left;
+}
+
+.lowerInfoBoxesText {
+	padding:12px;
+	padding-top: 8px;
+	font-family: 'myriad pro', helvetica, arial;
+	font-size:16px;
+	font-weight: normal;
+	color: #000;
+	text-align: left;
+}
+.text-box1 {
+	font-family: 'myriad pro', helvetica, arial;
+	font-size:20px;
+	font-weight: normal;
+	color: #fff;
+	text-shadow: rgba(0,0,0,0.5) 0px -1px 1px;
+	text-align: left;
+	line-height:30px;
+}

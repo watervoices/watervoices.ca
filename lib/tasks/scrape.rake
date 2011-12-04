@@ -52,6 +52,20 @@ namespace :reserves do
   end
 end
 
+namespace :twitter do
+  require 'csv'
+  desc 'Add Twitter accounts for members of parliament'
+  task :members_of_parliament => :environment do
+    CSV.foreach(File.join(Rails.root, 'data', 'federal.csv'), headers: true, encoding: 'utf-8') do |row|
+      begin
+        member_of_parliament = MemberOfParliament.find_by_name! row['Name']
+      rescue ActiveRecord::RecordNotFound
+        puts %(No match for name "#{row['Name']}")
+      end
+    end
+  end
+end
+
 namespace :members_of_parliament do
   desc 'Scrape members of parliament list'
   task :list => :environment do
