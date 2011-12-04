@@ -1,13 +1,8 @@
 WaterVoices::Application.routes.draw do
-  get "pages/index"
-
-  get "pages/search"
-
-  get "pages/about"
-
-  get "reserves/index"
-
-  get "reserves/show"
+  resources :reserves
+  match 'search' => 'pages#search'
+  match 'about' => 'pages#about'
+  root :to => 'pages#index'
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
