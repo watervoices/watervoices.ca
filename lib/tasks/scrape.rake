@@ -86,7 +86,7 @@ namespace :districts do
       federal = response.find{|x| x['electoral_group']['level'] == 'Federal'}
       if federal
         begin
-          MemberOfParliament.find_by_constituency! federal['name']
+          reserve.update_attribute :member_of_parliament_id, MemberOfParliament.find_by_constituency!(federal['name']).id
         rescue ActiveRecord::RecordNotFound
           puts %(No match for constituency "#{federal['name']}")
         end
