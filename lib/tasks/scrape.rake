@@ -58,26 +58,35 @@ namespace :location do
   require 'csv'
   require 'unicode_utils/upcase'
 
+  def fingerprint(string)
+    string.gsub(/( (\d[A-Z0-9]*|COUNCIL|CREE|FIRST|GOVERNMENT|INDIAN|INLET|ISLAND|LAKE|LANDING|LOCATION|NATIONS?|RESERVE|RIVER|SETTLEMENT|SUBDIVISION|TERRITORY|TREATY|UNCEDED))+\z/, '')
+  end
+
   def locate(name, latitude, longitude)
     reserve = Reserve.find_by_name name
     if reserve
       reserve.set_latitude_and_longitude latitude, longitude
     else
-      match_not_found name
+      alternative_name = fingerprint(name)
+      matches = Reserve.where('name LIKE ?', "#{alternative_name}%").all
+      if matches.size == 1 && reserve = matches.find{|x| fingerprint(x.name) == alternative_name}
+        reserve.set_latitude_and_longitude latitude, longitude
+      else
+        match_not_found name, matches
+      end
     end
   end
 
-  def match_not_found(name)
-    alt = (name.split(' ') - %w(COUNCIL FIRST GOVERNMENT NATION NATIONS RESERVE SETTLEMENT TREATY)).join(' ')
-    matches = Reserve.where('name LIKE ?', "%#{alt}%").all.map(&:name)
+  def match_not_found(name, matches)
+    alternative_name = fingerprint(name)
     case matches.size
     when 1
-      puts "#{name.rjust(45)}  #{matches.first}"
+      puts "#{name} (#{alternative_name})\n#{matches.first.name} (#{fingerprint(matches.first.name)})\n---"
     when 0
-      #puts "Couldn't find '#{name}' (searching '#{alt}')"
+      #puts "Couldn't find '#{name}' (searching '#{alternative_name}')"
     else
-      #puts "Couldn't find '#{name}': searching '#{alt}':"
-      #puts matches
+      #puts "Couldn't find '#{name}': searching '#{alternative_name}':"
+      #puts matches.map(&:name)
     end
   end
 
