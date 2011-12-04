@@ -1,4 +1,14 @@
 WaterVoices::Application.routes.draw do
+  get "pages/index"
+
+  get "pages/search"
+
+  get "pages/about"
+
+  get "reserves/index"
+
+  get "reserves/show"
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
