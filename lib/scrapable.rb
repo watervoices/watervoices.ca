@@ -26,7 +26,12 @@ module Scrapable
 
   module Helpers
     def self.parse(url)
-      Nokogiri::HTML(RestClient.get(url))
+      begin
+        Nokogiri::HTML(RestClient.get(url))
+      rescue Timeout::Error
+        puts "Timeout. Retrying in 2..."
+        retry
+      end
     end
   end
 
