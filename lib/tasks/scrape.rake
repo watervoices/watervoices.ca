@@ -62,11 +62,8 @@ namespace :twitter do
         if matches.size > 1
           puts %(Many matches for constituency "#{row['Riding']}": #{matches.map(&:constituency).to_sentence})
         elsif matches.size == 1
-          if row['Name'][/a-z/]
-            row['Name'] = row['Name'].titleize
-          end
           unless matches.first.name == row['Name']
-            puts %("#{matches.first.name}" doesn't match "#{row['Name']}")
+            puts %("#{matches.first.name}" (stored) doesn't match "#{row['Name']}")
           end
           matches.first.update_attribute :twitter, "http://twitter.com/#{row['Twitter'].sub(/\A@/, '')}"
         else
