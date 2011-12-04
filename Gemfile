@@ -9,6 +9,7 @@ gem 'andand'
 gem 'mechanize'
 gem 'nokogiri'
 gem 'rest-client'
+gem 'unicode_utils'
 
 # Gems used only for assets and not required
 # in production environments by default.
