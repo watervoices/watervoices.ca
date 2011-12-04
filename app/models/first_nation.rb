@@ -21,6 +21,10 @@ class FirstNation < ActiveRecord::Base
     'http://pse5-esd5.ainc-inac.gc.ca/fnp/Main/Search/FNGovernance.aspx?BAND_NUMBER=%s&lang=eng' % number
   end
 
+  def aboriginal_url
+    'http://www.aboriginalcanada.gc.ca/acp/community/site.nsf/eng/fn%d.html' % number
+  end
+
   def scrape_detail
     super
     self.tribal_council = TribalCouncil.find_by_number(doc.at_css('#ctl00_hlTCNumber').andand.text)
@@ -50,7 +54,7 @@ class FirstNation < ActiveRecord::Base
 
   def scrape_extra
     begin
-      doc = Scrapable::Helpers.parse 'http://www.aboriginalcanada.gc.ca/acp/community/site.nsf/eng/fn%d.html' % number
+      doc = Scrapable::Helpers.parse aboriginal_url
       self.wikipedia = doc.at_css('a[href*="wikipedia.org"]').andand[:href]
 
       # @note Not optimal to change state here, but okay.

@@ -12,6 +12,10 @@ class Reserve < ActiveRecord::Base
   serialize :connectivity
   validates_uniqueness_of :number
 
+  def aboriginal_url
+    'http://www.aboriginalcanada.gc.ca/acp/community/site.nsf/eng/rn%05d.html' % number
+  end
+
   def scrape_detail
     super
     self.first_nations = FirstNation.find_all_by_number(doc.css('#ctl00_dgFNlist td:first a').map{|a| a.text})
@@ -19,7 +23,7 @@ class Reserve < ActiveRecord::Base
 
   def scrape_extra
     begin
-      doc = Scrapable::Helpers.parse 'http://www.aboriginalcanada.gc.ca/acp/community/site.nsf/eng/rn%05d.html' % number
+      doc = Scrapable::Helpers.parse aboriginal_url
       self.statcan_url = doc.at_css('a[href*="statcan"]').andand[:href]
 
       a = doc.at_css('a[href*="maps.google.com"]')
@@ -27,10 +31,12 @@ class Reserve < ActiveRecord::Base
 
       a = doc.at_css('a[href*="connectivitysurvey.nsf"]')
       if a
-        doc = Scrapable::Helpers.parse 'http://www.aboriginalcanada.gc.ca/' + a[:href]
-        tds = doc.css('td')
+        self.connectivity_url = 'http://www.aboriginalcanada.gc.ca/' + a[:href]
+        doc = Scrapable::Helpers.parse connectivity_url
 
+        tds = doc.css('td')
         self.connectivity = {}
+
         [ 'Band Administration Office Internet Connectivity Type',
           'Is that Internet Access available to Community Members ?',
           'Connectivity Status',
@@ -44,7 +50,8 @@ class Reserve < ActiveRecord::Base
           'Percentage of Households that Subscribe to the Internet',
           'Expected Internet Availability by the end of 2007',
         ].each do |label|
-          value = tds.find{|x|x.text == label}.next_element.text.strip
+          value = tds.find{|x|x.text == label}.next_element.text.gsub(/[[:space:]]/, ' ').strip.capitalize
+          value[0] = value[0].capitalize if value.present?
           value = '' if ['No Connection', 'none available'].include? value
           self.connectivity[label] = value
         end

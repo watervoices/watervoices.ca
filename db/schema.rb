@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111204012948) do
+ActiveRecord::Schema.define(:version => 20111204021231) do
 
   create_table "first_nations", :force => true do |t|
     t.string   "name"
@@ -67,6 +67,7 @@ ActiveRecord::Schema.define(:version => 20111204012948) do
     t.float    "latitude"
     t.float    "longitude"
     t.text     "connectivity"
+    t.string   "connectivity_url"
   end
 
   create_table "tribal_councils", :force => true do |t|
