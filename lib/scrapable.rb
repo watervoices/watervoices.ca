@@ -14,7 +14,7 @@ module Scrapable
 
   # Scrapes one detail page.
   def scrape_detail
-    self.doc = Scrapable::Helpers.get detail_url
+    self.doc = Scrapable::Helpers.parse detail_url
     self.class.attributes.each do |attribute,id|
       if id['anchor']
         self[attribute] = doc.at_css('#' + id).andand[:href]
@@ -25,7 +25,7 @@ module Scrapable
   end
 
   module Helpers
-    def self.get(url)
+    def self.parse(url)
       Nokogiri::HTML(RestClient.get(url))
     end
   end

@@ -8,6 +8,14 @@ namespace :tribal_councils do
   task :details => :environment do
     TribalCouncil.scrape_details
   end
+
+  desc 'Scrape tribal councils data from Aboriginal Canada'
+  task :extra => :environment do
+    TribalCouncil.all.each do |item|
+      item.scrape_extra
+      item.save!
+    end
+  end
 end
 
 namespace :first_nations do
@@ -20,6 +28,14 @@ namespace :first_nations do
   task :details => :environment do
     FirstNation.scrape_details
   end
+
+  desc 'Scrape First Nations data from Aboriginal Canada'
+  task :extra => :environment do
+    FirstNation.all.each do |item|
+      item.scrape_extra
+      item.save!
+    end
+  end
 end
 
 namespace :reserves do
@@ -31,5 +47,13 @@ namespace :reserves do
   desc 'Scrape reserves details'
   task :details => :environment do
     Reserve.scrape_details
+  end
+
+  desc 'Scrape reserves data from Aboriginal Canada'
+  task :extra => :environment do
+    Reserve.all.each do |item|
+      item.scrape_extra
+      item.save!
+    end
   end
 end

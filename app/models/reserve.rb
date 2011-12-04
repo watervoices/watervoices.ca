@@ -15,4 +15,8 @@ class Reserve < ActiveRecord::Base
     super
     self.first_nations = FirstNation.find_all_by_number(doc.css('#ctl00_dgFNlist td:first a').map{|a| a.text})
   end
+
+  def scrape_extra
+    
+  end
 end

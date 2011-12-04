@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111203213956) do
+ActiveRecord::Schema.define(:version => 20111204000712) do
 
   create_table "first_nations", :force => true do |t|
     t.string   "name"
@@ -29,6 +29,7 @@ ActiveRecord::Schema.define(:version => 20111203213956) do
     t.string   "membership_authority"
     t.string   "election_system"
     t.integer  "quorum"
+    t.string   "wikipedia"
   end
 
   add_index "first_nations", ["tribal_council_id"], :name => "index_first_nations_on_tribal_council_id"
@@ -77,6 +78,7 @@ ActiveRecord::Schema.define(:version => 20111203213956) do
     t.string   "detail_url"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "url"
   end
 
 end

@@ -25,7 +25,7 @@ class FirstNation < ActiveRecord::Base
     super
     self.tribal_council = TribalCouncil.find_by_number(doc.at_css('#ctl00_hlTCNumber').andand.text)
 
-    gov = Scrapable::Helpers.get governance_url
+    gov = Scrapable::Helpers.parse governance_url
     {
       membership_authority: 'ctl00_txtAuthority',
       election_system: 'ctl00_txtElection',
@@ -47,5 +47,10 @@ class FirstNation < ActiveRecord::Base
         expires_on: (Date.strptime(tr.at_css('td:eq(5)').text, '%m/%d/%Y') rescue nil),
       }
     end
+  end
+
+  def scrape_extra
+    doc = Scrapable::Helpers.parse 'http://www.aboriginalcanada.gc.ca/acp/community/site.nsf/eng/fn%03d.html' % number
+    self.wikipedia = doc.at_css('a[href*=wikipedia]').andand[:href]
   end
 end
