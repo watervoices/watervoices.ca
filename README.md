@@ -45,7 +45,11 @@
 
 * [First Nation profiles from Aboriginal Affairs and Northern Development Canada](http://pse5-esd5.ainc-inac.gc.ca/fnp/Main/Index.aspx?lang=eng)
 * [Aboriginal community information from Aboriginal Canada Portal](http://www.aboriginalcanada.gc.ca/acp/community/site.nsf/index_en.html?OpenPage)
+* [Canadian MPs on Twitter from Politwitter.ca](http://politwitter.ca/page/canadian-politics-twitters/mp/house)
+
+## GIS
+
+* [Aboriginal Lands from GeoBase](http://www.geobase.ca/geobase/en/search.do;jsessionid=B20C773E3FC92FB30CD1FE9E594B50C9?produit=alta&language=en)
 * [Aboriginal Communities and Friendship Centres in Google Earth](http://www.aboriginalcanada.gc.ca/acp/site.nsf/eng/ao36276.html)
 * [Census subdivision boundaries from Statistics Canada](http://www12.statcan.gc.ca/census-recensement/2011/geo/bound-limit/bound-limit-eng.cfm)
 * [GeoCommons datasets by Steven DeRoy](http://geocommons.com/users/sderoy/overlays)
-* [Canadian MPs on Twitter from Politwitter.ca](http://politwitter.ca/page/canadian-politics-twitters/mp/house)
