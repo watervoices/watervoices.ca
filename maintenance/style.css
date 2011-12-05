@@ -44,6 +44,10 @@ h1 {
   text-align: center;
 }
 
+.fb-like {
+  top: -3px;
+}
+
 footer {
   border: none;
 }
