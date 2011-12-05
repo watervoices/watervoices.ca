@@ -1,0 +1,55 @@
+html,
+body {
+  background-color: #eedfd1;
+}
+body,
+input,
+label,
+p,
+select,
+textarea {
+  font: 16px/24px helvetica, arial, sans-serif;
+}
+
+.container {
+  width: 720px;
+  text-align: center;
+}
+
+h1 {
+  padding-top: 1em;
+}
+
+#mc_embed_signup form {
+  text-align: center;
+}
+#mc_embed_signup input.email {
+  width: 40%;
+  text-indent: 0;
+  padding-left: 5px;
+}
+#mc_embed_signup input.button {
+  width: 20%;
+  height: 36px;
+  background-color: #37414a;
+  font-size: 16px;
+  line-height: 36px;
+}
+#mc_embed_signup input.email,
+#mc_embed_signup input.button {
+  display: inline-block;
+  margin: 0;
+}
+.form-stacked label {
+  text-align: center;
+}
+
+footer {
+  border: none;
+}
+
+.lt-ie8 #mc_embed_signup input.email,
+.lt-ie8 #mc_embed_signup input.button {
+  zoom: 1;
+  display: inline;
+}
