@@ -108,6 +108,7 @@ end
 # @note 582 are found using Google Maps links on Aboriginal Canada.
 # Another 25 from GeoCommons.
 # Another 4 from KML.
+# Another 369 from Statcan census subdivisions.
 namespace :location do
   require 'csv'
   require 'unicode_utils/upcase'
@@ -144,7 +145,7 @@ namespace :location do
     end
   end
 
-  desc 'Import coordinates from Statistics Canada subdivisions'
+  desc 'Import coordinates from Statistics Canada census subdivisions'
   task :statcan => :environment do
     csv = CSV.read(File.join(Rails.root, 'data', 'statcan.gc.ca.csv'), headers: true, col_sep: "\t")
     Reserve.all.each do |reserve|
