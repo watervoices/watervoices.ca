@@ -1,0 +1,309 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE metadata SYSTEM "http://www.fgdc.gov/metadata/fgdc-std-001-1998.dtd"[]>
+<metadata>
+  <idinfo>
+    <citation>
+      <citeinfo>
+        <origin>Government of Canada, Natural Resources Canada, Earth Sciences Sector, Surveyor General Branch</origin>
+        <pubdate>20111130</pubdate>
+        <title>Aboriginal Lands, Canada</title>
+        <edition>2.20</edition>
+        <geoform>vector digital data</geoform>
+        <serinfo>
+          <sername>Aboriginal Lands</sername>
+          <issue>1.1</issue>
+        </serinfo>
+        <othercit>English</othercit>
+        <onlink>http://www.geobase.ca/</onlink>
+      </citeinfo>
+    </citation>
+    <descript>
+      <abstract>The Aboriginal Lands product consists of polygon entities that depict the administrative boundaries (extent) of lands where the title has been vested in specific Aboriginal Groups of Canada or lands which were set aside for their exclusive benefit. More specifically it includes the following lands: 
+1) Indian Reserves that include:
+1.1) Surrendered lands or a reserve, as defined in the Indian Act. This definition excludes Indian Settlements and Indian Communities.
+1.2) Sechelt lands, as defined in the Sechelt Indian Band Self-Government Act, chapter 27 of the Statutes of Canada, 1986.
+2) Land Claim Settlement Lands - Lands created under Comprehensive Land Claims Process that do not or will not have Indian Reserve status under the Indian Act.  They include:
+2.1) Category IA land or Category IA-N land, as defined in the Cree-Naskapi (of Quebec) Act, chapter 18 of the Statutes of Canada, 1984. Category 1B and category II Lands are excluded from this definition.
+2.2) Settlement land, as defined in the Yukon First Nations Self-Government Act, and lands in which an interest is transferred or recognized under section 21 of that Act. Only Yukon First Nations Settlement Lands, which were surveyed and the survey plan recorded, are included in the dataset.
+2.3) Inuit Owned Lands (IOL) as defined in the Agreement between the Inuit of the Nunavut Settlement Area and Her Majesty the Queen in Right of Canada given effect and declared valid by the Nunavut Land Claims Agreement Act. It includes all parcels that have been surveyed and those that do not require a survey (this includes the islands). Survey plans may not all be recorded in the CLSR at this time.
+2.4) Gwich'in Lands as defined in the Gwich'in Comprehensive Land Claim Agreement, given effect and declared valid by the Gwich'in Land Claim Settlement Act.
+2.5) Inuvialuit Lands as defined in the Western Arctic (Inuvialuit) Claims Settlement Act.
+2.6) Sahtu Lands as defined in The Sahtu Dene and Métis Comprehensive Land Claim Agreement given effect and declared valid by the Sahtu Dene and Métis Land Claim Settlement Act. All parcels are included but not all survey plans are recorded in the CLSR at this time.
+2.7) Tlicho lands, as defined in the Tlicho Agreement, given effect and declared valid by the Tlicho Land Claims and Self-Government Act.
+3) Indian Lands that include:
+3.1) Lands in the Kanesatake Mohawk interim land base, as defined in the Kanesatake Interim Land Base Governance Act, other than the lands known as Doncaster Reserve No. 17.
+</abstract>
+      <purpose>Provide a national coverage and promote the use of a common geometric representation for Aboriginal Lands in Canada.  This data set is not to be used for defining boundaries.  Administrative decisions should be based on legal documents and legal survey plans.</purpose>
+      <supplinf>More information on the individual Indian Reserves, Settlement Lands and Indian Lands contained in the Aboriginal Lands Dataset can be found at the following web site: http://www.clss.nrcan.gc.ca.  As efforts are made to ensure currency of the data, frequent visit is recommended.</supplinf>
+    </descript>
+    <timeperd>
+      <timeinfo>
+        <sngdate>
+          <caldate>20111130</caldate>
+        </sngdate>
+      </timeinfo>
+      <current>publication date</current>
+    </timeperd>
+    <status>
+      <progress>In work</progress>
+      <update>Monthly</update>
+    </status>
+    <spdom>
+      <bounding>
+        <westbc>
+-141</westbc>
+        <eastbc>
+-52</eastbc>
+        <northbc>
+84</northbc>
+        <southbc>
+41</southbc>
+      </bounding>
+    </spdom>
+    <keywords>
+      <theme>
+        <themekt>GCMD (Global Change Master Directory)</themekt>
+        <themekey>Earth Science &gt; Human Dimensions &gt; Boundaries &gt; Administrative Divisions</themekey>
+        <themekey>Earth Science &gt; Land Surface &gt; Land Use/Land Cover &gt; Land Management</themekey>
+        <themekey>Earth Science &gt; Human Dimensions &gt; Land Use/Land Cover &gt; Land Management</themekey>
+        <themekey>Earth Science &gt; Human Dimensions &gt; Land Use/Land Cover &gt; Land Tenure</themekey>
+      </theme>
+      <theme>
+        <themekt>None</themekt>
+        <themekey>Boundaries</themekey>
+        <themekey>Canada Lands</themekey>
+        <themekey>Yukon First Nations</themekey>
+        <themekey>First Nations lands</themekey>
+        <themekey>Aboriginal lands</themekey>
+        <themekey>Cree-Naskapi</themekey>
+        <themekey>Kanesatake</themekey>
+        <themekey>Property rights</themekey>
+        <themekey>Settlement lands</themekey>
+        <themekey>Indian reserve</themekey>
+        <themekey>Inuit Owned Lands</themekey>
+        <themekey>Gwich'in Lands</themekey>
+        <themekey>Inuvialuit Lands</themekey>
+        <themekey>Sahtu Lands</themekey>
+        <themekey>Tlicho Lands</themekey>
+      </theme>
+      <place>
+        <placekt>GCMD (Global Change Master Directory)</placekt>
+        <placekey>Continent &gt; North America &gt; Canada</placekey>
+        <placekey>Continent &gt; North America &gt; Canada &gt; Newfoundland and Labrador</placekey>
+        <placekey>Continent &gt; North America &gt; Canada &gt; Nova Scotia</placekey>
+        <placekey>Continent &gt; North America &gt; Canada &gt; Prince Edward Island</placekey>
+        <placekey>Continent &gt; North America &gt; Canada &gt; New Brunswick</placekey>
+        <placekey>Continent &gt; North America &gt; Canada &gt; Quebec</placekey>
+        <placekey>Continent &gt; North America &gt; Canada &gt; Ontario</placekey>
+        <placekey>Continent &gt; North America &gt; Canada &gt; Manitoba</placekey>
+        <placekey>Continent &gt; North America &gt; Canada &gt; Saskatchewan</placekey>
+        <placekey>Continent &gt; North America &gt; Canada &gt; Alberta</placekey>
+        <placekey>Continent &gt; North America &gt; Canada &gt; British Columbia</placekey>
+        <placekey>Continent &gt; North America &gt; Canada &gt; Yukon</placekey>
+        <placekey>Continent &gt; North America &gt; Canada &gt; Northwest Territories</placekey>
+        <placekey>Continent &gt; North America &gt; Canada &gt; Nunavut</placekey>
+      </place>
+    </keywords>
+    <accconst>User must register to get access to the data.</accconst>
+    <useconst>Data are subject to the GeoBase Unrestricted Use Licence Agreement (http://www.geobase.ca - Data/Licence)</useconst>
+    <ptcontac>
+      <cntinfo>
+        <cntorgp>
+          <cntorg>Government of Canada, Natural Resources Canada, Earth Sciences Sector, Surveyor General Branch</cntorg>
+        </cntorgp>
+        <cntaddr>
+          <addrtype>mailing and physical</addrtype>
+          <address>9700 Jasper Avenue, Suite 605</address>
+          <city>Edmonton</city>
+          <state>Alberta</state>
+          <postal>T5J 4C3</postal>
+          <country>Canada</country>
+        </cntaddr>
+        <cntvoice>+01-780-495-2519</cntvoice>
+        <cntfax>+01-780-495-4052</cntfax>
+        <cntemail>sgb@nrcan.gc.ca</cntemail>
+      </cntinfo>
+    </ptcontac>
+  </idinfo>
+  <dataqual>
+    <attracc>
+      <attraccr>There is no systematic validation of non quantitative attribute.  Attribute issues are resolved as they are identified and reported.</attraccr>
+    </attracc>
+    <logic>Conceptual consistency: The conceptual model of the AL data is presented in the document Aboriginal Lands: Conceptual Data Model - Edition 1.0.1, accessible on the GeoBase portal (http://www.geobase.ca).  The physical implementation of the AL product is consistent with the conceptual model.
+
+Domain consistency:  The attribute values are validated against a list of authorized domain values defined in the feature catalogue.
+
+Format consistency: The AL data formats conform to the distribution formats described in the document Aboriginal Lands: Product Distribution Formats - Edition 1.1 accessible on the GeoBase portal (www.geobase.ca).  
+
+Topological consistency: Validation routines are performed on the source data to identify overlaps.  Naongashing Indian Reserve No. 31A and Naongashing Indian Reserve No. 35A overlap each other.  Each Indian Reserve is made of 50% of the land described.  Aboriginal Lands which overlap provincial or territorial boundaries are included in both provincial and territorial datasets.  Therefore, if provincial or territorial datasets are downloaded, it is possible that the same Aboriginal land may be duplicated.</logic>
+    <complete>The AL product does not include all Aboriginal Lands in Canada.  Refer to the abstract  to get a description of the specific Aboriginal Lands that are included in the AL product.
+Omissions or commissions that specifically apply to the Aboriginal Lands that are included in the AL product are as follows.
+
+Commission:
+No commissions are identified for the AL dataset.
+
+Omission:
+1) Indian Reserves: Indian reserves where all the surface rights were surrendered but the sub-surface rights retained (e.g. mines and minerals) are not included in the AL dataset.
+2) Land Claim Settlement Lands: Please note that, although not considered an omission as per the abstract, the Yukon First Nations Settlement Lands, which are not surveyed or the survey plan not recorded in the Canada Lands Survey Records, are not included in the AL dataset.</complete>
+    <posacc>
+      <horizpa>
+        <horizpar>The absolute external positional accuracy of objects is given as the difference between objects position in the dataset and their real ground positions measured in reference to the coordinate reference system.  The accuracy may vary from one object to another. It is thus provided as an attribute with each object occurrence and is expressed in metres at the 95% confidence level.
+
+The absolute positional accuracy is dependent on the absolute accuracy of the known point(s) used as control point(s) to derive the coordinates of the local survey and the relative accuracy of the connection(s) to these known point(s).  Each AL is derived by dissolving the interior boundaries of the surveyed parcels comprising the AL object. The accuracy value provided is an estimate determined using the accuracies of the various component parts, with the following exception. AL objects are often made of rectilinear and natural boundaries. The positional accuracy is typically determined using accuracy estimates of the rectilinear boundaries only. Therefore, the positional accuracy as specified in the metadata applies to the rectilinear boundaries and not to the natural boundaries.
+
+The accuracy aimed for the AL product is 30 m or better. Nevertheless, four cases occur when assessing the positional accuracy of AL objects.
+
+Under the data maintenance phase, no systematic validation of the positional accuracy is performed on all Aboriginal Lands.  Positional accuracy issues are fixed as they are identified or when better accuracy information becomes available.
+
+The horizontal data accuracy ranges into four categories:
+Case 1) Better than 2 m - Coordinate geometry was used to define the position of all surveyed points relative to the control points. Positional accuracy of the control points in reference to NAD83(CSRS) is known through GPS observations documented on survey plans or reports recorded in the Canada Lands Survey Records.  Absolute external positional accuracy of AL objects positioned using this method is usually better than 2 m.
+
+Case 2) Between 2 m and 10 m - Coordinate geometry was used to define the position of all surveyed points relative to the control points. Positional accuracy of the control points in reference to NAD83(CSRS) is not well established.  For example, the source provider does not specify the accuracy in reference to NAD83(CSRS) and/or it was required to convert the coordinates of the control point to NAD83(CSRS) using various methods. Absolute external positional accuracy of AL objects positioned using this method is usually between 2 m and 10 m.
+
+Case 3) Between 10 m and 100 m - Coordinate geometry was used to define the relative position of all surveyed points. Absolute external positional accuracy of AL objects is established using sources other than control points such as mapping, satellite imagery or aerial photography. Absolute external positional accuracy of AL objects positioned using this method is usually between 10 m and 100 m.
+
+Case 4) Unknown - External positional accuracy of AL objects cannot be determined, as it is not possible to establish with enough certainty the position of the AL object in reference to a NAD83(CSRS) source. This is the case at times with old survey plans, even if coordinate geometry methods are used to establish relative position. Absolute external positional accuracy of AL objects positioned using this method is usually set to "Unknown" (-1).
+
+The horizontal data accuracy range (Cases 1 to 4) is stored as an attribute to each entity (feature/object).</horizpar>
+      </horizpa>
+    </posacc>
+    <lineage>
+      <procstep>
+        <procdesc>The Maa-nulth Final Agreement came into effect April 1st, 2011. As a result, the 55 Maa-nulth Indian Reserves were transferred by Canada to the respective First Nation and are no longer Indian Reserves.  The list of Indian Reserves associated with the five First Nations which have been removed from the GeoBase - Aboriginal Lands dataset are:
+Huu-ay-aht First Nations: Numukamis 1, Nuchaquis 2, Dochsupple 3, Sachsa 4, Sachawil 5, Kirby Point 6, Hamilton Point 7, Haines Island 8, Keeshan 9, Kichha 10, Clutus 11, Anacla 12, Masit 13.
+Ka:'yu:'k't'h'/Che:k'tles7et'h' First Nations: Village Island 1, Acous 1, Mission Island 2, Hub-toul 2A, Ahmacinnit 3, Mahope 3, Granite Island 4, Hisnit 4, Yakats 5, Ououkinsh 5, Houpsitas 6, Upsowis 6, Chamiss 7, Malksope 7, Quin-e-ex 8, Kayouk 8, Kashittle 9, Checkaklis 9 , Kaoowinch 10, Tahsish 11, Artlish 12, Kaouk 13, Markale 14, Amai 15, Machta 16.
+Toquaht: Mocoah 1, Deekyakus 2, Chequis 3, Chenatha 4, Dookqua 5, Stuart Bay 6.
+Uchucklesaht: Cowishil 1, Elhlateese 2.
+Ucluelet First Nation: Ittatsoo 1, Clakamucus 2, Outs 3, Quinaquilth 4, Kleykleyhous 5, Ucluth 6, WYA 7, Oo-oolth 8, Quisitis 9.</procdesc>
+        <procdate>20110415</procdate>
+      </procstep>
+      <procstep>
+        <procdesc>For Indian Reserves, Land Claim Settlement Lands and Indian Lands, the AL polygon was generated by dissolving the cadastral land parcels associated with each specific AL object.  Using this approach, parcels such as rights of way and parcels which do not form part of the AL are excluded.  The source cadastral parcels were compiled from survey plans recorded in the Canada Lands Survey Records.</procdesc>
+        <procdate>20111130</procdate> 
+      </procstep>
+    </lineage>
+  </dataqual>
+  <spdoinfo>
+    <direct>Vector</direct>
+  </spdoinfo>
+  <spref>
+    <horizsys>
+      <geograph>
+        <latres>0.0000001</latres>
+        <longres>0.0000001</longres>
+        <geogunit>Decimal degrees</geogunit>
+      </geograph>
+      <geodetic>
+        <horizdn>NAD83CSRS (North American Datum of 1983, Canadian Spatial Reference System)</horizdn>
+        <ellips>Geodetic Reference System 80</ellips>
+        <semiaxis>6378137</semiaxis>
+        <denflat>298.257222101</denflat>
+      </geodetic>
+    </horizsys>
+  </spref>
+  <eainfo>
+    <overview>
+      <eaover>Entities and attributes are described in details in the Aboriginal Lands: Feature Catalogue - Edition 1.0.1, accessible on the GeoBase portal (http://www.geobase.ca)</eaover>
+      <eadetcit>Aboriginal Lands: Feature Catalogue - Edition 1.0.1.</eadetcit>
+    </overview>
+  </eainfo>
+  <distinfo>
+    <distrib>
+      <cntinfo>
+        <cntperp>
+          <cntper>GeoBase Technical Support</cntper>
+          <cntorg>Government of Canada, Natural Resources Canada, Earth Sciences Sector, Centre for Topographic Information</cntorg>
+        </cntperp>
+        <cntaddr>
+          <addrtype>mailing and physical address</addrtype>
+          <address>2144 King Street West, suite 010</address>
+          <city>Sherbrooke</city>
+          <state>Quebec</state>
+          <postal>J1J 2E8</postal>
+          <country>Canada</country>
+        </cntaddr>
+        <cntvoice>+01-819-564-4857 / 1-800-661-2638 (Canada and USA)</cntvoice>
+        <cntfax>+01-819-564-5698</cntfax>
+        <cntemail>supportGeobase@nrcan.gc.ca</cntemail>
+      </cntinfo>
+    </distrib>
+    <distliab>Data is subject to the GeoBase Unrestricted Use License Agreement</distliab>
+    <stdorder>
+      <digform>
+        <digtinfo>
+          <formname>GML (Geography Markup Language)</formname>
+          <filedec>Has been compressed using Winzip</filedec>
+        </digtinfo>
+        <digtopt>
+          <onlinopt>
+            <computer>
+              <networka>
+                <networkr>http://www.geobase.ca/</networkr>
+              </networka>
+            </computer>
+          </onlinopt>
+        </digtopt>
+      </digform>
+      <digform>
+        <digtinfo>
+          <formname>KML (Keyhole Markup Language)</formname>
+          <filedec>Has been compressed using Winzip</filedec>
+        </digtinfo>
+        <digtopt>
+          <onlinopt>
+            <computer>
+              <networka>
+                <networkr>http://www.geobase.ca/</networkr>
+              </networka>
+            </computer>
+          </onlinopt>
+        </digtopt>
+      </digform>
+      <digform>
+        <digtinfo>
+          <formname>SHP (ESRI Shapefile)</formname>
+          <filedec>Has been compressed using Winzip</filedec>
+        </digtinfo>
+        <digtopt>
+          <onlinopt>
+            <computer>
+              <networka>
+                <networkr>http://www.geobase.ca/</networkr>
+              </networka>
+            </computer>
+          </onlinopt>
+        </digtopt>
+      </digform>
+      <fees>Free</fees>
+      <ordering>The dataset must be downloaded directly from the Geobase site</ordering>
+    </stdorder>
+  </distinfo>
+  <metainfo>
+    <metd>20100324</metd>
+    <metc>
+      <cntinfo>
+        <cntperp>
+          <cntper>Paul Egesborg</cntper>
+          <cntorg>Government of Canada, Natural Resources Canada, Earth Sciences Sector, Surveyor General Branch</cntorg>
+        </cntperp>
+        <cntpos>Manager, Boundary and Cadastral Integration</cntpos>
+        <cntaddr>
+          <addrtype>mailing and physical</addrtype>
+          <address>557-615 Booth Street</address>
+          <city>Ottawa</city>
+          <state>Ontario</state>
+          <postal>K1A 0E9</postal>
+          <country>Canada</country>
+        </cntaddr>
+        <cntvoice>+01-613-995-4118</cntvoice>
+        <cntfax>+01-613-992-1122</cntfax>
+        <cntemail>egesborg@nrcan.gc.ca</cntemail>
+      </cntinfo>
+    </metc>
+    <metstdn>FGDC Content Standards for Digital Geospatial Metadata</metstdn>
+    <metstdv>FGDC-STD-001-1998</metstdv>
+    <mettc>local time</mettc>
+    <metac>None</metac>
+    <metuc>None. Only the English version of the metadata XML file is valid according to XML schema (W3C) as defined by FGDC (http://www.fgdc.gov). French version of the metadata XML file is not valid as it does not always respect domain values for all fields which are sometimes only available in English. The French version is issued mainly for display purposes. User must ensure to validate metadata against the XML schema English version.</metuc>
+  </metainfo>
+</metadata>
