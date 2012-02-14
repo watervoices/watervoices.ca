@@ -54,7 +54,7 @@ end
 
 namespace :twitter do
   require 'csv'
-  desc 'Add Twitter accounts for members of parliament'
+  desc 'Add Twitter accounts for Members of Parliament'
   task :members_of_parliament => :environment do
     CSV.foreach(File.join(Rails.root, 'data', 'federal.csv'), headers: true, encoding: 'utf-8') do |row|
       begin
@@ -169,7 +169,7 @@ namespace :location do
 
   desc 'Import coordinates from GeoCommons'
   task :geocommons => :environment do
-    Dir[File.join(Rails.root, 'data', '* First Nations.csv')].each do |filename|
+    Dir[File.join(Rails.root, 'data', 'geocommons.com', '* First Nations.csv')].each do |filename|
       CSV.foreach(filename, headers: true) do |row|
         locate UnicodeUtils.upcase(row['name'].gsub('&apos;', "'")), row['latitude'], row['longitude']
       end
