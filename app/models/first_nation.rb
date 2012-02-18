@@ -17,6 +17,8 @@ class FirstNation < ActiveRecord::Base
 
   validates_uniqueness_of :number
 
+  scope :unscraped, where(name: nil)
+
   def governance_url
     'http://pse5-esd5.ainc-inac.gc.ca/fnp/Main/Search/FNGovernance.aspx?BAND_NUMBER=%s&lang=eng' % number
   end

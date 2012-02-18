@@ -154,6 +154,7 @@ GEM
     unicode_utils (1.1.2)
     webrobots (0.0.12)
       nokogiri (>= 1.4.4)
+    zip (2.0.2)
 
 PLATFORMS
   ruby
@@ -176,3 +177,4 @@ DEPENDENCIES
   turn
   uglifier
   unicode_utils
+  zip

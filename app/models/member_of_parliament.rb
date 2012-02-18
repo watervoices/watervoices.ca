@@ -7,6 +7,8 @@ class MemberOfParliament < ActiveRecord::Base
 
   validates_uniqueness_of :constituency
 
+  scope :unscraped, where(name: nil)
+
   def self.scrape_list
     doc = Scrapable::Helpers.parse 'http://www.parl.gc.ca/MembersOfParliament/MainMPsCompleteList.aspx?TimePeriod=Current&Language=E'
     doc.css('#MasterPage_MasterPage_BodyContent_PageContent_Content_ListContent_ListContent_grdCompleteList tr:gt(1)').each do |tr|

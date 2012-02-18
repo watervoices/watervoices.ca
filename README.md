@@ -2,6 +2,7 @@
 
     git clone git://github.com/jpmckinney/watervoices.ca.git
     bundle
+    bundle exec rake db:create
     bundle exec rake db:migrate
     bundle exec rake members_of_parliament:list
     bundle exec rake tribal_councils:list
@@ -13,6 +14,7 @@
     bundle exec rake reserves:details
     bundle exec rake first_nations:extra
     bundle exec rake reserves:extra
+    bundle exec rake location:clss
     bundle exec rake location:geocommons
     bundle exec rake location:kml
     bundle exec rake location:statcan
@@ -35,6 +37,7 @@
     heroku run rake reserves:details
     heroku run rake first_nations:extra
     heroku run rake reserves:extra
+    heroku run rake location:clss
     heroku run rake location:geocommons
     heroku run rake location:kml
     heroku run rake location:statcan
@@ -49,7 +52,7 @@
 
 ## GIS
 
-* [Aboriginal Lands from GeoBase](http://www.geobase.ca/geobase/en/search.do;jsessionid=B20C773E3FC92FB30CD1FE9E594B50C9?produit=alta&language=en)
+* [Canada Lands in Google Earth](http://clss.nrcan.gc.ca/googledata-donneesgoogle-eng.php)
 * [Aboriginal Communities and Friendship Centres in Google Earth](http://www.aboriginalcanada.gc.ca/acp/site.nsf/eng/ao36276.html)
 * [Census subdivision boundaries from Statistics Canada](http://www12.statcan.gc.ca/census-recensement/2011/geo/bound-limit/bound-limit-eng.cfm)
 * [GeoCommons datasets by Steven DeRoy](http://geocommons.com/users/sderoy/overlays)

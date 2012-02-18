@@ -14,4 +14,6 @@ class TribalCouncil < ActiveRecord::Base
   has_many :nations
 
   validates_uniqueness_of :number
+
+  scope :unscraped, where(name: nil)
 end
