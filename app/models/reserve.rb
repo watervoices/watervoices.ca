@@ -12,16 +12,43 @@ class Reserve < ActiveRecord::Base
 
   serialize :connectivity
   validates_uniqueness_of :number
+  validates_uniqueness_of :name
+  validates_uniqueness_of :fingerprint
 
+  scope :unscraped, where(name: nil)
   scope :nongeocoded, where(latitude: nil)
   scope :geocoded, where('latitude IS NOT NULL')
+
+  COMMON_WORDS = [
+    'BAND',
+    'COMMUNITY',
+    'FIRST NATION',
+    'FN',
+    'I.R.',
+    'INDIAN',
+    'IR',
+    'ISLAND',
+    'NAKODA',
+    'NO.',
+    'RESERVE',
+    'RIVER',
+    'SETTLEMENT',
+    'TIMBER LIMIT',
+  ]
 
   def geocoded?
     latitude? && longitude?
   end
 
-  def set_latitude_and_longitude(lat, lng)
-    if geocoded?
+  # @param [String] string a string
+  # @return [String] the string with dashes and common and parenthesized words
+  #   removed, and with standardized conjunctions and identifiers.
+  def self.fingerprint(string)
+    string.gsub('&', 'AND').gsub(/(\d+)-([A-Z])/, '\1\2').gsub(/(?: (?:\([^)]+\)|#{COMMON_WORDS.map{|x| Regexp.escape x}.join '|'})\b)/, '').gsub('-', ' ')
+  end
+
+  def set_latitude_and_longitude(lat, lng, options = {})
+    if geocoded? && !options[:force]
       unless latitude.round(2) == lat.to_f.round(2)
         puts %(Latitude #{latitude} (stored) not close to #{lat} for reserve "#{name}" (#{number}))
       end
@@ -41,6 +68,8 @@ class Reserve < ActiveRecord::Base
 
   def scrape_detail
     super
+    self.name = self.name.squeeze(' ').gsub(/(\S)\(/, '\1 (')
+    self.fingerprint = Reserve.fingerprint name
     self.first_nations = FirstNation.find_all_by_number(doc.css('#ctl00_dgFNlist td:first a').map{|a| a.text})
   end
 

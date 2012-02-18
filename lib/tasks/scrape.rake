@@ -52,6 +52,134 @@ namespace :reserves do
   end
 end
 
+namespace :members_of_parliament do
+  desc 'Scrape members of parliament list'
+  task :list => :environment do
+    MemberOfParliament.scrape_list
+  end
+
+  desc 'Scrape members of parliament details'
+  task :details => :environment do
+    MemberOfParliament.scrape_details
+  end
+end
+
+# @todo update these figures
+# @note 582 are found using Google Maps links on Aboriginal Canada.
+#   Another 25 from GeoCommons.
+#   Another 4 from KML.
+#   Another 369 from Statcan census subdivisions.
+namespace :location do
+  require 'csv'
+  require 'open-uri'
+  require 'unicode_utils/upcase'
+
+  NAME_MAP = {
+    # Meaningful parentheses
+    'BEATON RIVER 204, SOUTH HALF'                              => 'BEATON RIVER 204 (NORTH HALF)',
+    'BEATON RIVER NO. 204, NORTH HALF'                          => 'BEATON RIVER 204 (SOUTH HALF)',
+    'BIG HOLE TRACT INDIAN RESERVE NO. 8 (NORTH HALF)'          => 'BIG HOLE TRACT 8 (NORTH HALF)',
+    'BIG HOLE TRACT INDIAN RESERVE NO. 8 (SOUTH HALF)'          => 'BIG HOLE TRACT 8 (SOUTH HALF)',
+
+    # Major differences
+    'ONE HUNDRED FIVE MILE POST 2'                              => '105 MILE POST 2',
+    'FOUR AND ONE HALF MILE 2'                                  => '4 1/2 MILE 2',
+    'ANAHIMS FLAT 1'                                            => "ANAHIM'S FLAT 1",
+    "BIHL' K' A 18"                                             => "BIHL' K'A 18",
+    'BIRDTAIL HAYLANDS 57A'                                     => 'BIRDTAIL HAY LANDS 57A',
+    'CHIPPEWA OF THE THAMES FIRST NATION INDIAN RESERVE NO. 42' => 'CHIPPEWA OF THE THAMES FIRST NATION INDIAN RESERVE',
+    'FORT VERMILLION 173B'                                      => 'FORT VERMILION 173B',
+    'FOX LAKE EAST 2'                                           => 'FOX LAKE 2',
+    "GRIZZLY BEAR'S HEAD & LEAN MAN I.R.'S 110 & 111"           => "GRIZZLY BEAR'S HEAD 110 & LEAN MAN 111",
+    'HOLLOW WATER 10'                                           => 'HOLE OR HOLLOW WATER 10',
+  }
+
+  def locate(name, latitude, longitude, options = {})
+    reserve = Reserve.find_by_name name
+    if reserve.nil?
+      if NAME_MAP[name]
+        reserve = Reserve.find_by_name NAME_MAP[name]
+        puts %("#{name}" no longer maps to "#{NAME_MAP[name]}") if reserve.nil?
+      end
+      if reserve.nil?
+        reserve = Reserve.find_by_fingerprint Reserve.fingerprint(name)
+        puts %("Couldn't find #{name}") if reserve.nil?
+      end
+    end
+    if reserve
+      reserve.set_latitude_and_longitude latitude, longitude, options
+    end
+  end
+
+  # Reserve locations from Canada Lands Survey System
+  # http://clss.nrcan.gc.ca/googledata-donneesgoogle-eng.php
+  desc 'Import coordinates from Canada Lands Survey System'
+  task :clss => :environment do
+    Zip::ZipInputStream.open(open('http://clss-satc.nrcan-rncan.gc.ca/data-donnees/kml/placemarks-eng.kmz')) do |io|
+      while entry = io.get_next_entry
+        if entry.name == 'doc.kml'
+          Nokogiri::XML(io.read, nil, 'utf-8').css('Folder').each do |folder|
+            puts %(Processing "#{folder.at_css('name').text}" folder)
+            folder.css('Placemark').each do |placemark|
+              longitude, latitude = placemark.at_css('coordinates').text.split(',')
+              locate placemark.at_css('name').text, latitude, longitude, force: true
+            end
+          end
+          break
+        end
+      end
+    end
+  end
+
+  # Census subdivision boundaries from Statistics Canada
+  # http://www12.statcan.gc.ca/census-recensement/2011/geo/bound-limit/bound-limit-eng.cfm
+  desc 'Import coordinates from Statistics Canada census subdivisions'
+  task :statcan => :environment do
+    # The CSV is longer than the list of reserves (5252 vs. 3216), so we don't
+    # use the +locate+ method in this case to avoid too many debug messages.
+    csv = {}
+    CSV.open(File.join(Rails.root, 'data', 'statcan.gc.ca.csv'), headers: true, col_sep: "\t").each do |row|
+      csv[UnicodeUtils.upcase(row['CSDNAME'])] = row
+    end
+
+    Reserve.all.each do |reserve|
+      if csv[reserve.name]
+        longitude, latitude = csv[reserve.name]['wkt_geom'].match(/\APOINT\(([0-9.-]+) ([0-9.-]+)\)\z/)[1..2]
+        reserve.set_latitude_and_longitude latitude, longitude
+      end
+    end
+  end
+
+  # Aboriginal Communities and Friendship Centres in Google Earth
+  # KML description is address and Aboriginal Canada Portal URL.
+  # http://www.aboriginalcanada.gc.ca/acp/site.nsf/eng/ao36276.html
+  desc 'Import coordinates from Aboriginal Canada KML'
+  task :kml => :environment do
+    Zip::ZipInputStream.open(open('http://www.aboriginalcanada.gc.ca/acp/community/site.nsf/vDownload/ge/$file/AboriginalCommunities_and_FriendshipCentres-CAN-V02-en.kmz')) do |io|
+      while entry = io.get_next_entry
+        if entry.name == 'AboriginalCommunities_and_FriendshipCentres-CAN-V02-en.kml'
+          Nokogiri::XML(io.read).css('Placemark').each do |placemark|
+            longitude, latitude = placemark.at_css('coordinates').text.split(',')
+            locate UnicodeUtils.upcase(placemark.at_css('name').text), latitude, longitude
+          end
+        end
+        break
+      end
+    end
+  end
+
+  # GeoCommons datasets by Steven DeRoy
+  # http://geocommons.com/users/sderoy/overlays
+  desc 'Import coordinates from GeoCommons'
+  task :geocommons => :environment do
+    Dir[File.join(Rails.root, 'data', 'geocommons.com', '* First Nations.csv')].each do |filename|
+      CSV.foreach(filename, headers: true) do |row|
+        locate UnicodeUtils.upcase(row['name'].gsub('&apos;', "'")), row['latitude'], row['longitude']
+      end
+    end
+  end
+end
+
 namespace :twitter do
   require 'csv'
   desc 'Add Twitter accounts for Members of Parliament'
@@ -74,20 +202,8 @@ namespace :twitter do
   end
 end
 
-namespace :members_of_parliament do
-  desc 'Scrape members of parliament list'
-  task :list => :environment do
-    MemberOfParliament.scrape_list
-  end
-
-  desc 'Scrape members of parliament details'
-  task :details => :environment do
-    MemberOfParliament.scrape_details
-  end
-end
-
 namespace :districts do
-  desc 'Find electoral districts for each reserve'
+  desc 'Find federal electoral district for each reserve'
   task :lookup => :environment do
     Reserve.geocoded.all.each do |reserve|
       response = JSON.parse(RestClient.get 'http://api.vote.ca/api/beta/districts', params: {lat: reserve.latitude, lng: reserve.longitude})
@@ -100,78 +216,6 @@ namespace :districts do
         end
       else
         puts %(No match for reserve "#{reserve.name}" (#{reserve.number}))
-      end
-    end
-  end
-end
-
-# @note 582 are found using Google Maps links on Aboriginal Canada.
-# Another 25 from GeoCommons.
-# Another 4 from KML.
-# Another 369 from Statcan census subdivisions.
-namespace :location do
-  require 'csv'
-  require 'unicode_utils/upcase'
-
-  def fingerprint(string)
-    string.gsub(/( (\d[A-Z0-9]*|COUNCIL|CREE|FIRST|GOVERNMENT|INDIAN|INLET|ISLAND|LAKE|LANDING|LOCATION|NATIONS?|RESERVE|RIVER|SETTLEMENT|SUBDIVISION|TERRITORY|TREATY|UNCEDED))+\z/, '')
-  end
-
-  def locate(name, latitude, longitude)
-    reserve = Reserve.find_by_name name
-    if reserve
-      reserve.set_latitude_and_longitude latitude, longitude
-    else
-      alternative_name = fingerprint(name)
-      matches = Reserve.where('name LIKE ?', "#{alternative_name}%").all
-      if matches.size == 1 && reserve = matches.find{|x| fingerprint(x.name) == alternative_name}
-        reserve.set_latitude_and_longitude latitude, longitude
-      else
-        match_not_found name, matches
-      end
-    end
-  end
-
-  def match_not_found(name, matches)
-    alternative_name = fingerprint(name)
-    case matches.size
-    when 1
-      puts "#{name} (#{alternative_name})\n#{matches.first.name} (#{fingerprint(matches.first.name)})\n---"
-    when 0
-      #puts %(Couldn't find "#{name}": searching "#{alternative_name}")
-    else
-      #puts %(Couldn't find "#{name}": searching "#{alternative_name}":)
-      #puts matches.map(&:name)
-    end
-  end
-
-  desc 'Import coordinates from Statistics Canada census subdivisions'
-  task :statcan => :environment do
-    csv = CSV.read(File.join(Rails.root, 'data', 'statcan.gc.ca.csv'), headers: true, col_sep: "\t")
-    Reserve.all.each do |reserve|
-      row = csv.find{|x| UnicodeUtils.upcase(x['CSDNAME']) == reserve.name}
-      if row
-        longitude, latitude = row['wkt_geom'].match(/\APOINT\(([0-9.-]+) ([0-9.-]+)\)\z/)[1..2]
-        reserve.set_latitude_and_longitude latitude, longitude
-      end
-    end
-  end
-
-  desc 'Import coordinates from Aboriginal Canada KML'
-  task :kml => :environment do
-    Nokogiri::XML(File.read(File.join(Rails.root, 'data', 'aboriginalcanada.gc.ca.kml'))).css('Placemark').each do |placemark|
-      name = UnicodeUtils.upcase placemark.at_css('name').text
-      longitude, latitude = placemark.at_css('coordinates').text.split(',')
-      locate name, latitude, longitude
-      # @todo placemark.at_css('description').text
-    end
-  end
-
-  desc 'Import coordinates from GeoCommons'
-  task :geocommons => :environment do
-    Dir[File.join(Rails.root, 'data', 'geocommons.com', '* First Nations.csv')].each do |filename|
-      CSV.foreach(filename, headers: true) do |row|
-        locate UnicodeUtils.upcase(row['name'].gsub('&apos;', "'")), row['latitude'], row['longitude']
       end
     end
   end
