@@ -47,7 +47,7 @@ class Reserve < ActiveRecord::Base
   # @return [String] the string with dashes, accents, and parenthesized and
   #   common words removed, and with standardized conjunctions and identifiers.
   def self.fingerprint(string)
-    string.gsub(/(\S)\(/, '\1 (').gsub('’', "'").gsub('&', 'AND').gsub(/\b(\d{1,3})[ -]([A-Z])\z/, '\1\2').gsub(/(?: (?:\([^)]{3,}\)|#{COMMON_WORDS.join '|'}))/, ' ').gsub('-', ' ').squeeze(' ').strip.tr(
+    string.gsub(/(\S)\(/, '\1 (').gsub('’', "'").gsub('&', 'AND').gsub(/\b(\d{1,3})[ -]([A-Z])\z/, '\1\2').gsub(/(?: (?:\([^)]{3,}\)|#{COMMON_WORDS.join '|'}))/, ' ').gsub(/[#-]/, ' ').squeeze(' ').strip.tr(
       "ÀÁÂÃÄÅàáâãäåĀāĂăĄąÇçĆćĈĉĊċČčÐðĎďĐđÈÉÊËèéêëĒēĔĕĖėĘęĚěĜĝĞğĠġĢģĤĥĦħÌÍÎÏìíîïĨĩĪīĬĭĮįİıĴĵĶķĸĹĺĻļĽľĿŀŁłÑñŃńŅņŇňŉŊŋÒÓÔÕÖØòóôõöøŌōŎŏŐőŔŕŖŗŘřŚśŜŝŞşŠšſŢţŤťŦŧÙÚÛÜùúûüŨũŪūŬŭŮůŰűŲųŴŵÝýÿŶŷŸŹźŻżŽž",
       "AAAAAAAAAAAAAAAAAACCCCCCCCCCDDDDDDEEEEEEEEEEEEEEEEEEGGGGGGGGHHHHIIIIIIIIIIIIIIIIIIJJKKKLLLLLLLLLLNNNNNNNNNNNOOOOOOOOOOOOOOOOOORRRRRRSSSSSSSSSTTTTTTUUUUUUUUUUUUUUUUUUUUWWYYYYYYZZZZZZ")
   end
