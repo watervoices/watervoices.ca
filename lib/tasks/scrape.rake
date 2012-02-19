@@ -75,17 +75,32 @@ namespace :location do
   require 'unicode_utils/upcase'
 
   FIRST_NATION_NAME_MAP = {
+    # According to band number
+    'Burnt Church'                => 'Esgenoopetitj First Nation',
+    'Peawanuck'                   => 'Weenusk',
+    'Whitefish Lake'              => 'Atikameksheng Anishnawbek',
+    'Stoney Nakoda Tribal Nation' => 'Chiniki',
+    'Akisqnuk First Nation'       => "?Akisq'nuk First Nation",
+    'Alexandria'                  => '?Esdilagh First Nation',
+    'Burrard'                     => 'Tsleil-Waututh Nation',
+    'Canoe Creek'                 => "Stswecem'c Xgat'tem First Nation",
+    'Chehalis'                    => "Sts'ailes",
+    'Chemainus First Nation'      => "Stz'uminus First Nation",
+    'Comox'                       => "K'ómoks First Nation",
+    'Kitamaat'                    => 'Haisla Nation',
+    'Red Bluff'                   => 'Lhtako Dene Nation',
+    'Spallumcheen'                => 'Splatsin First Nation',
+
     # Extra numbers
     'Carcross/ Tagish First Nations No. 140' => 'Carcross/Tagish First Nations',
-    'Enoch Cree Nation' => 'Enoch Cree Nation #440',
-    'Fort McMurray First Nation' => 'Fort McMurray #468 First Nation',
-    'Lake Manitoba Treaty 2 First Nation' => 'Lake Manitoba',
-    'Waywayseecappo First Nation' => 'Waywayseecappo First Nation Treaty Four - 1874',
+    'Enoch Cree Nation'                      => 'Enoch Cree Nation #440',
+    'Fort McMurray First Nation'             => 'Fort McMurray #468 First Nation',
+    'Lake Manitoba Treaty 2 First Nation'    => 'Lake Manitoba',
+    'Waywayseecappo First Nation'            => 'Waywayseecappo First Nation Treaty Four - 1874',
 
     # Other (fingerprint with edit distance > 1)
-    'Blood Tribe (Kainai)' => 'Blood',
-    'Fort Albany' => 'Albany',
-    'Gordon' => 'George Gordon First Nation',
+    'Fort Albany'                                 => 'Albany',
+    'Gordon'                                      => 'George Gordon First Nation',
     'Mosquito, Grizzly Bears Head, Lean Man Fst.' => "Mosquito, Grizzly Bear's Head, Lean Man First Nati",
   }
 
