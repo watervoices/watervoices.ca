@@ -1,3 +1,4 @@
+# coding: utf-8
 module Scrapable
   def self.included(base)
     base.extend ClassMethods
@@ -27,7 +28,7 @@ module Scrapable
   module Helpers
     def self.parse(url)
       begin
-        Nokogiri::HTML(RestClient.get(url))
+        Nokogiri::HTML RestClient.get(url)
       rescue Timeout::Error, RestClient::RequestTimeout, RestClient::ServerBrokeConnection
         puts "Timeout. Retrying in 2..."
         retry

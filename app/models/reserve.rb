@@ -35,6 +35,7 @@ class Reserve < ActiveRecord::Base
     'NO\.',
     'NO\b', # must come after NO.
     'RESERVE\b',
+    'RSERVE\b',
     'RIVER\b',
     'SETTLEMENT\b',
     'TIMBER LIMIT\b',

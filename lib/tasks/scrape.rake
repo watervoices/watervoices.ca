@@ -141,7 +141,6 @@ namespace :location do
     'MUSKODAY FIRST NATION I.R. 99'                             => 'MUSKODAY FIRST NATION',
     'OPASKWAYAK CREE NATION ROCKY LAKE INDIAN RESERVE NO. 1'    => 'OPASKWAYAK CREE NATION ROCKY LAKE',
     'WIKWEMIKONG UNCEDED INDIAN RESERVE NO. 26'                 => 'WIKWEMIKONG UNCEDED RESERVE',
-    'WILLOW CREE INDIAN RSERVE'                                 => 'WILLOW CREE',
 
     # Other (fingerprint with edit distance > 1)
     "(DEADMAN'S ISLAND) HALKETT ISLAND NO. 2"         => "(DEADMAN'S) HALKETT ISLAND NO. 2",
@@ -159,8 +158,9 @@ namespace :location do
     reserve = Reserve.find_by_name name
     if reserve.nil?
       if NAME_MAP[name]
-        reserve = Reserve.find_by_name NAME_MAP[name]
-        puts %("#{name}" no longer maps to "#{NAME_MAP[name]}") if reserve.nil?
+        alternate_name = NAME_MAP[name]
+        reserve = Reserve.find_by_name alternate_name
+        puts %("#{name}" no longer maps to "#{alternate_name}") if reserve.nil?
       end
       if reserve.nil?
         fingerprint = Reserve.fingerprint(name)
@@ -390,13 +390,14 @@ namespace :other do
     }.each do |region,tables|
       puts "Scraping #{region} tables..."
       tables.each do |name,id|
+        puts "Scraping table #{name}..."
         doc = Scrapable::Helpers.parse "http://www.aadnc-aandc.gc.ca/eng/#{id}"
         data = {}
         doc.css('table.widthFull').each_with_index do |table,i|
           table.css("tr:gt(#{offsets[name]})").each_with_index do |tr,j|
             data[j] ||= []
             data[j] += tr.css(i.zero? ? 'td' : 'td:gt(2)').map do |td|
-              text = td.text.sub /\A[[:space:]]+\z/, ''
+              text = td.text.sub(/\A[[:space:]]+\z/, '').gsub("-\n", '').gsub("\n", ' ').squeeze(' ')
               number = text.gsub(/[$,]/, '')
               if number[/\A-?\d+\z/]
                 Integer number
@@ -408,9 +409,14 @@ namespace :other do
             end
           end
         end
+
+        # @todo save record instead?
         rows = []
         data.each do |_,values|
-          rows << Hash[headers[name].zip(values)] # @todo save record instead
+          rows << Hash[headers[name].zip(values)]
+        end
+        File.open("#{region}-#{name}.yml", 'w') do |f|
+          f.write Psych.dump(rows)
         end
       end
     end
