@@ -53,14 +53,7 @@ class Reserve < ActiveRecord::Base
   end
 
   def set_latitude_and_longitude(lat, lng, options = {})
-    if geocoded? && !options[:force]
-      unless latitude.round(2) == lat.to_f.round(2)
-        puts %(Latitude #{latitude} (stored) not close to #{lat} for reserve "#{name}" (#{number}))
-      end
-      unless longitude.round(2) == lng.to_f.round(2)
-        puts %(Longitude #{longitude} (stored) not close to #{lng} for reserve "#{name}" (#{number}))
-      end
-    else
+    if not geocoded? or options[:force]
       self.latitude = lat
       self.longitude = lng
       save!

@@ -19,7 +19,7 @@
     bundle exec rake location:kml
     bundle exec rake location:statcan
     bundle exec rake twitter:members_of_parliament
-    bundle exec rake districts:lookup
+    bundle exec rake other:districts
 
 # Deployment
 
@@ -42,7 +42,7 @@
     heroku run rake location:kml
     heroku run rake location:statcan
     heroku run rake twitter:members_of_parliament
-    heroku run rake districts:lookup
+    heroku run rake other:districts
 
 Or, if you already ran the scraping tasks locally:
 

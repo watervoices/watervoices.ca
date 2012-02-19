@@ -64,11 +64,11 @@ namespace :members_of_parliament do
   end
 end
 
-# @todo update these figures
 # @note 582 are found using Google Maps links on Aboriginal Canada.
-#   Another 25 from GeoCommons.
-#   Another 4 from KML.
-#   Another 369 from Statcan census subdivisions.
+#   All but 175 from Canada Lands Survey System
+#   Another 2 from GeoCommons
+#   Another 2 from Aboriginal Communities and Friendship Centres in Google Earth
+#   Another 11 from Statistics Canada Census subdivisions
 namespace :location do
   require 'csv'
   require 'open-uri'
@@ -185,7 +185,7 @@ namespace :location do
     end
   end
 
-  # Census subdivision boundaries from Statistics Canada
+  # Census subdivisions from Statistics Canada
   # http://www12.statcan.gc.ca/census-recensement/2011/geo/bound-limit/bound-limit-eng.cfm
   desc 'Import coordinates from Statistics Canada census subdivisions'
   task :statcan => :environment do
