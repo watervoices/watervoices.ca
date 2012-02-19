@@ -28,7 +28,7 @@ module Scrapable
     def self.parse(url)
       begin
         Nokogiri::HTML(RestClient.get(url))
-      rescue Timeout::Error, RestClient::RequestTimeout
+      rescue Timeout::Error, RestClient::RequestTimeout, RestClient::ServerBrokeConnection
         puts "Timeout. Retrying in 2..."
         retry
       end

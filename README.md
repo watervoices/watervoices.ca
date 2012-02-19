@@ -44,6 +44,10 @@
     heroku run rake twitter:members_of_parliament
     heroku run rake districts:lookup
 
+Or, if you already ran the scraping tasks locally:
+
+    heroku db:push
+
 # Data Sources
 
 * [First Nation profiles from Aboriginal Affairs and Northern Development Canada](http://pse5-esd5.ainc-inac.gc.ca/fnp/Main/Index.aspx?lang=eng)

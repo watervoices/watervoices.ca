@@ -1,3 +1,4 @@
+# coding: utf-8
 class Reserve < ActiveRecord::Base
   include Scrapable
   filename 'SearchRV.aspx'
@@ -18,20 +19,24 @@ class Reserve < ActiveRecord::Base
   scope :geocoded, where('latitude IS NOT NULL')
 
   COMMON_WORDS = [
-    'BAND',
-    'COMMUNITY',
-    'FIRST NATION',
-    'FN',
-    'I.R.',
-    'INDIAN',
-    'IR',
-    'ISLAND',
-    'NAKODA',
-    'NO.',
-    'RESERVE',
-    'RIVER',
-    'SETTLEMENT',
-    'TIMBER LIMIT',
+    'BAND\b',
+    'C\.N\.',
+    'COMMUNITY\b',
+    'CREE FIRST NATION\b',
+    'CREE NATION\b',
+    'FIRST NATION\b',
+    'FN\b',
+    'I\.R\.',
+    'INDIAN\b',
+    'IR\b',
+    'ISLAND\b',
+    'NAKODA\b',
+    'NO\.',
+    'NO\b', # must come after NO.
+    'RESERVE\b',
+    'RIVER\b',
+    'SETTLEMENT\b',
+    'TIMBER LIMIT\b',
   ]
 
   def geocoded?
@@ -39,10 +44,12 @@ class Reserve < ActiveRecord::Base
   end
 
   # @param [String] string a string
-  # @return [String] the string with dashes and common and parenthesized words
-  #   removed, and with standardized conjunctions and identifiers.
+  # @return [String] the string with dashes, accents, and parenthesized and
+  #   common words removed, and with standardized conjunctions and identifiers.
   def self.fingerprint(string)
-    string.gsub('&', 'AND').gsub(/(\d+)-([A-Z])/, '\1\2').gsub(/(?: (?:\([^)]+\)|#{COMMON_WORDS.map{|x| Regexp.escape x}.join '|'})\b)/, '').gsub('-', ' ')
+    string.gsub(/(\S)\(/, '\1 (').gsub('’', "'").gsub('&', 'AND').gsub(/\b(\d{1,3})[ -]([A-Z])\z/, '\1\2').gsub(/(?: (?:\([^)]{3,}\)|#{COMMON_WORDS.join '|'}))/, ' ').gsub('-', ' ').squeeze(' ').strip.tr(
+      "ÀÁÂÃÄÅàáâãäåĀāĂăĄąÇçĆćĈĉĊċČčÐðĎďĐđÈÉÊËèéêëĒēĔĕĖėĘęĚěĜĝĞğĠġĢģĤĥĦħÌÍÎÏìíîïĨĩĪīĬĭĮįİıĴĵĶķĸĹĺĻļĽľĿŀŁłÑñŃńŅņŇňŉŊŋÒÓÔÕÖØòóôõöøŌōŎŏŐőŔŕŖŗŘřŚśŜŝŞşŠšſŢţŤťŦŧÙÚÛÜùúûüŨũŪūŬŭŮůŰűŲųŴŵÝýÿŶŷŸŹźŻżŽž",
+      "AAAAAAAAAAAAAAAAAACCCCCCCCCCDDDDDDEEEEEEEEEEEEEEEEEEGGGGGGGGHHHHIIIIIIIIIIIIIIIIIIJJKKKLLLLLLLLLLNNNNNNNNNNNOOOOOOOOOOOOOOOOOORRRRRRSSSSSSSSSTTTTTTUUUUUUUUUUUUUUUUUUUUWWYYYYYYZZZZZZ")
   end
 
   def set_latitude_and_longitude(lat, lng, options = {})
