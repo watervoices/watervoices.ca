@@ -41,10 +41,6 @@ class Reserve < ActiveRecord::Base
     'TIMBER LIMIT\b',
   ]
 
-  def geocoded?
-    latitude? && longitude?
-  end
-
   # @param [String] string a string
   # @return [String] the string with dashes, accents, and parenthesized and
   #   common words removed, and with standardized conjunctions and identifiers.
@@ -52,6 +48,10 @@ class Reserve < ActiveRecord::Base
     string.gsub(/(\S)\(/, '\1 (').gsub('’', "'").gsub('&', 'AND').gsub(/\b(\d{1,3})[ -]([A-Z])\z/, '\1\2').gsub(/(?: (?:\([^)]{3,}\)|#{COMMON_WORDS.join '|'}))/, ' ').gsub(/[#-]/, ' ').squeeze(' ').strip.tr(
       "ÀÁÂÃÄÅàáâãäåĀāĂăĄąÇçĆćĈĉĊċČčÐðĎďĐđÈÉÊËèéêëĒēĔĕĖėĘęĚěĜĝĞğĠġĢģĤĥĦħÌÍÎÏìíîïĨĩĪīĬĭĮįİıĴĵĶķĸĹĺĻļĽľĿŀŁłÑñŃńŅņŇňŉŊŋÒÓÔÕÖØòóôõöøŌōŎŏŐőŔŕŖŗŘřŚśŜŝŞşŠšſŢţŤťŦŧÙÚÛÜùúûüŨũŪūŬŭŮůŰűŲųŴŵÝýÿŶŷŸŹźŻżŽž",
       "AAAAAAAAAAAAAAAAAACCCCCCCCCCDDDDDDEEEEEEEEEEEEEEEEEEGGGGGGGGHHHHIIIIIIIIIIIIIIIIIIJJKKKLLLLLLLLLLNNNNNNNNNNNOOOOOOOOOOOOOOOOOORRRRRRSSSSSSSSSTTTTTTUUUUUUUUUUUUUUUUUUUUWWYYYYYYZZZZZZ")
+  end
+
+  def geocoded?
+    latitude? && longitude?
   end
 
   def set_latitude_and_longitude(lat, lng, options = {})

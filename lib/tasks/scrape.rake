@@ -74,7 +74,22 @@ namespace :location do
   require 'open-uri'
   require 'unicode_utils/upcase'
 
-  NAME_MAP = {
+  FIRST_NATION_NAME_MAP = {
+    # Extra numbers
+    'Carcross/ Tagish First Nations No. 140' => 'Carcross/Tagish First Nations',
+    'Enoch Cree Nation' => 'Enoch Cree Nation #440',
+    'Fort McMurray First Nation' => 'Fort McMurray #468 First Nation',
+    'Lake Manitoba Treaty 2 First Nation' => 'Lake Manitoba',
+    'Waywayseecappo First Nation' => 'Waywayseecappo First Nation Treaty Four - 1874',
+
+    # Other (fingerprint with edit distance > 1)
+    'Blood Tribe (Kainai)' => 'Blood',
+    'Fort Albany' => 'Albany',
+    'Gordon' => 'George Gordon First Nation',
+    'Mosquito, Grizzly Bears Head, Lean Man Fst.' => "Mosquito, Grizzly Bear's Head, Lean Man First Nati",
+  }
+
+  RESERVE_NAME_MAP = {
     # Parentheses (that disambiguate otherwise identical fingerprints)
     'BEATON RIVER 204, SOUTH HALF'                     => 'BEATON RIVER 204 (NORTH HALF)',
     'BEATON RIVER NO. 204, NORTH HALF'                 => 'BEATON RIVER 204 (SOUTH HALF)',
@@ -157,8 +172,8 @@ namespace :location do
   def locate(name, latitude, longitude, options = {})
     reserve = Reserve.find_by_name name
     if reserve.nil?
-      if NAME_MAP[name]
-        alternate_name = NAME_MAP[name]
+      if RESERVE_NAME_MAP[name]
+        alternate_name = RESERVE_NAME_MAP[name]
         reserve = Reserve.find_by_name alternate_name
         puts %("#{name}" no longer maps to "#{alternate_name}") if reserve.nil?
       end
@@ -289,7 +304,9 @@ namespace :other do
   # http://www.aadnc-aandc.gc.ca/eng/1313426883501
   desc 'Get National Assessment data or each reserve'
   task :assessment => :environment do
+    data = {}
     headers = {
+      # Individual First Nation Water Summary
       # Water System Information, Storage Information, Distribution System Information
       D1: %w(
         band_number band_name system_number system_name water_source
@@ -298,6 +315,7 @@ namespace :other do
         distribution_class population_served homes_piped homes_trucked
         number_of_trucks_in_service pipe_length pipe_length_per_connection
       ).map(&:to_sym),
+      # Individual First Nation Wastewater Summary
       # Wastewater System Information
       D2: %w(
         band_number band_name system_number system_name construction_year
@@ -306,16 +324,19 @@ namespace :other do
         wastewater_disinfection_chlorine wastewater_disinfection_uv
         discharge_frequency wastewater_sludge_treatment
       ).map(&:to_sym),
+      # Individual First Nation Water Risk Summary
       E1: %w(
         band_number band_name system_number system_name water_source
         treatment_class source_risk design_risk operations_risk report_risk
         operator_risk final_risk_score
       ).map(&:to_sym),
+      # Individual First Nation Wastewater Risk Summary
       E2: %w(
         band_number band_name system_number system_name receiver_type
         treatment_class effluent_risk design_risk operations_risk report_risk
         operator_risk final_risk_score
       ).map(&:to_sym),
+      # Protocol and Servicing Costs
       F: %w(
         band_number band_name community_name current_population current_homes
         forecast_population forecast_homes zone_markup upgrade_to_protocol
@@ -391,13 +412,14 @@ namespace :other do
       puts "Scraping #{region} tables..."
       tables.each do |name,id|
         puts "Scraping table #{name}..."
+        data[name] ||= {}
+        offset = data[name].size
         doc = Scrapable::Helpers.parse "http://www.aadnc-aandc.gc.ca/eng/#{id}"
-        data = {}
         doc.css('table.widthFull').each_with_index do |table,i|
           table.css("tr:gt(#{offsets[name]})").each_with_index do |tr,j|
-            data[j] ||= []
-            data[j] += tr.css(i.zero? ? 'td' : 'td:gt(2)').map do |td|
-              text = td.text.sub(/\A[[:space:]]+\z/, '').gsub("-\n", '').gsub("\n", ' ').squeeze(' ')
+            data[name][j + offset] ||= []
+            data[name][j + offset] += tr.css(i.zero? ? 'td' : 'td:gt(2)').map do |td|
+              text = td.text.sub(/\A[[:space:]]+\z/, '').gsub(/(?<=\S)-[[:space:]]/, '').gsub("\n", ' ').squeeze(' ')
               number = text.gsub(/[$,]/, '')
               if number[/\A-?\d+\z/]
                 Integer number
@@ -409,13 +431,15 @@ namespace :other do
             end
           end
         end
+      end
 
-        # @todo save record instead?
+      # @todo save record instead?
+      data.each do |name,x|
         rows = []
-        data.each do |_,values|
+        x.each do |_,values|
           rows << Hash[headers[name].zip(values)]
         end
-        File.open("#{region}-#{name}.yml", 'w') do |f|
+        File.open("#{name}.yml", 'w') do |f|
           f.write Psych.dump(rows)
         end
       end

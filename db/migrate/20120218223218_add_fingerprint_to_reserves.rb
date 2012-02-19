@@ -1,8 +1,8 @@
 class AddFingerprintToReserves < ActiveRecord::Migration
   def change
     add_column :reserves, :fingerprint, :string
-    Reserve.all.each do |reserve|
-      reserve.update_attribute :fingerprint, Reserve.fingerprint(reserve.name)
+    Reserve.all.each do |o|
+      o.update_attribute :fingerprint, o.class.fingerprint(o.name)
     end
   end
 end

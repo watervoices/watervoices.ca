@@ -1,3 +1,4 @@
+# coding: utf-8
 class FirstNation < ActiveRecord::Base
   include Scrapable
   filename 'SearchFN.aspx'
@@ -18,6 +19,24 @@ class FirstNation < ActiveRecord::Base
   validates_uniqueness_of :number
 
   scope :unscraped, where(name: nil)
+
+  COMMON_WORDS = [
+    'First Nations?\b',
+    'First N\b', # must come after First Nation
+    'G\z',
+    'Government\b',
+    'Nakoda\b',
+    'No\.',
+    'Tribal Nation\b',
+    'Tribe\b',
+  ]
+
+  # @param [String] string a string
+  # @return [String] the string with some punctuation and parenthesized and
+  #   common words removed.
+  def self.fingerprint(string)
+    string.gsub('’', "'").gsub(/['#-]/, '').gsub('/', ' ').gsub(/(?: (?:\([^)]{3,}\)|#{COMMON_WORDS.join '|'}))/, ' ').squeeze(' ').strip
+  end
 
   def governance_url
     'http://pse5-esd5.ainc-inac.gc.ca/fnp/Main/Search/FNGovernance.aspx?BAND_NUMBER=%s&lang=eng' % number

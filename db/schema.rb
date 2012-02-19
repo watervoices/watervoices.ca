@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120218223218) do
+ActiveRecord::Schema.define(:version => 20120219200955) do
 
   create_table "addresses", :force => true do |t|
     t.string   "kind"
@@ -52,6 +52,7 @@ ActiveRecord::Schema.define(:version => 20120218223218) do
     t.string   "election_system"
     t.integer  "quorum"
     t.string   "wikipedia"
+    t.string   "fingerprint"
   end
 
   add_index "first_nations", ["number"], :name => "index_first_nations_on_number"
