@@ -133,7 +133,7 @@ namespace :location do
     'WILLOW CREE INDIAN RSERVE'                                 => 'WILLOW CREE',
 
     # Other (fingerprint with edit distance > 1)
-    "(DEADMAN'S ISLAND) HALKETT ISLAND NO. 2"         => "DEADMAN'S) HALKETT ISLAND NO. 2",
+    "(DEADMAN'S ISLAND) HALKETT ISLAND NO. 2"         => "(DEADMAN'S) HALKETT ISLAND NO. 2",
     'ONE HUNDRED FIVE MILE POST 2'                    => '105 MILE POST 2',
     'FOUR AND ONE HALF MILE 2'                        => '4 1/2 MILE 2',
     'FOX LAKE EAST 2'                                 => 'FOX LAKE 2',
