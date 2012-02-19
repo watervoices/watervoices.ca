@@ -69,51 +69,34 @@ end
 #   Another 2 from GeoCommons
 #   Another 2 from Aboriginal Communities and Friendship Centres in Google Earth
 #   Another 11 from Statistics Canada Census subdivisions
-namespace :location do
+namespace :other do
   require 'csv'
-  require 'open-uri'
-  require 'unicode_utils/upcase'
-
-  def locate(name, latitude, longitude, options = {})
-    reserve = Reserve.find_by_name name
-    if reserve.nil?
-      fingerprint = Reserve.fingerprint(name)
-      reserve = Reserve.find_by_fingerprint fingerprint
-      puts %(Couldn't find #{name.ljust 60} #{fingerprint}) if reserve.nil?
-    end
-    if reserve
-      reserve.set_latitude_and_longitude latitude, longitude, options
-    end
-  end
 
   # Reserve locations from Canada Lands Survey System
-  # http://clss.nrcan.gc.ca/googledata-donneesgoogle-eng.php
+  # http://clss.nrcan.gc.ca/geobase-eng.php
   desc 'Import coordinates from Canada Lands Survey System'
-  task :clss => :environment do
-    Zip::ZipInputStream.open(open('http://clss-satc.nrcan-rncan.gc.ca/data-donnees/kml/placemarks-eng.kmz')) do |io|
-      while entry = io.get_next_entry
-        if entry.name == 'doc.kml'
-          Nokogiri::XML(io.read, nil, 'utf-8').css('Folder').each do |folder|
-            name = folder.at_css('name').text
-            next if ['Type', 'Subdivision', 'National Park'].include? name
-            placemarks = folder.css('Placemark')
-            puts %(Processing "#{name}" folder (#{placemarks.size}))
-            placemarks.each do |placemark|
-              longitude, latitude = placemark.at_css('coordinates').text.split(',')
-              locate placemark.at_css('name').text, latitude, longitude, force: true
-            end
+  task :locate => :environment do
+    filename = File.join(Rails.root, 'data', 'al_ta_ca_shp_eng', 'AL_TA_CA_2_22_eng.shp')
+    if File.exist? filename
+      RGeo::Shapefile::Reader.open(filename) do |file|
+        file.each do |record|
+          next if record['ALTYPE'] == 'Land Claim'
+          reserve = Reserve.find_by_number record['ALCODE'].to_i
+          if reserve
+            centroid = record.geometry.centroid
+            reserve.set_latitude_and_longitude centroid.y, centroid.x
+          else
+            puts "Couldn't find #{record['NAME1'].ljust 65}#{record['ALCODE']}"
           end
-          break
         end
       end
+    else
+      puts "You must download and unzip the Canada Lands Survey System shapefile to data/"
     end
   end
-end
 
-namespace :twitter do
-  require 'csv'
   desc 'Add Twitter accounts for Members of Parliament'
-  task :members_of_parliament => :environment do
+  task :twitter => :environment do
     CSV.foreach(File.join(Rails.root, 'data', 'federal.csv'), headers: true, encoding: 'utf-8') do |row|
       begin
         matches = [MemberOfParliament.find_by_constituency(row['Riding']) || MemberOfParliament.where('constituency LIKE ?', "#{row['Riding']}%").all].flatten
@@ -130,9 +113,7 @@ namespace :twitter do
       end
     end
   end
-end
 
-namespace :other do
   desc 'Find federal electoral district for each reserve'
   task :districts => :environment do
     Reserve.geocoded.unrepresented.all.each do |reserve|

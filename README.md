@@ -14,11 +14,8 @@
     bundle exec rake reserves:details
     bundle exec rake first_nations:extra
     bundle exec rake reserves:extra
-    bundle exec rake location:clss
-    bundle exec rake location:geocommons
-    bundle exec rake location:kml
-    bundle exec rake location:statcan
-    bundle exec rake twitter:members_of_parliament
+    bundle exec rake other:locate
+    bundle exec rake other:twitter
     bundle exec rake other:districts
     bundle exec rake other:assessment
 
@@ -38,11 +35,8 @@
     heroku run rake reserves:details
     heroku run rake first_nations:extra
     heroku run rake reserves:extra
-    heroku run rake location:clss
-    heroku run rake location:geocommons
-    heroku run rake location:kml
-    heroku run rake location:statcan
-    heroku run rake twitter:members_of_parliament
+    heroku run rake other:locate
+    heroku run rake other:twitter
     heroku run rake other:districts
     heroku run rake other:assessment
 
