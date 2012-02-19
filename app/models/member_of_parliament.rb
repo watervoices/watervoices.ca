@@ -18,7 +18,7 @@ class MemberOfParliament < ActiveRecord::Base
   end
 
   def self.scrape_details
-    all.each do |item|
+    unscraped.each do |item|
       item.scrape_detail
       item.save!
     end
@@ -43,12 +43,12 @@ class MemberOfParliament < ActiveRecord::Base
 
     # @todo constituency_number
     # @todo addressings
-    #kind
-    #address
-    #city
-    #region
-    #postal_code
-    #tel
-    #fax
+      #kind
+      #address
+      #city
+      #region
+      #postal_code
+      #tel
+      #fax
   end
 end

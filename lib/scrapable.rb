@@ -78,7 +78,7 @@ module Scrapable
 
     # Scrapes the details pages.
     def scrape_details
-      all.each do |item|
+      unscraped.each do |item|
         item.scrape_detail
         item.save!
       end

@@ -12,8 +12,6 @@ class Reserve < ActiveRecord::Base
 
   serialize :connectivity
   validates_uniqueness_of :number
-  validates_uniqueness_of :name
-  validates_uniqueness_of :fingerprint
 
   scope :unscraped, where(name: nil)
   scope :nongeocoded, where(latitude: nil)
