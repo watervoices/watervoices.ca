@@ -52,6 +52,7 @@ Or, if you already ran the scraping tasks locally:
 
 * [First Nation profiles from Aboriginal Affairs and Northern Development Canada](http://pse5-esd5.ainc-inac.gc.ca/fnp/Main/Index.aspx?lang=eng)
 * [Aboriginal community information from Aboriginal Canada Portal](http://www.aboriginalcanada.gc.ca/acp/community/site.nsf/index_en.html?OpenPage)
+* [National Assessment of Water and Wastewater Systems in First Nation Communities](http://www.aadnc-aandc.gc.ca/eng/1313426883501/1313426958782)
 * [Canadian MPs on Twitter from Politwitter.ca](http://politwitter.ca/page/canadian-politics-twitters/mp/house)
 
 ## GIS

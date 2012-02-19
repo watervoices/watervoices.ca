@@ -75,11 +75,21 @@ namespace :location do
   require 'unicode_utils/upcase'
 
   NAME_MAP = {
-    # Meaningful parentheses
+    # Parentheses (that disambiguate otherwise identical fingerprints)
     'BEATON RIVER 204, SOUTH HALF'                     => 'BEATON RIVER 204 (NORTH HALF)',
     'BEATON RIVER NO. 204, NORTH HALF'                 => 'BEATON RIVER 204 (SOUTH HALF)',
     'BIG HOLE TRACT INDIAN RESERVE NO. 8 (NORTH HALF)' => 'BIG HOLE TRACT 8 (NORTH HALF)',
     'BIG HOLE TRACT INDIAN RESERVE NO. 8 (SOUTH HALF)' => 'BIG HOLE TRACT 8 (SOUTH HALF)',
+    'DEASE RIVER 2 (DEASE)'                            => 'DEASE RIVER 2 (DEASE RIVER BAND)',
+    'DEASE RIVER 2 (LIARD)'                            => 'DEASE RIVER 2 (LIARD RIVER BAND)',
+    'DEASE RIVER 3 (DEASE)'                            => 'DEASE RIVER 3 (DEASE RIVER BAND)',
+    'DEASE RIVER 3 (LIARD)'                            => 'DEASE RIVER 3 (LIARD RIVER BAND)',
+    'SALMON RIVER 1 (K’ÓMOKS)'                         => "SALMON RIVER 1 (K'ÓMOKS)",
+    'SALMON RIVER 1 (SPLATSIN)'                        => 'SALMON RIVER 1 (SPLATSIN)', # not hit
+
+    # Identical fingerprints
+    'HOPE 1'        => 'HOPE NO. 1',
+    'HOPE ISLAND 1' => 'HOPE ISLAND 1', # not hit
 
     # Whitespace
     'BIRDTAIL HAYLANDS 57A'   => 'BIRDTAIL HAY LANDS 57A',
