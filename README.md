@@ -56,10 +56,4 @@ Or, if you already ran the scraping tasks locally:
 * [Aboriginal community information from Aboriginal Canada Portal](http://www.aboriginalcanada.gc.ca/acp/community/site.nsf/index_en.html?OpenPage)
 * [National Assessment of Water and Wastewater Systems in First Nation Communities](http://www.aadnc-aandc.gc.ca/eng/1313426883501/1313426958782)
 * [Canadian MPs on Twitter from Politwitter.ca](http://politwitter.ca/page/canadian-politics-twitters/mp/house)
-
-## GIS
-
-* [Canada Lands in Google Earth](http://clss.nrcan.gc.ca/googledata-donneesgoogle-eng.php)
-* [Aboriginal Communities and Friendship Centres in Google Earth](http://www.aboriginalcanada.gc.ca/acp/site.nsf/eng/ao36276.html)
-* [Census subdivision boundaries from Statistics Canada](http://www12.statcan.gc.ca/census-recensement/2011/geo/bound-limit/bound-limit-eng.cfm)
-* [GeoCommons datasets by Steven DeRoy](http://geocommons.com/users/sderoy/overlays)
+* [GeoBase Aboriginal Lands](http://clss.nrcan.gc.ca/geobase-eng.php)

@@ -74,129 +74,12 @@ namespace :location do
   require 'open-uri'
   require 'unicode_utils/upcase'
 
-  FIRST_NATION_NAME_MAP = {
-    # According to band number
-    'Burnt Church'                => 'Esgenoopetitj First Nation',
-    'Peawanuck'                   => 'Weenusk',
-    'Whitefish Lake'              => 'Atikameksheng Anishnawbek',
-    'Stoney Nakoda Tribal Nation' => 'Chiniki',
-    'Akisqnuk First Nation'       => "?Akisq'nuk First Nation",
-    'Alexandria'                  => '?Esdilagh First Nation',
-    'Burrard'                     => 'Tsleil-Waututh Nation',
-    'Canoe Creek'                 => "Stswecem'c Xgat'tem First Nation",
-    'Chehalis'                    => "Sts'ailes",
-    'Chemainus First Nation'      => "Stz'uminus First Nation",
-    'Comox'                       => "K'ómoks First Nation",
-    'Kitamaat'                    => 'Haisla Nation',
-    'Red Bluff'                   => 'Lhtako Dene Nation',
-    'Spallumcheen'                => 'Splatsin First Nation',
-
-    # Extra numbers
-    'Carcross/ Tagish First Nations No. 140' => 'Carcross/Tagish First Nations',
-    'Enoch Cree Nation'                      => 'Enoch Cree Nation #440',
-    'Fort McMurray First Nation'             => 'Fort McMurray #468 First Nation',
-    'Lake Manitoba Treaty 2 First Nation'    => 'Lake Manitoba',
-    'Waywayseecappo First Nation'            => 'Waywayseecappo First Nation Treaty Four - 1874',
-
-    # Other (fingerprint with edit distance > 1)
-    'Fort Albany'                                 => 'Albany',
-    'Gordon'                                      => 'George Gordon First Nation',
-    'Mosquito, Grizzly Bears Head, Lean Man Fst.' => "Mosquito, Grizzly Bear's Head, Lean Man First Nati",
-  }
-
-  RESERVE_NAME_MAP = {
-    # Parentheses (that disambiguate otherwise identical fingerprints)
-    'BEATON RIVER 204, SOUTH HALF'                     => 'BEATON RIVER 204 (NORTH HALF)',
-    'BEATON RIVER NO. 204, NORTH HALF'                 => 'BEATON RIVER 204 (SOUTH HALF)',
-    'BIG HOLE TRACT INDIAN RESERVE NO. 8 (NORTH HALF)' => 'BIG HOLE TRACT 8 (NORTH HALF)',
-    'BIG HOLE TRACT INDIAN RESERVE NO. 8 (SOUTH HALF)' => 'BIG HOLE TRACT 8 (SOUTH HALF)',
-    'DEASE RIVER 2 (DEASE)'                            => 'DEASE RIVER 2 (DEASE RIVER BAND)',
-    'DEASE RIVER 2 (LIARD)'                            => 'DEASE RIVER 2 (LIARD RIVER BAND)',
-    'DEASE RIVER 3 (DEASE)'                            => 'DEASE RIVER 3 (DEASE RIVER BAND)',
-    'DEASE RIVER 3 (LIARD)'                            => 'DEASE RIVER 3 (LIARD RIVER BAND)',
-    'SALMON RIVER 1 (K’ÓMOKS)'                         => "SALMON RIVER 1 (K'ÓMOKS)",
-    'SALMON RIVER 1 (SPLATSIN)'                        => 'SALMON RIVER 1 (SPLATSIN)', # not hit
-
-    # Identical fingerprints
-    'HOPE 1'        => 'HOPE NO. 1',
-    'HOPE ISLAND 1' => 'HOPE ISLAND 1', # not hit
-
-    # Whitespace
-    'BIRDTAIL HAYLANDS 57A'   => 'BIRDTAIL HAY LANDS 57A',
-    "BIHL' K' A 18"           => "BIHL' K'A 18",
-    'S 1/2 TSIMPSEAN 2'       => 'S1/2 TSIMPSEAN 2',
-    'STARBLANKET I.R. 83'     => 'STAR BLANKET 83',
-    'SWEETGRASS I.R. 113'     => 'SWEET GRASS 113',
-    'SWEETGRASS I.R. 113-O28' => 'SWEET GRASS 113-028', # typo
-    'SWEETGRASS I.R. 113-C19' => 'SWEET GRASS 113-C19',
-    'SWEETGRASS I.R. 113-C7'  => 'SWEET GRASS 113-C7',
-    'SWEETGRASS I.R. 113-F16' => 'SWEET GRASS 113-F16',
-    'SWEETGRASS I.R. 113-G7'  => 'SWEET GRASS 113-G7',
-    'SWEETGRASS I.R. 113-I4'  => 'SWEET GRASS 113-I4',
-    'SWEETGRASS I.R. 113-K32' => 'SWEET GRASS 113-K32',
-    'SWEETGRASS I.R. 113-L6'  => 'SWEET GRASS 113-L6',
-    'SWEETGRASS I.R. 113-M16' => 'SWEET GRASS 113-M16',
-    'SWEETGRASS I.R. 113-N27' => 'SWEET GRASS 113-N27',
-    'SWEETGRASS I.R. 113-P2'  => 'SWEET GRASS 113-P2',
-    'SWEETGRASS I.R. 113A'    => 'SWEET GRASS 113A',
-    'SWEETGRASS I.R. 113B'    => 'SWEET GRASS 113B',
-    'YELLOW QUILL I.R. 90' => 'YELLOWQUILL 90',
-
-    # Punctuation
-    'ANAHIMS FLAT 1'                   => "ANAHIM'S FLAT 1",
-    'MISSISSAUGAS OF SCUGOG ISLAND'    => "MISSISSAUGA'S OF SCUGOG ISLAND",
-    'ST. BASILE INDIAN RESERVE NO. 10' => 'ST BASILE 10',
-    'ST. THERESA POINT'                => 'ST THERESA POINT',
-
-    # Typos (fingerprint with edit distance = 1)
-    'FORT VERMILLION 173B'                        => 'FORT VERMILION 173B',
-    'KEESEEKOOSE I.R. 66-CO-01'                   => 'KEESEEKOOSE 66-CO-O1',
-    'KEHIWIN 123'                                 => 'KEHEWIN 123',
-    'KINOOSAO-THOMAS CLARKE I.R. 204'             => 'KINOOSAO-THOMAS CLARK 204',
-    'LYACKSON 3'                                  => 'LYACKSUN 3',
-    'MAGNETAWAN INDIAN RESERVE NO. 1'             => 'MAGNETEWAN 1',
-    'OLD CLEMENES 16'                             => 'OLD CLEMENS 16',
-    'ONIKAHP SAHGNIKANSIS INDIAN RESERVE NO 165E' => 'ONIKAHP SAHGHIKANSIS 165E',
-    'PARSNIPS 5'                                  => 'PARSNIP 5',
-    'STONEY 142, 143, 144' => 'STONEY 142-143-144',
-    'VILLAGE ISLANDS 7' => 'VILLAGE ISLAND 7',
-
-    # Abbreviations
-    'SAUGEEN AND CAPE CROKER FISHING ISLANDS INDIAN RESERVE NO. 1' => 'SAUGEEN & CAPE CROKER FISHING ISL. 1',
-    'ST. JOE 10' => 'SAINT JOE 10',
-
-    # Extra numbers
-    'NEYAASHIINIGMIING RESERVE'                                 => 'NEYAASHIINIGMIING 27',
-    'CHIPPEWA OF THE THAMES FIRST NATION INDIAN RESERVE NO. 42' => 'CHIPPEWA OF THE THAMES FIRST NATION INDIAN RESERVE',
-    'MUSKODAY FIRST NATION I.R. 99'                             => 'MUSKODAY FIRST NATION',
-    'OPASKWAYAK CREE NATION ROCKY LAKE INDIAN RESERVE NO. 1'    => 'OPASKWAYAK CREE NATION ROCKY LAKE',
-    'WIKWEMIKONG UNCEDED INDIAN RESERVE NO. 26'                 => 'WIKWEMIKONG UNCEDED RESERVE',
-
-    # Other (fingerprint with edit distance > 1)
-    "(DEADMAN'S ISLAND) HALKETT ISLAND NO. 2"         => "(DEADMAN'S) HALKETT ISLAND NO. 2",
-    'ONE HUNDRED FIVE MILE POST 2'                    => '105 MILE POST 2',
-    'FOUR AND ONE HALF MILE 2'                        => '4 1/2 MILE 2',
-    'FOX LAKE EAST 2'                                 => 'FOX LAKE 2',
-    "GRIZZLY BEAR'S HEAD & LEAN MAN I.R.'S 110 & 111" => "GRIZZLY BEAR'S HEAD 110 & LEAN MAN 111",
-    'HOLLOW WATER 10'                                 => 'HOLE OR HOLLOW WATER 10',
-    'PEIGAN TIMBER LIMIT 147B'                        => 'PEIGAN TIMBER LIMIT "B"',
-    'ROSEAU RIVER ANISHINABE 2B'                      => 'ROSEAU RIVER 2B',
-    'RÉSERVE DE WÔLINAK  NO. 11'                      => 'WÔLINAK 11',
-  }
-
   def locate(name, latitude, longitude, options = {})
     reserve = Reserve.find_by_name name
     if reserve.nil?
-      if RESERVE_NAME_MAP[name]
-        alternate_name = RESERVE_NAME_MAP[name]
-        reserve = Reserve.find_by_name alternate_name
-        puts %("#{name}" no longer maps to "#{alternate_name}") if reserve.nil?
-      end
-      if reserve.nil?
-        fingerprint = Reserve.fingerprint(name)
-        reserve = Reserve.find_by_fingerprint fingerprint
-        puts %(Couldn't find #{name.ljust 60} #{fingerprint}) if reserve.nil?
-      end
+      fingerprint = Reserve.fingerprint(name)
+      reserve = Reserve.find_by_fingerprint fingerprint
+      puts %(Couldn't find #{name.ljust 60} #{fingerprint}) if reserve.nil?
     end
     if reserve
       reserve.set_latitude_and_longitude latitude, longitude, options
@@ -222,54 +105,6 @@ namespace :location do
           end
           break
         end
-      end
-    end
-  end
-
-  # Census subdivisions from Statistics Canada
-  # http://www12.statcan.gc.ca/census-recensement/2011/geo/bound-limit/bound-limit-eng.cfm
-  desc 'Import coordinates from Statistics Canada census subdivisions'
-  task :statcan => :environment do
-    # The CSV is longer than the list of reserves (5252 vs. 3216), so we don't
-    # use the +locate+ method in this case to avoid too many debug messages.
-    csv = {}
-    CSV.open(File.join(Rails.root, 'data', 'statcan.gc.ca.csv'), headers: true, col_sep: "\t").each do |row|
-      csv[UnicodeUtils.upcase(row['CSDNAME'])] = row
-    end
-
-    Reserve.all.each do |reserve|
-      if csv[reserve.name]
-        longitude, latitude = csv[reserve.name]['wkt_geom'].match(/\APOINT\(([0-9.-]+) ([0-9.-]+)\)\z/)[1..2]
-        reserve.set_latitude_and_longitude latitude, longitude
-      end
-    end
-  end
-
-  # Aboriginal Communities and Friendship Centres in Google Earth
-  # KML description is address and Aboriginal Canada Portal URL.
-  # http://www.aboriginalcanada.gc.ca/acp/site.nsf/eng/ao36276.html
-  desc 'Import coordinates from Aboriginal Canada KML'
-  task :kml => :environment do
-    Zip::ZipInputStream.open(open('http://www.aboriginalcanada.gc.ca/acp/community/site.nsf/vDownload/ge/$file/AboriginalCommunities_and_FriendshipCentres-CAN-V02-en.kmz')) do |io|
-      while entry = io.get_next_entry
-        if entry.name == 'AboriginalCommunities_and_FriendshipCentres-CAN-V02-en.kml'
-          Nokogiri::XML(io.read).css('Placemark').each do |placemark|
-            longitude, latitude = placemark.at_css('coordinates').text.split(',')
-            locate UnicodeUtils.upcase(placemark.at_css('name').text), latitude, longitude
-          end
-        end
-        break
-      end
-    end
-  end
-
-  # GeoCommons datasets by Steven DeRoy
-  # http://geocommons.com/users/sderoy/overlays
-  desc 'Import coordinates from GeoCommons'
-  task :geocommons => :environment do
-    Dir[File.join(Rails.root, 'data', 'geocommons.com', '* First Nations.csv')].each do |filename|
-      CSV.foreach(filename, headers: true) do |row|
-        locate UnicodeUtils.upcase(row['name'].gsub('&apos;', "'")), row['latitude'], row['longitude']
       end
     end
   end
