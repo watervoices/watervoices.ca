@@ -20,6 +20,7 @@
     bundle exec rake location:statcan
     bundle exec rake twitter:members_of_parliament
     bundle exec rake other:districts
+    bundle exec rake other:assessment
 
 # Deployment
 
@@ -43,6 +44,7 @@
     heroku run rake location:statcan
     heroku run rake twitter:members_of_parliament
     heroku run rake other:districts
+    heroku run rake other:assessment
 
 Or, if you already ran the scraping tasks locally:
 

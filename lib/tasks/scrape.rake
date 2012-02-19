@@ -138,6 +138,7 @@ namespace :location do
     # Extra numbers
     'NEYAASHIINIGMIING RESERVE'                                 => 'NEYAASHIINIGMIING 27',
     'CHIPPEWA OF THE THAMES FIRST NATION INDIAN RESERVE NO. 42' => 'CHIPPEWA OF THE THAMES FIRST NATION INDIAN RESERVE',
+    'MUSKODAY FIRST NATION I.R. 99'                             => 'MUSKODAY FIRST NATION',
     'OPASKWAYAK CREE NATION ROCKY LAKE INDIAN RESERVE NO. 1'    => 'OPASKWAYAK CREE NATION ROCKY LAKE',
     'WIKWEMIKONG UNCEDED INDIAN RESERVE NO. 26'                 => 'WIKWEMIKONG UNCEDED RESERVE',
     'WILLOW CREE INDIAN RSERVE'                                 => 'WILLOW CREE',
@@ -269,7 +270,7 @@ end
 namespace :other do
   desc 'Find federal electoral district for each reserve'
   task :districts => :environment do
-    Reserve.geocoded.all.each do |reserve|
+    Reserve.geocoded.unrepresented.all.each do |reserve|
       response = JSON.parse(RestClient.get 'http://api.vote.ca/api/beta/districts', params: {lat: reserve.latitude, lng: reserve.longitude})
       federal = response.find{|x| x['electoral_group']['level'] == 'Federal'}
       if federal

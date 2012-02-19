@@ -17,6 +17,7 @@ class Reserve < ActiveRecord::Base
   scope :unscraped, where(name: nil)
   scope :nongeocoded, where(latitude: nil)
   scope :geocoded, where('latitude IS NOT NULL')
+  scope :unrepresented, where(member_of_parliament_id: nil)
 
   COMMON_WORDS = [
     'BAND\b',
