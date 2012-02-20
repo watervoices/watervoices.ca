@@ -51,7 +51,8 @@ class Reserve < ActiveRecord::Base
     'LAGOONS?\b',
     'MTA\b', # Municipal Type Agreement
     'PLANT\b',
-    'PUMP ?HOUSE\b(?: +[1-9])?',
+    'PUMP HOUSE\b',
+    'PUMPHOUSE\b',
     'SEW\b',
     'SEWAGE\b',
     'SEWER\b',
@@ -60,7 +61,7 @@ class Reserve < ActiveRecord::Base
     'STATION DE TRAITEMENT DE L\'EAU\b',
     'SUBDIVISION\b',
     'SUPPLY AND\b.*',
-    'SYSTEM\b(?: +[1-9])?',
+    'SYSTEM\b',
     'TREATMENT\b',
     'WASTEWATER\b',
     'WATER\b',
