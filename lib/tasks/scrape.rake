@@ -115,7 +115,7 @@ namespace :other do
           reserve = Reserve.find_by_name UnicodeUtils.upcase(record['CSDNAME'])
           if reserve
             centroid = record.geometry.centroid
-            reserve.set_latitude_and_longitude centroid.y, centroid.x
+            reserve.set_latitude_and_longitude(centroid.y, centroid.x) unless reserve.geocoded?
           end
         end
       end

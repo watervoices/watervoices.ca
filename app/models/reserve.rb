@@ -24,11 +24,9 @@ class Reserve < ActiveRecord::Base
   end
 
   def set_latitude_and_longitude(lat, lng)
-    unless geocoded?
-      self.latitude = lat
-      self.longitude = lng
-      save!
-    end
+    self.latitude = lat
+    self.longitude = lng
+    save!
   end
 
   def aboriginal_url
