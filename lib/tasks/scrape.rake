@@ -64,13 +64,13 @@ namespace :members_of_parliament do
   end
 end
 
-# @note 582 are found using Google Maps links on Aboriginal Canada.
-#   All but 175 from Canada Lands Survey System
-#   Another 2 from GeoCommons
-#   Another 2 from Aboriginal Communities and Friendship Centres in Google Earth
-#   Another 11 from Statistics Canada Census subdivisions
+# @note 3007 are found using Canada Lands Survey System
+#        582 are found using Google Maps links on Aboriginal Canada (46 more)
+#        (8 more)
 namespace :other do
   require 'csv'
+  require 'open-uri'
+  require 'unicode_utils/upcase'
 
   # Reserve locations from Canada Lands Survey System
   # http://clss.nrcan.gc.ca/geobase-eng.php
@@ -79,7 +79,12 @@ namespace :other do
     filename = File.join(Rails.root, 'data', 'al_ta_ca_shp_eng', 'AL_TA_CA_2_22_eng.shp')
     if File.exist? filename
       RGeo::Shapefile::Reader.open(filename) do |file|
+        puts "Processing #{file.num_records} records..."
+        index = 0
         file.each do |record|
+          index += 1
+          puts "On record #{index} at #{Time.now.strftime('%H:%M:%S')}" if index % 100 == 0
+          # Land Claim centroids are long to calculate and match first nations, not reserves.
           next if record['ALTYPE'] == 'Land Claim'
           reserve = Reserve.find_by_number record['ALCODE'].to_i
           if reserve
@@ -92,6 +97,30 @@ namespace :other do
       end
     else
       puts "You must download and unzip the Canada Lands Survey System shapefile to data/"
+    end
+  end
+
+  # Census subdivisions from Statistics Canada
+  # http://www12.statcan.gc.ca/census-recensement/2011/geo/bound-limit/bound-limit-eng.cfm
+  desc 'Import coordinates from Statistics Canada census subdivisions'
+  task :statcan => :environment do
+    filename = File.join(Rails.root, 'data', 'gcsd000a11a_e', 'gcsd000a11a_e.shp')
+    if File.exist? filename
+      RGeo::Shapefile::Reader.open(filename) do |file|
+        puts "Processing #{file.num_records} records..."
+        index = 0
+        file.each do |record|
+          index += 1
+          puts "On record #{index} at #{Time.now.strftime('%H:%M:%S')}" if index % 500 == 0
+          reserve = Reserve.find_by_name UnicodeUtils.upcase(record['CSDNAME'])
+          if reserve
+            centroid = record.geometry.centroid
+            reserve.set_latitude_and_longitude centroid.y, centroid.x
+          end
+        end
+      end
+    else
+      puts "You must download and unzip Census Subdivisions shapefile to data/"
     end
   end
 
