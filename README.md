@@ -15,6 +15,7 @@
     bundle exec rake first_nations:extra
     bundle exec rake reserves:extra
     bundle exec rake other:locate
+    bundle exec rake other:statcan
     bundle exec rake other:twitter
     bundle exec rake other:districts
     bundle exec rake other:assessment
@@ -24,25 +25,14 @@
     gem install heroku
     heroku create --stack cedar APP_NAME
     git push heroku master
-    heroku run rake db:migrate
-    heroku run rake members_of_parliament:list
-    heroku run rake tribal_councils:list
-    heroku run rake first_nations:list
-    heroku run rake reserves:list
-    heroku run rake members_of_parliament:details
-    heroku run rake tribal_councils:details
-    heroku run rake first_nations:details
-    heroku run rake reserves:details
-    heroku run rake first_nations:extra
-    heroku run rake reserves:extra
-    heroku run rake other:locate
-    heroku run rake other:twitter
-    heroku run rake other:districts
-    heroku run rake other:assessment
-
-Or, if you already ran the scraping tasks locally:
-
     heroku db:push
+
+# Export Data
+
+    bundle exec rake export:tribal_councils
+    bundle exec rake export:first_nations
+    bundle exec rake export:reserves
+    bundle exec rake export:members_of_parliament
 
 # Data Sources
 
@@ -51,3 +41,4 @@ Or, if you already ran the scraping tasks locally:
 * [National Assessment of Water and Wastewater Systems in First Nation Communities](http://www.aadnc-aandc.gc.ca/eng/1313426883501/1313426958782)
 * [Canadian MPs on Twitter from Politwitter.ca](http://politwitter.ca/page/canadian-politics-twitters/mp/house)
 * [GeoBase Aboriginal Lands](http://clss.nrcan.gc.ca/geobase-eng.php)
+* [Census Subdivisions from Statistics Canada](http://www12.statcan.gc.ca/census-recensement/2011/geo/bound-limit/bound-limit-eng.cfm)

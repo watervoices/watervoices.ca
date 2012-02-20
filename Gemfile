@@ -14,6 +14,7 @@ gem 'nokogiri'
 gem 'rest-client'
 gem 'unicode_utils'
 gem 'rgeo-shapefile'
+gem 'spreadsheet'
 gem 'zip'
 
 # Gems used only for assets and not required

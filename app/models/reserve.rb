@@ -56,6 +56,7 @@ class Reserve < ActiveRecord::Base
 
         tds = doc.css('td')
         self.connectivity = {}
+        self.connectivity['Date Modified'] = Date.parse doc.at_css('.date').text
 
         [ 'Band Administration Office Internet Connectivity Type',
           'Is that Internet Access available to Community Members ?',

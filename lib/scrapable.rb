@@ -17,10 +17,10 @@ module Scrapable
   def scrape_detail
     self.doc = Scrapable::Helpers.parse detail_url
     self.class.attributes.each do |attribute,id|
-      if id['anchor']
+      if id['anchor'] # substring
         self[attribute] = doc.at_css('#' + id).andand[:href]
       else
-        self[attribute] = doc.at_css('#' + id).andand.text
+        self[attribute] = doc.at_css('#' + id).andand.text.andand.sub(/\A[[:space:]]+\z/, '')
       end
     end
   end
