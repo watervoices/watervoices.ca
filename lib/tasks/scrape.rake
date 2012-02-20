@@ -64,9 +64,9 @@ namespace :members_of_parliament do
   end
 end
 
-# @note 3007 are found using Canada Lands Survey System
-#        582 are found using Google Maps links on Aboriginal Canada (46 more)
-#        (8 more)
+# @note 3007 locations from Canada Lands Survey System
+#        582 locations from Google Maps links on Aboriginal Canada (46 more)
+#        851 locations from Census Subdivisions (8 more)
 namespace :other do
   require 'csv'
   require 'open-uri'
