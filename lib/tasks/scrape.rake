@@ -164,7 +164,6 @@ namespace :other do
   # http://www.aadnc-aandc.gc.ca/eng/1313426883501
   desc 'Get National Assessment data or each reserve'
   task :assessment => :environment do
-    data = {}
     headers = {
       # Individual First Nation Water Summary
       # Water System Information, Storage Information, Distribution System Information
@@ -211,7 +210,7 @@ namespace :other do
       E2: 1,
       F: 1,
     }
-    {
+    definitions = {
       'Atlantic' => {
         D1: 1314113533397,
         D2: 1314110702660,
@@ -268,18 +267,24 @@ namespace :other do
         E2: 1315615615822,
         F: 1315616040456,
       },
-    }.each do |region,tables|
+    }
+
+    # Clean up last run
+    DataRow.destroy_all
+
+    set = {}
+    definitions.each do |region,tables|
       puts "Scraping #{region} tables..."
-      tables.each do |name,id|
-        puts "Scraping table #{name}..."
-        data[name] ||= {}
-        offset = data[name].size
+      tables.each do |table_name,id|
+        puts "Scraping table #{table_name}..."
+        set[table_name] ||= {}
+        offset = set[table_name].size
         doc = Scrapable::Helpers.parse "http://www.aadnc-aandc.gc.ca/eng/#{id}"
         doc.css('table.widthFull').each_with_index do |table,i|
-          table.css("tr:gt(#{offsets[name]})").each_with_index do |tr,j|
-            data[name][j + offset] ||= []
-            data[name][j + offset] += tr.css(i.zero? ? 'td' : 'td:gt(2)').map do |td|
-              text = td.text.sub(/\A[[:space:]]+\z/, '').gsub(/(?<=\S)-[[:space:]]/, '').gsub("\n", ' ').squeeze(' ')
+          table.css("tr:gt(#{offsets[table_name]})").each_with_index do |tr,j|
+            set[table_name][j + offset] ||= []
+            set[table_name][j + offset] += tr.css(i.zero? ? 'td' : 'td:gt(2)').map do |td|
+              text = td.text.sub(/\A[[:space:]]+\z/, '').gsub(/(?<=[A-Za-z])-[[:space:]]/, '').gsub("\n", ' ').squeeze(' ')
               number = text.gsub(/[$,]/, '')
               if number[/\A-?\d+\z/]
                 Integer number
@@ -292,16 +297,29 @@ namespace :other do
           end
         end
       end
+    end
 
-      # @todo save record instead?
-      data.each do |name,x|
-        rows = []
-        x.each do |_,values|
-          rows << Hash[headers[name].zip(values)]
+    set.each do |table_name,rows|
+      puts "Saving table #{table_name}..."
+      rows.each do |_,values|
+        row = DataRow.new table: table_name, data: Hash[headers[table_name].zip(values)]
+        row.first_nation = FirstNation.find_by_number row.data[:band_number]
+        reserve_name = row.data[:system_name] || row.data[:community_name]
+        reserve_number = reserve_name[/\((\d+)\)\z/, 1]
+        if reserve_number
+          row.reserve = Reserve.find_by_number reserve_number
+          puts %(Couldn't find #{reserve_name.ljust 70} #{reserve_number}) if row.reserve.nil?
+        else
+          row.reserve = Reserve.find_by_name reserve_name
+          if row.reserve.nil?
+            fingerprint = Reserve.fingerprint reserve_name
+            if fingerprint.present?
+              row.reserve = Reserve.find_by_fingerprint fingerprint
+              puts %(Couldn't find #{reserve_name.ljust 70} #{fingerprint}) if row.reserve.nil?
+            end
+          end
         end
-        File.open("#{name}.yml", 'w') do |f|
-          f.write Psych.dump(rows)
-        end
+        row.save!
       end
     end
   end

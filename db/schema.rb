@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111204162639) do
+ActiveRecord::Schema.define(:version => 20120220031809) do
 
   create_table "addresses", :force => true do |t|
     t.string   "kind"
@@ -34,6 +34,18 @@ ActiveRecord::Schema.define(:version => 20111204162639) do
 
   add_index "addressings", ["address_id"], :name => "index_addressings_on_address_id"
   add_index "addressings", ["member_of_parliament_id"], :name => "index_addressings_on_member_of_parliament_id"
+
+  create_table "data_rows", :force => true do |t|
+    t.string   "table"
+    t.text     "data"
+    t.integer  "first_nation_id"
+    t.integer  "reserve_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "data_rows", ["first_nation_id"], :name => "index_data_rows_on_first_nation_id"
+  add_index "data_rows", ["reserve_id"], :name => "index_data_rows_on_reserve_id"
 
   create_table "first_nations", :force => true do |t|
     t.string   "name"
@@ -112,6 +124,7 @@ ActiveRecord::Schema.define(:version => 20111204162639) do
     t.text     "connectivity"
     t.string   "connectivity_url"
     t.integer  "member_of_parliament_id"
+    t.string   "fingerprint"
   end
 
   add_index "reserves", ["name"], :name => "index_reserves_on_name"

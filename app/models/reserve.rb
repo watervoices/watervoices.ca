@@ -19,6 +19,64 @@ class Reserve < ActiveRecord::Base
   scope :geocoded, where('latitude IS NOT NULL')
   scope :unrepresented, where(member_of_parliament_id: nil)
 
+  COMMON_WORDS = [
+    # Canada Lands in Google Earth
+    'BAND\b',
+    'C\.N\.',
+    'COMMUNITY\b',
+    'CREE FIRST NATION\b',
+    'CREE NATION\b',
+    'FIRST NATION\b',
+    'FN\b',
+    'I\.R\.',
+    'INDIAN\b',
+    'IR\b',
+    'ISLAND\b',
+    'NAKODA\b',
+    'NO\.',
+    'NO\b', # must come after NO.
+    'RESERVE\b',
+    'RSERVE\b',
+    'RIVER\b',
+    'SETTLEMENT\b',
+    'TIMBER LIMIT\b',
+
+    # Roll-up reports
+    'BOTTLING\b',
+    'COLLECTION AND\b.*',
+    'COLLECTION\b',
+    'COMMUNITY\b',
+    'DISTRIBUTION\b',
+    'CWS\b', # Canadian Wildlife Service
+    'LAGOONS?\b',
+    'MTA\b', # Municipal Type Agreement
+    'PLANT\b',
+    'PUMP ?HOUSE\b(?: +[1-9])?',
+    'SEW\b',
+    'SEWAGE\b',
+    'SEWER\b',
+    'STATION D\'EPURATION DES EAUX D\'EGOUT\b',
+    'STATION DE TRAITEMENT D\'EAU\b',
+    'STATION DE TRAITEMENT DE L\'EAU\b',
+    'SUBDIVISION\b',
+    'SUPPLY AND\b.*',
+    'SYSTEM\b(?: +[1-9])?',
+    'TREATMENT\b',
+    'WASTEWATER\b',
+    'WATER\b',
+    'WELL\b',
+    'WTP\b', # Water Treatment Plant
+  ]
+
+  # @param [String] string a string
+  # @return [String] the string with dashes, accents, and parenthesized and
+  #   common words removed, and with standardized conjunctions and identifiers.
+  def self.fingerprint(string)
+    UnicodeUtils.upcase(string).gsub(/(\S)\(/, '\1 (').gsub('’', "'").gsub('&', 'AND').gsub(/\b(\d{1,3})[ -]([A-Z])\z/, '\1\2').gsub(/[#\/-]/, ' ').gsub(/\([^)]{3,}\)|\b(?:#{COMMON_WORDS.join '|'})/, ' ').squeeze(' ').strip.tr(
+      "ÀÁÂÃÄÅàáâãäåĀāĂăĄąÇçĆćĈĉĊċČčÐðĎďĐđÈÉÊËèéêëĒēĔĕĖėĘęĚěĜĝĞğĠġĢģĤĥĦħÌÍÎÏìíîïĨĩĪīĬĭĮįİıĴĵĶķĸĹĺĻļĽľĿŀŁłÑñŃńŅņŇňŉŊŋÒÓÔÕÖØòóôõöøŌōŎŏŐőŔŕŖŗŘřŚśŜŝŞşŠšſŢţŤťŦŧÙÚÛÜùúûüŨũŪūŬŭŮůŰűŲųŴŵÝýÿŶŷŸŹźŻżŽž",
+      "AAAAAAAAAAAAAAAAAACCCCCCCCCCDDDDDDEEEEEEEEEEEEEEEEEEGGGGGGGGHHHHIIIIIIIIIIIIIIIIIIJJKKKLLLLLLLLLLNNNNNNNNNNNOOOOOOOOOOOOOOOOOORRRRRRSSSSSSSSSTTTTTTUUUUUUUUUUUUUUUUUUUUWWYYYYYYZZZZZZ")
+  end
+
   def geocoded?
     latitude? && longitude?
   end
@@ -37,6 +95,7 @@ class Reserve < ActiveRecord::Base
     super
     self.name = self.name.squeeze(' ').gsub(/(\S)\(/, '\1 (')
     self.first_nations = FirstNation.find_all_by_number(doc.css('#ctl00_dgFNlist td:first a').map{|a| a.text})
+    self.fingerprint = Reserve.fingerprint name
   end
 
   def scrape_extra
