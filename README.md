@@ -1,9 +1,9 @@
 # Getting Started
 
     git clone git://github.com/jpmckinney/watervoices.ca.git
+    cd watervoices.ca
     bundle
-    bundle exec rake db:create
-    bundle exec rake db:migrate
+    bundle exec rake db:setup
     bundle exec rake members_of_parliament:list
     bundle exec rake tribal_councils:list
     bundle exec rake first_nations:list
