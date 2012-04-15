@@ -20,6 +20,9 @@ class Reserve < ActiveRecord::Base
   scope :unrepresented, where(member_of_parliament_id: nil)
 
   COMMON_WORDS = [
+    # National Broadband Coverage Data
+    'COMMUNAUTÉ DE\b',
+
     # Canada Lands in Google Earth
     'BAND\b',
     'C\.N\.',
@@ -70,10 +73,12 @@ class Reserve < ActiveRecord::Base
   ]
 
   # @param [String] string a string
-  # @return [String] the string with dashes, accents, and parenthesized and
-  #   common words removed, and with standardized conjunctions and identifiers.
+  # @return [String] the string after performing the following operations:
+  #   * remove periods, pounds, dashes, non-solidus slashes and possessive apostrophes
+  #   * standardize spacing, punctuation, conjunctions and identifiers
+  #   * remove accents and parenthesized and common words
   def self.fingerprint(string)
-    UnicodeUtils.upcase(string).gsub(/(\S)\(/, '\1 (').gsub('’', "'").gsub('&', 'AND').gsub(/\b(\d{1,3})[ -]([A-Z])\z/, '\1\2').gsub(/[#\/-]/, ' ').gsub(/\([^)]{3,}\)|\b(?:#{COMMON_WORDS.join '|'})/, ' ').squeeze(' ').strip.tr(
+    UnicodeUtils.upcase(string).gsub('’', "'").gsub(', ', '-').gsub(/(\S)\(/, '\1 (').gsub(/(\D)\//, '\1 ').gsub("'S ", 'S ').gsub('&', 'AND').gsub(/\b(\d{1,3})[ -]([A-Z])\z/, '\1\2').gsub(/[.#-]/, ' ').gsub(/\([^)]{3,}\)|\b(?:#{COMMON_WORDS.join '|'})/, ' ').squeeze(' ').strip.tr(
       "ÀÁÂÃÄÅàáâãäåĀāĂăĄąÇçĆćĈĉĊċČčÐðĎďĐđÈÉÊËèéêëĒēĔĕĖėĘęĚěĜĝĞğĠġĢģĤĥĦħÌÍÎÏìíîïĨĩĪīĬĭĮįİıĴĵĶķĸĹĺĻļĽľĿŀŁłÑñŃńŅņŇňŉŊŋÒÓÔÕÖØòóôõöøŌōŎŏŐőŔŕŖŗŘřŚśŜŝŞşŠšſŢţŤťŦŧÙÚÛÜùúûüŨũŪūŬŭŮůŰűŲųŴŵÝýÿŶŷŸŹźŻżŽž",
       "AAAAAAAAAAAAAAAAAACCCCCCCCCCDDDDDDEEEEEEEEEEEEEEEEEEGGGGGGGGHHHHIIIIIIIIIIIIIIIIIIJJKKKLLLLLLLLLLNNNNNNNNNNNOOOOOOOOOOOOOOOOOORRRRRRSSSSSSSSSTTTTTTUUUUUUUUUUUUUUUUUUUUWWYYYYYYZZZZZZ")
   end
@@ -96,7 +101,7 @@ class Reserve < ActiveRecord::Base
     super
     self.name = self.name.squeeze(' ').gsub(/(\S)\(/, '\1 (')
     self.first_nations = FirstNation.find_all_by_number(doc.css('#ctl00_dgFNlist td:first a').map{|a| a.text})
-    self.fingerprint = Reserve.fingerprint name
+    self.fingerprint = self.class.fingerprint name
   end
 
   def scrape_extra

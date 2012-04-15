@@ -72,6 +72,45 @@ namespace :other do
   require 'open-uri'
   require 'unicode_utils/upcase'
 
+  # http://www.data.gc.ca/default.asp?lang=En&n=5175A6F0-1&xsl=datacataloguerecord&metaxsl=datacataloguerecord&formid=00A331DB-121B-445D-B119-35DBBE3EEDD9
+  desc 'Import National Broadband Coverage Data'
+  task :broadband => :environment do
+    filename = File.join(Rails.root, 'data', 'National_Broadband_Data_Jan2012_Eng.csv')
+    if File.exist? filename
+      CSV.read(filename, encoding: 'utf-8', headers: true).select{|x| x['First Nation']}.each do |record|
+        reserve_name = UnicodeUtils.upcase(record['First Nation']).gsub(/[[:space:]]+/, ' ')
+        reserve_name = {
+          'AROLAND 83'                              => 'AROLAND INDIAN SETTLEMENT',
+          'CHIPPEWAS OF THE THAMES FIRST NATION 42' => 'CHIPPEWA OF THE THAMES FIRST NATION INDIAN RESERVE',
+          'ESSIPIT'                                 => 'INNUE ESSIPIT',
+          'FORT VERMILLION 173B'                    => 'FORT VERMILION 173B',
+          "KAPAWE'NO FIRST NATION (FREEMAN 150B)"   => "KAPAWE'NO FIRST NATION 150B",
+          "KAPAWE'NO FIRST NATION (GROUARD 230)"    => "KAPAWE'NO FIRST NATION 230",
+          "KAPAWE'NO FIRST NATION (HALCRO 150C)"    => "KAPAWE'NO FIRST NATION 150C",
+          "KAPAWE'NO FIRST NATION (PAKASHAN 150D)"  => "KAPAWE'NO FIRST NATION 150D",
+          'LA ROMAINE'                              => 'ROMAINE 2',
+          'LAC-RAPIDE'                              => 'RAPID LAKE',
+          'PIIKANI 147'                             => 'PIIKANI',
+        }[reserve_name] || reserve_name
+
+        row = DataRow.new table: 'Coverage', data: record.to_hash
+        row.reserve = Reserve.find_by_name reserve_name
+        if row.reserve.nil?
+          fingerprint = Reserve.fingerprint reserve_name
+          row.reserve = Reserve.find_by_fingerprint(fingerprint) if fingerprint.present?
+        end
+        if row.reserve.nil?
+          candidates = Reserve.where('name LIKE ?', "#{reserve_name}%")
+          row.reserve = candidates.first if candidates.size == 1
+        end
+        puts %(Couldn't find #{reserve_name.ljust 70} #{fingerprint}) if row.reserve.nil?
+        row.save!
+      end
+    else
+      puts "You must save as UTF-8 the National Broadband Coverage Data to data/ from http://www.data.gc.ca/default.asp?lang=En&n=5175A6F0-1&xsl=datacataloguerecord&metaxsl=datacataloguerecord&formid=00A331DB-121B-445D-B119-35DBBE3EEDD9"
+    end
+  end
+
   # Reserve locations from Canada Lands Survey System
   # http://clss.nrcan.gc.ca/geobase-eng.php
   desc 'Import coordinates from Canada Lands Survey System'
@@ -96,7 +135,7 @@ namespace :other do
         end
       end
     else
-      puts "You must download and unzip the Canada Lands Survey System shapefile to data/"
+      puts "You must download and unzip the Canada Lands Survey System shapefile to data/ from http://clss.nrcan.gc.ca/geobase-eng.php"
     end
   end
 
@@ -120,7 +159,7 @@ namespace :other do
         end
       end
     else
-      puts "You must download and unzip Census Subdivisions shapefile to data/"
+      puts "You must download and unzip the Census Subdivisions shapefile to data/ from http://www12.statcan.gc.ca/census-recensement/2011/geo/bound-limit/bound-limit-eng.cfm"
     end
   end
 
@@ -313,11 +352,9 @@ namespace :other do
           row.reserve = Reserve.find_by_name reserve_name
           if row.reserve.nil?
             fingerprint = Reserve.fingerprint reserve_name
-            if fingerprint.present?
-              row.reserve = Reserve.find_by_fingerprint fingerprint
-              puts %(Couldn't find #{reserve_name.ljust 70} #{fingerprint}) if row.reserve.nil?
-            end
+            row.reserve = Reserve.find_by_fingerprint(fingerprint) if fingerprint.present?
           end
+          puts %(Couldn't find #{reserve_name.ljust 70} #{fingerprint}) if row.reserve.nil?
         end
         row.save!
       end
