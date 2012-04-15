@@ -19,6 +19,7 @@
     bundle exec rake other:twitter
     bundle exec rake other:districts
     bundle exec rake other:assessment
+    bundle exec rake other:broadband
 
 # Deployment
 
@@ -40,6 +41,7 @@
     bundle exec rake export:first_nations
     bundle exec rake export:reserves
     bundle exec rake export:members_of_parliament
+    bundle exec rake export:data_rows
 
 # Data Sources
 
