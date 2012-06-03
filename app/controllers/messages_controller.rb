@@ -38,23 +38,5 @@ class MessagesController < ApplicationController
     end
   end
 
-  def post_to_map(report)
-    #report = Report.find(:all).first
-    reserve = Reserve.find(:first, :conditions => {:id => report.reserve_id})
-    #c = Curl::Easy.perform("http://maps.watervoices.ca/Ushahidi_Web/reports/submit?incident_title=#{report.title}&incident_description=#{report.message}&incident_category=#{report.status}&location_name=#{reserve.location}")
-    c = Curl::Easy.http_post("http://maps.watervoices.ca/Ushahidi_Web/api",
-                         Curl::PostField.content('task', 'report'),
-                         Curl::PostField.content('incident_title', report.title),
-                         Curl::PostField.content('incident_description', report.message),
-                         Curl::PostField.content('incident_date', report.created_at.strftime("%m/%d/%Y")),
-                         Curl::PostField.content('incident_hour', report.created_at.strftime("%I")),
-                         Curl::PostField.content('incident_minute', report.created_at.strftime("%M")),
-                         Curl::PostField.content('incident_ampm', report.created_at.strftime("%p").downcase),
-                         Curl::PostField.content('incident_category', 1),
-                         Curl::PostField.content('latitude', 43.6481),
-                         Curl::PostField.content('longitude', 79.4042),
-                         Curl::PostField.content('location_name', reserve.name))
-    puts c.body_str
-  end  
 
 end

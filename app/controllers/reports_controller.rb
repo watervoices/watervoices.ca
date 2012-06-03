@@ -48,6 +48,7 @@ class ReportsController < ApplicationController
 
     respond_to do |format|
       if @report.save
+        post_to_map @report
         format.html { redirect_to @report, notice: 'Report was successfully created.' }
         format.json { render json: @report, status: :created, location: @report }
       else
