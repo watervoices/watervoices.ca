@@ -55,6 +55,8 @@ GEM
     excon (0.6.6)
     execjs (1.2.9)
       multi_json (~> 1.0)
+    faraday (0.8.1)
+      multipart-post (~> 1.1)
     fastercsv (1.5.4)
     fog (0.11.0)
       builder
@@ -86,6 +88,7 @@ GEM
       webrobots (~> 0.0, >= 0.0.9)
     mime-types (1.17.2)
     multi_json (1.0.4)
+    multipart-post (1.1.5)
     net-http-digest_auth (1.2)
     net-http-persistent (1.9)
     net-scp (1.0.4)
@@ -155,6 +158,7 @@ GEM
     simple_form (2.0.1)
       actionpack (~> 3.0)
       activemodel (~> 3.0)
+    simple_oauth (0.1.8)
     spreadsheet (0.6.5.9)
       ruby-ole (>= 1.0)
     sprockets (2.0.3)
@@ -176,6 +180,11 @@ GEM
       json_pure (>= 1.2.0)
     turn (0.8.3)
       ansi
+    twitter (2.2.0)
+      activesupport (>= 2.3.9, < 4)
+      faraday (~> 0.7)
+      multi_json (~> 1.0)
+      simple_oauth (~> 0.1)
     tzinfo (0.3.31)
     uglifier (1.1.0)
       execjs (>= 0.3.0)
@@ -213,6 +222,7 @@ DEPENDENCIES
   thin
   tropo-webapi-ruby
   turn
+  twitter
   uglifier
   unicode_utils
   zip
