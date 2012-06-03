@@ -24,6 +24,7 @@ class ReportsController < ApplicationController
   # GET /reports/new
   # GET /reports/new.json
   def new
+    @nav = :file_report
     @report = Report.new
 
     respond_to do |format|
@@ -40,7 +41,10 @@ class ReportsController < ApplicationController
   # POST /reports
   # POST /reports.json
   def create
+    @nav = :file_report
     @report = Report.new(params[:report])
+    @report.status = 1
+    @report.web = true
 
     respond_to do |format|
       if @report.save

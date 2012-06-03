@@ -5,7 +5,7 @@ WaterVoices::Application.routes.draw do
   match 'about' => 'pages#about'
   match 'mission' => 'pages#mission'
   match 'resources' => 'pages#resources'
-  match 'file_report' => 'pages#file_report'
+  match 'file_report' => 'reports#new'
 
   namespace :admin do 
     root :to => 'dashboard#show'
@@ -13,7 +13,7 @@ WaterVoices::Application.routes.draw do
   end
   
   resources :reports
-  match 'messages/' => 'messages#index', :via => :post
+  post 'messages' => 'messages#index'
   root :to => 'pages#index'
 
   # resources :reserves
