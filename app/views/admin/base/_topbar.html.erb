@@ -1,0 +1,26 @@
+<div class="navbar navbar-fixed-top">
+  <div class="navbar-inner">
+
+    <div class="container">
+
+      <a class="btn btn-navbar" data-target=".nav-collapse" data-toggle="collapse">
+        <span class="i-bar"></span>
+        <span class="i-bar"></span>
+        <span class="i-bar"></span>
+      </a>
+
+      <a class="brand" href="<%= admin_root_path %>">WATER VOICES Admin</a>
+
+      <div class="container nav-collapse">
+        <%= render_navigation  :renderer => BootstrapTopbarList, :expand_all => true, :context => :admin %>
+        <div class="pull-right" style="color: #888">
+          <%= link_to 'Public', root_path, :class => "btn btn-success btn-small" %>
+        </div>
+        <ul class="nav pull-right">
+          <li><%= link_to 'Hey Steve-o!', '#' %></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+</div>

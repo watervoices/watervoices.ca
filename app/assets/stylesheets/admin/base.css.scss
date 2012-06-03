@@ -1,0 +1,12 @@
+// Place all the styles related to the admin/base controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+div.clear {
+  clear:both
+}
+
+/*Calendar + Bootstrap conflict fixes */
+.calendar table.fc-header td {
+  border-top: none;
+}

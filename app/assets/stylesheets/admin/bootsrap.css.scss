@@ -1,0 +1,92 @@
+@import "bootstrap";
+
+header.master {
+  padding-top: 60px;
+}
+
+.btn-tiny {
+  padding: 2px 7px 2px;
+  font-size: 11px;
+}
+
+.btn-small i {
+  margin-top: -1px;
+}
+
+//Calendar + Bootstrap conflict fixes 
+.calendar table.fc-header td {
+  border-top: none;
+}
+
+.page-header {
+  padding-bottom: 6px;
+  margin-bottom: 10px;
+}
+
+.nav-small > li > a {
+  padding-top: 6px;
+  padding-bottom: 6px;
+  margin-top: 1px;
+  margin-bottom: 1px;
+}
+
+.navbar ul.nav > li.admin > a {
+  color: red;
+}
+
+
+.alert-actions {
+  margin-top: 6px;
+}
+
+.alert p:last-child {
+  margin-bottom: 0px;
+}
+
+input[type="text"].index-search {
+  height: 20px; 
+  width: 200px; 
+  font-size: 1.1em;
+  margin-bottom:0px;
+}
+
+input[type="submit"].index-search {
+  line-height: 17px; 
+  font-size: 12px;
+  margin-bottom: 1px;
+}
+
+.large-pill {
+  padding: 4px 4px 4px;
+  font-size: 13px;
+  position:relative; 
+  top:6px;
+}
+
+ul.nav > li.disabled {
+  opacity: 0.4;
+  a {
+    cursor: default;
+  }
+}
+
+div.well {
+  padding: 5px 10px;
+}
+
+ul.pills.small {
+  margin: 0px 0px 0px 0px;
+  
+  > li {
+    > a {
+      line-height: 28px;
+      border-radius: 10px;
+      margin-top: 0px;
+      margin-bottom: 0px;
+    }
+  }
+}
+
+select.auto-width {
+  width: auto;
+}

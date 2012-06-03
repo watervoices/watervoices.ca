@@ -1,0 +1,59 @@
+<% provide :page_name, "#{@prefix.humanize} Content" %>
+<% provide :title, "#{@prefix.humanize} Content" %>
+
+<%= render "admin/contents/prefixes/#{@prefix}_index"  %>
+
+
+<% content_for :end_of_body do %>
+  <script>
+    $(function() {
+      $('.editable-text form').submit(function (e) {
+        $(this).closest('.editable-content').find('.save-btn').click();
+        return false;
+      });
+
+      $('.edit-btn').click(function() {
+        $this = $(this);
+        $content = $this.closest('.editable-content');
+        $this.hide();
+        $content.find('.edit-mode').show();
+        $content.find('.cancel-edit-btn').show();
+        $content.find('.save-btn').show();
+        $content.find('.preview-mode').hide();
+        return false;
+      });
+      $('.save-btn').click(function(e) {
+        $this = $(this);
+        $this.hide();
+        $content = $(this).closest('.editable-content');
+        $content.find('.edit-mode').hide();
+        $content.find('.edit-btn').show();
+        $content.find('.cancel-edit-btn').hide();
+        preview = $content.find('.preview-mode')
+        preview.css({opacity:0.3}).show();
+        $form = $content.find('form');
+        //console.log($form.serialize());
+        $.ajax({
+          url: $form.attr('action'),
+          type: 'POST',//$form.find('input[name="_method"]').length == 0 ? 'POST' : 'PUT',
+          dataType: 'html',
+          data: $form.serialize(),
+          success: function(data) {
+            preview.html(data).css({opacity: 1.0});
+          }
+        });
+        return false;
+      });
+      $('.cancel-edit-btn').click(function() {
+        $this = $(this);
+        $content = $this.closest('.editable-content');
+        $this.hide();
+        $content.find('.edit-mode').hide();
+        $content.find('.save-btn').hide();
+        $content.find('.edit-btn').show();
+        $content.find('.preview-mode').show();
+        return false;
+      });
+    });
+  </script>
+<% end %>

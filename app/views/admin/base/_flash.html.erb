@@ -1,0 +1,29 @@
+<% actions = flash[:actions] %>
+<% if alert = flash[:alert] %>
+  <div class="alert <%= 'alert-block' if flash[:actions] %> alert-error">
+    <p>
+      <%= alert.html_safe %>
+    </p>
+    <% if actions %>
+      <div class="alert-actions">
+        <% actions.each do |name, link| %>
+          <%= link_to name, link, :class => "btn btn-small" %>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+<% end %>
+<% if notice = flash[:notice] %>
+  <div class="alert <%= 'alert-block' if flash[:actions] %> alert-success">
+    <p>
+      <%= notice.html_safe %>
+    </p>
+    <% if actions %>
+      <div class="alert-actions">
+        <% actions.each do |name, link| %>
+          <%= link_to name, link, :class => "btn btn-small" %>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+<% end %>

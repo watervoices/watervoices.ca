@@ -17,6 +17,7 @@ gem 'unicode_utils'
 gem 'rgeo-shapefile'
 gem 'spreadsheet'
 gem 'zip'
+gem 'rdiscount' # markdown for cms
 
 # Gems used only for assets and not required
 # in production environments by default.
@@ -26,7 +27,10 @@ group :assets do
   gem 'uglifier'
 end
 
+gem 'bootstrap-sass', '~> 2.0.3'
 gem 'jquery-rails'
+gem 'simple-navigation'
+gem 'simple_form', '~> 2.0.1'
 
 group :production do
   gem 'pg'

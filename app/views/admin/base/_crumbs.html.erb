@@ -1,0 +1,11 @@
+<% last_crumb = crumbs.to_a.last[0] %>
+<ul class="breadcrumb">
+  <% crumbs.each do |name, url|  %>
+    <li class="active">
+      <%= url ? link_to(name, url) : name %>
+      <% unless name == last_crumb %>
+        <span class="divider">/</span>
+      <% end %>
+    </li>
+  <% end %>
+</ul>

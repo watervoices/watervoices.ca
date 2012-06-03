@@ -1,0 +1,45 @@
+// Place all the styles related to the admin/contents controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+.editable-content {
+
+  &.single-line {
+    .preview-mode {
+      height: 18px;
+      overflow: hidden;
+    }
+  }
+
+  .edit-mode {
+    textarea {
+      width:922px;padding:8.5px;margin:0 0 18px;
+    }
+    input[type="text"] {
+      width: 922px;
+    /*margin: 0 0 18px;*/
+      padding: 8.5px;
+    }
+
+  } 
+  .preview-mode {
+    height: 80px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    background-color: whiteSmoke;
+    display: block;
+    padding: 8.5px;
+    margin: 0 0 18px;
+    line-height: 0px;
+    font-size: 12px;
+    border: 1px solid #CCC;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    white-space: pre;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    border-image: initial;
+  }
+}

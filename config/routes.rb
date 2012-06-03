@@ -2,6 +2,13 @@ WaterVoices::Application.routes.draw do
   resources :reserves
   match 'search' => 'pages#search'
   match 'about' => 'pages#about'
+
+
+  namespace :admin do 
+    root :to => 'dashboard#show'
+    resources :contents
+  end
+  
   root :to => 'pages#index'
 
   # The priority is based upon order of creation:
