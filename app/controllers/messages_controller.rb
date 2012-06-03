@@ -9,13 +9,13 @@ class MessagesController < ApplicationController
     network = from["network"]
     from_id = from["id"]
     reserve = parse(message)
-    if network == "SMS" && !reserve.nil?
+    if network == "SMS"
       # save message
-      message_m = Message.new({:text => message, :from => from, :from_id => from_id, :network => network, :reserve_id => reserve.id})
+      message_m = Message.new({:text => message, :from => from, :from_id => from_id, :network => network, :reserve => reserve})
       message_m.save
       # save message as a report to be displayed on map
-      report = Report.new({:reserve_id => reserve.id, :title => reserve.name, :status => true, :message => message})
-      report.save
+      report = Report.new({:reserve => reserve, :title => reserve.try(:name) || 'Water Crisis', :status => true, :message => message || 'Please help.'})
+      report.save!
       post_to_map(report)
       # render
       #render :json => Tropo::Generator.say("Message received")

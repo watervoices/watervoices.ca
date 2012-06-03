@@ -22,8 +22,8 @@ class ApplicationController < ActionController::Base
                            Curl::PostField.content('incident_minute', report.created_at.strftime("%M")),
                            Curl::PostField.content('incident_ampm', report.created_at.strftime("%p").downcase),
                            Curl::PostField.content('incident_category', 1),
-                           Curl::PostField.content('latitude', 43.6481),
-                           Curl::PostField.content('longitude', 79.4042),
+                           Curl::PostField.content('latitude', reserve.latitude || 79.4042),
+                           Curl::PostField.content('longitude', reserve.longitude || 43.6481),
                            Curl::PostField.content('location_name', reserve.name))
       puts c.body_str
     end
