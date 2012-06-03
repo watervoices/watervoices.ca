@@ -43,6 +43,7 @@ class ReportsController < ApplicationController
   def create
     @nav = :file_report
     @report = Report.new(params[:report])
+    @report.status = 1
     @report.web = true
 
     respond_to do |format|
