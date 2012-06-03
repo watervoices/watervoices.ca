@@ -19,12 +19,12 @@ class Report < ActiveRecord::Base
       if reserve.member_of_parliament && reserve.member_of_parliament.twitter?
         # last minute coding = hacks like the ones below - June 03, 2012 - KV
         t = reserve.member_of_parliament.twitter.gsub('http://twitter.com/', '')
-        Twitter.update("Dear @#{t}:" + message.first(100) + ' http://bit.ly/mywater')
+        Twitter.update("Dear @#{t}: " + message.first(92) + ' http://bit.ly/mywater')
       else
-        Twitter.update(message.first(100) + ' http://bit.ly/mywater')
+        Twitter.update(message.first(110) + ' http://bit.ly/mywater')
       end
     else
-      Twitter.update(message.first(100) + ' http://bit.ly/mywater')
+      Twitter.update(message.first(110) + ' http://bit.ly/mywater')
     end  
   end
   
