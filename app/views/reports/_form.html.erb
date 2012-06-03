@@ -1,4 +1,15 @@
-<%= form_for(@report) do |f| %>
+<!-- RESOURCES -->
+<div class="mid1" id="section-mission">
+  <div class="text-box1">
+    <h1>File a Report</h1>
+    <p>Water issues? File a report below!</p>
+  </div>
+</div>
+
+
+<div class="mid2">
+
+<%= simple_form_for(@report, :html => {:class => "form-vertical"}) do |f| %>
   <% if @report.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@report.errors.count, "error") %> prohibited this report from being saved:</h2>
@@ -11,23 +22,14 @@
     </div>
   <% end %>
 
-  <div class="field">
-    <%= f.label :reserve %><br />
-    <%= f.text_field :reserve %>
-  </div>
-  <div class="field">
-    <%= f.label :title %><br />
-    <%= f.text_field :title %>
-  </div>
-  <div class="field">
-    <%= f.label :status %><br />
-    <%= f.text_field :status %>
-  </div>
-  <div class="field">
-    <%= f.label :message %><br />
-    <%= f.text_area :message %>
-  </div>
+  <%= f.association :reserve %>
+  <%= f.input :title %>
+  <%= f.input :status %>
+  <%= f.input :message, :input_html => {:rows => 5, :cols => 20} %>
+  
   <div class="actions">
-    <%= f.submit %>
+    <%= f.submit :class => 'btn' %>
   </div>
 <% end %>
+
+</div>
