@@ -14,29 +14,29 @@
 
       $(document).ready(function() {
 
-        loadSection('View Map', 'view-map', true);
-      
-      var animationSpeed = 300;
+      //   loadSection('View Map', 'view-map', true);
+      // 
+      // var animationSpeed = 300;
       
 
       //Top menu button animations
-        $(".but1").bind("mouseenter", function() {
-          $(this).children(".over").stop().fadeTo(animationSpeed,1);
-        });
-        
-        $(".but1").bind("mouseleave", function() {
-          $(this).children(".over").stop().fadeTo(animationSpeed,0);
-        });
-        
-        $(".but1").bind("mousedown", function() {
-          $(this).children(".down").stop().fadeTo(0,1);
-        });
-        
-        $(".but1").bind("mouseup", function() {
-          $(this).children(".down").stop().fadeTo(animationSpeed,0);
-        });
-      
-        $("#logo").click(function() { loadSection('View Map', 'view-map', true); });
+        // $(".but1").bind("mouseenter", function() {
+        //          $(this).children(".over").stop().fadeTo(animationSpeed,1);
+        //        });
+        //        
+        //        $(".but1").bind("mouseleave", function() {
+        //          $(this).children(".over").stop().fadeTo(animationSpeed,0);
+        //        });
+        //        
+        //        $(".but1").bind("mousedown", function() {
+        //          $(this).children(".down").stop().fadeTo(0,1);
+        //        });
+        //        
+        //        $(".but1").bind("mouseup", function() {
+        //          $(this).children(".down").stop().fadeTo(animationSpeed,0);
+        //        });
+        //      
+        //$("#logo").click(function() { loadSection('View Map', 'view-map', true); });
       });
       
     //returns html for a top level button
@@ -73,7 +73,7 @@
           crumbString = crumbString  + "<div onclick=\"loadSection('"+strName+"','"+strID+"',"+boolClearCrumbs+");\">" + strName + " > </div>"
         //};
         
-        $("#breadCrumbs").html(crumbString);
+        //$("#breadCrumbs").html(crumbString);
         
         $(".mid1").hide();
         $("#section-"+strID).show();
@@ -91,121 +91,22 @@
     <div class="main">
       <div class="top">
         <div id="logo" style="width:996px; height:150px"></div>
-        <div id="breadCrumbs">File Report</div>
+        <!-- <div id="breadCrumbs">File Report</div> -->
         <ul class="tabs">
-          <li class="active" id="tab-view-map" onclick="loadSection('View Map', 'view-map', true);"><div class="frontcap"></div>View Map<div class="endcap"></div> </li>
-          <li id="tab-file-report" onclick="loadSection('File Report', 'file-report', true);"> File Report <div class="endcap"></div></li>
-          <li id="tab-tell-others" onclick="loadSection('Tell Others', 'tell-others', true);"> Tell Others<div class="endcap"></div></li>
-          <li id="tab-resources" onclick="loadSection('Resources', 'resources', true);"> Resources<div class="endcap"></div></li>
-          <li id="tab-mission" onclick="loadSection('Mission', 'mission', true);"> Mission <div class="endcap"></div></li>
+          <li  class="<%= 'active' if @nav == :map %>" id="tab-view-map"><div class="frontcap"></div><%= link_to 'View Map', root_path %><div class="endcap"></div> </li>
+          <li class="<%= 'active' if @nav == :file_report %>" id="tab-file-report"> <%= link_to 'File Report', file_report_path %> <div class="endcap"></div></li>
+          <li class="<%= 'active' if @nav == :resources %>" id="tab-resources"> <%= link_to 'Resources', resources_path %> <div class="endcap"></div></li>
+          <li class="<%= 'active' if @nav == :mission %>" id="tab-mission"> <%= link_to 'Mission', mission_path %> <div class="endcap"></div></li>
         </ul>
       </div>
       
-    <!-- FILE REPORT -->
-      <div class="mid1" id="section-file-report">
-        <div class="info-box1">
-          <span>
-            Report a<br />
-            Water Quality<br />
-            Issue by:
-          </span>
-        </div>    
-        <script type="text/javascript">
-          document.write(addButton('SMS', 'section-file-report-sms'));
-          document.write(addButton('Online', 'section-file-report-online'));
-          document.write(addButton('Phone', 'section-file-report-phone'));
-          document.write(addButton('Mail', 'section-file-report-mail'));
-        </script>
-      </div>
-      
-    <!-- FILE REPORT > SMS -->  
-      <div class="mid1" id="section-file-report-sms">
-        <div class="info-box1">
-          SMS content
-        </div>
-      </div>
-      
-    <!-- FILE REPORT > ONLINE --> 
-      <div class="mid1" id="section-file-report-online">
-        <div class="info-box1">
-          Online content
-        </div>
-      </div>
-      
-    <!-- FILE REPORT > PHONE -->  
-      <div class="mid1" id="section-file-report-phone">
-        <div class="info-box1">
-          Phone content
-        </div>
-      </div>
-      
-    <!-- FILE REPORT > MAIL --> 
-      <div class="mid1" id="section-file-report-mail">
-        <div class="info-box1">
-          Mail content
-        </div>
-      </div>
-      
-    <!-- RESOURCES -->
-      <div class="mid1" id="section-resources">
-        <div class="text-box1">
-          dolor sit amet, consectetur adipiscing elit. Aenean vel nisl leo, ac fringilla est. Maecenas sit amet facilisis magna. Cras posuere quam et dui dignissim malesuada. Donec nisl sem, pulvinar ac 
-        </div>
+
+      <%= yield %>
+
+      <div class="divider2">        
       </div>
 
-    <!-- TELL OTHERS -->
-      <div class="mid1" id="section-tell-others">
-        <div class="info-box1">
-          <span>
-            Tell others.<br />
-            Be Heard.
-          </span>
-        </div>    
-        <script type="text/javascript">
-          document.write(addButton('Twitter', 'twitter'));
-          document.write(addButton('Facebook', ''));
-          document.write(addButton('Email', ''));
-          document.write(addButton('Printables', ''));
-        </script>
-      </div>
-          
-          
-    <!-- MISSION -->
-      <div class="mid1" id="section-mission">
-        <div class="text-box1">
-          While the government remains committed to addressing water quality issues, WaterVoices remains committed to providing an outlet to spatially and a visually address real-time water concerns. The goal of this website is to provide citizens an outlet to highlight their water challenges and governments a better understanding of the water quality issues.
-        </div>  
-      </div>
-      
-      <div class="divider1">
-        
-      </div>
-      <div class="mid2">
-        <iframe src="http://maps.watervoices.ca/Ushahidi_Web/iframemap" style="border: 0px solid #fff;" border="0" width="100%" height="100%"></iframe>
-      </div>
       <div class="divider2">
-        
-      </div>
-      <div class="mid3">
-        <div class="lowerInfoBoxes">
-          <div class="lowerInfoBoxesTitle">
-            News
-          </div>
-          <div class="lowerInfoBoxesText">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean vel nisl leo, ac fringilla est. Maecenas sit amet facilisis magna. Cras posuere quam et dui dignissim malesuada. Donec nisl sem, pulvinar ac vulputate a, dapibus vitae lorem. Mauris interdum lacus dictum nunc feugiat eleifend. Curabitur leo elit, rhoncus et ullamcorper quis, molestie non justo. Pellentesque bibendum ipsum nec nunc venenatis egestas. Maecenas ultrices pulvinar fermentum. Quisque in cursus mauris. Vivamus euismod dolor augue, vitae tincidunt erat. Nulla turpis urna, pellentesque id convallis at, ultricies nec risus. Morbi lacinia volutpat dignissim. Duis consequat elementum tempor.
-          </div>
-        </div>
-        <div class="lowerInfoBoxes">
-          <div class="lowerInfoBoxesTitle">
-            Twitter
-          </div>
-          <div class="lowerInfoBoxesText">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean vel nisl leo, ac fringilla est. Maecenas sit amet facilisis magna. Cras posuere quam et dui dignissim malesuada. Donec nisl sem, pulvinar ac vulputate a, dapibus vitae lorem. Mauris interdum lacus dictum nunc feugiat eleifend. Curabitur leo elit, rhoncus et ullamcorper quis, molestie non justo. Pellentesque bibendum ipsum nec nunc venenatis egestas. Maecenas ultrices pulvinar fermentum. Quisque in cursus mauris. Vivamus euismod dolor augue, vitae tincidunt erat. Nulla turpis urna, pellentesque id convallis at, ultricies nec risus. Morbi lacinia volutpat dignissim. Duis consequat elementum tempor.
-          </div>
-        </div>
-      </div>
-      <div class="divider2">
-        
       </div>
       <div class="mid4">
         

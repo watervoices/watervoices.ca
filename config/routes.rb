@@ -2,7 +2,9 @@ WaterVoices::Application.routes.draw do
   resources :reserves
   match 'search' => 'pages#search'
   match 'about' => 'pages#about'
-
+  match 'mission' => 'pages#mission'
+  match 'resources' => 'pages#resources'
+  match 'file_report' => 'pages#file_report'
 
   namespace :admin do 
     root :to => 'dashboard#show'

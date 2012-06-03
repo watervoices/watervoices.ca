@@ -51,9 +51,8 @@ body {
 	background-image: url(/assets/mid1b.png);
 	background-repeat: repeat-y;
 	width: 916px;
-	height:165px;
+/*	height:165px;*/
 	padding:25px;
-	display:none;
 	position:relative;
 	clear:both;
 }
@@ -64,7 +63,7 @@ body {
 	padding:25px;
 	position:relative;
 	clear:both;
-	height:440px;
+/*	height:440px;*/
 }
 .mid3 {
 	background-image: url(/assets/mid3.png);
@@ -73,7 +72,7 @@ body {
 	padding:25px;
 	position:relative;
 	clear:both;
-	height:350px;
+/*	height:350px;*/
 }
 .mid4 {
 	background-image: url(/assets/mid4.png);
@@ -213,9 +212,10 @@ li {
 	position: relative;
 	padding-left:25px;
 	padding-right:17px;
+}
+.tabs li a, .tabs li a:active, .tabs li a:hover { 
 	color: #fff;
-	text-shadow: #000 0px 1px 1px;
-	cursor: pointer;
+	text-shadow: #000 0px 1px 1px;	
 }
 .tabs li.active {
 	background-image: url(/assets/tab-active.png);
