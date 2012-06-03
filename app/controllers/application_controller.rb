@@ -12,7 +12,8 @@ class ApplicationController < ActionController::Base
   
   def post_to_map(report)
     #report = Report.find(:all).first
-    if reserve = report.reserve
+    reserve = report.reserve
+
       c = Curl::Easy.http_post("http://maps.watervoices.ca/Ushahidi_Web/api",
                            Curl::PostField.content('task', 'report'),
                            Curl::PostField.content('incident_title', report.title),
@@ -22,11 +23,12 @@ class ApplicationController < ActionController::Base
                            Curl::PostField.content('incident_minute', report.created_at.strftime("%M")),
                            Curl::PostField.content('incident_ampm', report.created_at.strftime("%p").downcase),
                            Curl::PostField.content('incident_category', 1),
-                           Curl::PostField.content('latitude', reserve.latitude || 79.4042),
-                           Curl::PostField.content('longitude', reserve.longitude || 43.6481),
-                           Curl::PostField.content('location_name', reserve.name))
+                           Curl::PostField.content('latitude', reserve.try(:latitude) || 79.4042),
+                           Curl::PostField.content('longitude', reserve.try(:longitude) || 43.6481),
+                           Curl::PostField.content('location_name', reserve.try(:name) || 'Uknown Reservation' )
+                           )
       puts c.body_str
-    end
+
   end
   
 end
