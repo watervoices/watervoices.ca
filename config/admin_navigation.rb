@@ -34,17 +34,9 @@ SimpleNavigation::Configuration.run do |navigation|
   navigation.items do |primary|
   
     primary.item :content, 'Content', '#' do |content|
-      content.item :news_content, 'Home', admin_contents_path(:prefix => 'home'), :highlights_on => lambda { @nav == :contents && @prefix == 'home' }
-      content.item :home_content, 'News', admin_contents_path(:prefix => 'news'), :highlights_on => lambda { @nav == :contents && @prefix == 'news' }
-      content.item :courses_content, 'Courses', admin_contents_path(:prefix => 'courses'), :highlights_on => lambda { @nav == :contents && @prefix == 'courses' }
-      content.item :about_content, 'About', admin_contents_path(:prefix => 'about'), :highlights_on => lambda { @nav == :contents && @prefix == 'about' }
-      content.item :history_content, 'History', admin_contents_path(:prefix => 'history'), :highlights_on => lambda { @nav == :contents && @prefix == 'history' }
-      content.item :contact_content, 'Contact', admin_contents_path(:prefix => 'contact'), :highlights_on => lambda { @nav == :contents && @prefix == 'contact' }
+      content.item :home_content, 'Home', admin_contents_path(:prefix => 'home'), :highlights_on => lambda { @nav == :contents && @prefix == 'home' }
       content.item :resources_content, 'Resources', admin_contents_path(:prefix => 'resources'), :highlights_on => lambda { @nav == :contents && @prefix == 'resources' }
-      content.item :jobs_content, 'Jobs', admin_contents_path(:prefix => 'jobs'), :highlights_on => lambda { @nav == :contents && @prefix == 'jobs' }
-      content.item :instructors_content, 'Instructors', admin_contents_path(:prefix => 'instructors'), :highlights_on => lambda { @nav == :contents && @prefix == 'instructors' }
-      content.item :graduates_content, 'Graduates', admin_contents_path(:prefix => 'graduates'), :highlights_on => lambda { @nav == :contents && @prefix == 'graduates' }
-      content.item :enrollments_content, 'Enrollment', admin_contents_path(:prefix => 'enrollments'), :highlights_on => lambda { @nav == :contents && @prefix == 'enrollments' }
+      content.item :mission_content, 'Mission', admin_contents_path(:prefix => 'mission'), :highlights_on => lambda { @nav == :contents && @prefix == 'mission' }
     end
 
     # You can also specify a condition-proc that needs to be fullfilled to display an item.
