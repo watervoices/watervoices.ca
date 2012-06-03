@@ -13,7 +13,7 @@ WaterVoices::Application.routes.draw do
   end
   
   resources :reports
-  match 'messages/' => 'messages#index', :via => :post
+  post 'messages.json' => 'messages#index'
   root :to => 'pages#index'
 
   # resources :reserves
