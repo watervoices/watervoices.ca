@@ -14,15 +14,10 @@
 
       $(document).ready(function() {
 
-        loadSection('File Report', 'section-file-report', true);
+        loadSection('View Map', 'view-map', true);
       
       var animationSpeed = 300;
       
-        $(".tabs li").bind("click", function() {
-          $(this).parent().children("li").removeClass("active");
-          $(this).addClass("active");
-           //parent().children("li").stop().fadeTo(animationSpeed,1);
-        });   
 
       //Top menu button animations
         $(".but1").bind("mouseenter", function() {
@@ -41,6 +36,7 @@
           $(this).children(".down").stop().fadeTo(animationSpeed,0);
         });
       
+        $("#logo").click(function() { loadSection('View Map', 'view-map', true); });
       });
       
     //returns html for a top level button
@@ -71,7 +67,7 @@
         }
         
         if(boolClearCrumbs || strName == "home") {
-          crumbString = "<div onclick=\"loadSection('"+strName+"','"+strID+"',"+boolClearCrumbs+");\"><img src='/assets/icon-home.png' /></div>";
+          crumbString = "<div onclick=\"loadSection('View Map', 'view-map', true);\"><img src='/assets/icon-home.png' /></div>";
         }
         //if(strName != "home") {
           crumbString = crumbString  + "<div onclick=\"loadSection('"+strName+"','"+strID+"',"+boolClearCrumbs+");\">" + strName + " > </div>"
@@ -80,7 +76,9 @@
         $("#breadCrumbs").html(crumbString);
         
         $(".mid1").hide();
-        $("#"+strID).show();
+        $("#section-"+strID).show();
+        $(".tabs").children("li").removeClass("active");
+        $("#tab-"+strID).addClass("active");
         currentSection = strID;
       };
       
@@ -92,13 +90,14 @@
   <body>
     <div class="main">
       <div class="top">
+        <div id="logo" style="width:996px; height:150px"></div>
         <div id="breadCrumbs">File Report</div>
         <ul class="tabs">
-          <li class="active" onclick="loadSection('File Report', 'section-file-report', true);"><div class="frontcap"></div>File Report <div class="endcap"></div></li>
-          <li onclick="loadSection('Tell Others', 'section-tell-others', true);"> Tell Others<div class="endcap"></div></li>
-          <li onclick="loadSection('View Map', 'section-view-map', true);"> View Map<div class="endcap"></div> </li>
-          <li onclick="loadSection('Resources', 'section-resources', true);"> Resources<div class="endcap"></div></li>
-          <li onclick="loadSection('Mission', 'section-mission', true);"> Mission <div class="endcap"></div></li>
+          <li class="active" id="tab-view-map" onclick="loadSection('View Map', 'view-map', true);"><div class="frontcap"></div>View Map<div class="endcap"></div> </li>
+          <li id="tab-file-report" onclick="loadSection('File Report', 'file-report', true);"> File Report <div class="endcap"></div></li>
+          <li id="tab-tell-others" onclick="loadSection('Tell Others', 'tell-others', true);"> Tell Others<div class="endcap"></div></li>
+          <li id="tab-resources" onclick="loadSection('Resources', 'resources', true);"> Resources<div class="endcap"></div></li>
+          <li id="tab-mission" onclick="loadSection('Mission', 'mission', true);"> Mission <div class="endcap"></div></li>
         </ul>
       </div>
       
@@ -182,7 +181,7 @@
         
       </div>
       <div class="mid2">
-        <iframe src="http://watervoices.ca/Ushahidi_Web/iframemap" style="border: 0px solid #fff;" border="0" width="100%" height="100%"></iframe>
+        <iframe src="http://maps.watervoices.ca/Ushahidi_Web/iframemap" style="border: 0px solid #fff;" border="0" width="100%" height="100%"></iframe>
       </div>
       <div class="divider2">
         
