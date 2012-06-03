@@ -95,6 +95,18 @@ ActiveRecord::Schema.define(:version => 20120603141931) do
 
   add_index "member_of_parliaments", ["constituency"], :name => "index_member_of_parliaments_on_constituency"
 
+  create_table "messages", :force => true do |t|
+    t.text     "text"
+    t.string   "from"
+    t.string   "from_id"
+    t.string   "network"
+    t.integer  "reserve_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "messages", ["reserve_id"], :name => "index_messages_on_reserve_id"
+
   create_table "nation_memberships", :force => true do |t|
     t.integer  "first_nation_id"
     t.integer  "reserve_id"
@@ -118,6 +130,17 @@ ActiveRecord::Schema.define(:version => 20120603141931) do
   end
 
   add_index "officials", ["given_name", "surname", "first_nation_id"], :name => "index_officials_on_given_name_and_surname_and_first_nation_id"
+
+  create_table "reports", :force => true do |t|
+    t.integer  "reserve_id"
+    t.string   "title"
+    t.integer  "status"
+    t.text     "message"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "reports", ["reserve_id"], :name => "index_reports_on_reserve_id"
 
   create_table "reserves", :force => true do |t|
     t.string   "name"
