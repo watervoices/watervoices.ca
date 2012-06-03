@@ -27,8 +27,8 @@ class MessagesController < ApplicationController
   end
 
   def parse(message)
-    reserve_name = message.match(/^[0-9A-Z ]+/)
-    if !reserve_name.nil?
+    reserve_name = message.scan(/^[0-9A-Z ]+/).first
+    if reserve_name.present?
       reserve_name = reserve_name.string
       #reserve_name = "105 MILE POST 2"
       reserve = Reserve.find_by_sql("SELECT * FROM reserves WHERE levenshtein(LOWER(reserves.name), '#{reserve_name.downcase}') < 4;")
