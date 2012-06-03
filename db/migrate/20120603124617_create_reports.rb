@@ -3,7 +3,7 @@ class CreateReports < ActiveRecord::Migration
     create_table :reports do |t|
       t.references :reserve
       t.string :title
-      t.int :status
+      t.integer :status
       t.text :message
 
       t.timestamps

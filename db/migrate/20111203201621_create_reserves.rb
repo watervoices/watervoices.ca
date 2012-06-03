@@ -9,5 +9,7 @@ class CreateReserves < ActiveRecord::Migration
 
       t.timestamps
     end
+    execute "create extension fuzzystrmatch"
+    execute "create extension pg_trgm"
   end
 end

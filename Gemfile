@@ -18,6 +18,7 @@ gem 'rgeo-shapefile'
 gem 'spreadsheet'
 gem 'zip'
 gem 'tropo-webapi-ruby'
+gem 'curb'
 
 # Gems used only for assets and not required
 # in production environments by default.
